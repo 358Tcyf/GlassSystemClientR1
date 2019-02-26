@@ -192,7 +192,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         }
         if (tag.equals(strDetail)) {
             //TODO 查看详情
-            ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserDetailFragmentNew.newInstance());
+            ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserDetailFragmentNew.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
 //            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserDetailFragment.newInstance()));
         }
         if (tag.equals(strEdit)) {

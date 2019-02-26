@@ -1,57 +1,78 @@
 package project.ys.glasssystem_r1.support_fragment;
 
-import android.view.View;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 
-import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.stone.vega.library.VegaLayoutManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
+import org.androidannotations.annotations.res.StringArrayRes;
+
+import java.util.ArrayList;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.adapter.MenuItemQuickAdapter;
+import project.ys.glasssystem_r1.bean.MenuItemBean;
+
+import static project.ys.glasssystem_r1.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.constant.UserConstant.USER_NAME;
 
 @EFragment(R.layout.fragment_self_detail)
 public class UserSelfInfoFragment extends SupportFragment {
-    public static UserSelfInfoFragment newInstance() {
-        return new UserSelfInfoFragment_();
+
+    public static UserSelfInfoFragment newInstance(String no, String name) {
+        Bundle args = new Bundle();
+        args.putString(USER_ACCOUNT, no);
+        args.putString(USER_NAME, name);
+        UserSelfInfoFragment fragment = new UserSelfInfoFragment_();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    @ViewById(R.id.groupListView)
-    QMUIGroupListView mGroupListView;
+    @ViewById(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+
+    @DrawableRes(R.drawable.ic_icon_email)
+    Drawable iconEmail;
+    @DrawableRes(R.drawable.ic_icon_mobilephone)
+    Drawable iconPhone;
+
+    @StringArrayRes(R.array.userSelfDetails)
+    String[] selfDetails;
+
+    private String name;
+    private String no;
+
 
     @AfterViews
     void afterViews() {
-        initGroupListView();
+        initList();
+        initAdapter();
     }
 
-    private void initGroupListView() {
-        QMUICommonListItemView nameItem = mGroupListView.createItemView("姓名");
-        nameItem.setOrientation(QMUICommonListItemView.VERTICAL);
-        nameItem.setDetailText("XX");
 
-        QMUICommonListItemView emailItem = mGroupListView.createItemView("邮箱");
-        emailItem.setOrientation(QMUICommonListItemView.VERTICAL);
-        emailItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-        emailItem.setDetailText("XX");
+    private ArrayList<MenuItemBean> mList;
+    private BaseQuickAdapter mAdapter;
 
-        QMUICommonListItemView phoneItem = mGroupListView.createItemView("手机");
-        phoneItem.setOrientation(QMUICommonListItemView.VERTICAL);
-        phoneItem.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
-        phoneItem.setDetailText("XX");
-        QMUIGroupListView.newSection(getContext())
-                .addItemView(nameItem, onClickListener)
-                .addItemView(emailItem, onClickListener)
-                .addItemView(phoneItem, onClickListener)
-                .addTo(mGroupListView);
+    private void initList() {
+        no = getArguments().getString(USER_ACCOUNT);
+        name = getArguments().getString(USER_NAME);
+        mList = new ArrayList<>();
+        mList.add(new MenuItemBean(selfDetails[0], "xx"));
+        mList.add(new MenuItemBean(selfDetails[1], "xx", iconEmail));
+        mList.add(new MenuItemBean(selfDetails[2], "xx", iconPhone));
     }
-    private View.OnClickListener onClickListener = this::onClick;
 
-    private void onClick(View v) {
-        if (v instanceof QMUICommonListItemView) {
-            CharSequence text = ((QMUICommonListItemView) v).getText();
-
-        }
+    private void initAdapter() {
+        mRecyclerView.setLayoutManager(new VegaLayoutManager());
+        mAdapter = new MenuItemQuickAdapter(getActivity(), mList);
+        mRecyclerView.setAdapter(mAdapter);
     }
+
 }

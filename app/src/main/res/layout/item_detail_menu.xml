@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/qmui_config_color_white">
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_text_horizontal_margin"
+        android:layout_marginTop="@dimen/item_text_vertical_margin"
+        android:textColor="?attr/qmui_config_color_gray_5"
+        android:textSize="@dimen/item_text_size" />
+
+    <com.qmuiteam.qmui.widget.textview.QMUILinkTextView
+        android:id="@+id/item_detail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_text"
+        android:layout_alignStart="@id/item_text"
+        android:layout_marginBottom="@dimen/item_text_vertical_margin"
+        android:textColor="?attr/qmui_config_color_gray_1"
+        android:textSize="@dimen/item_detail_text_size" />
+
+    <ImageView
+        android:id="@+id/item_right_icon"
+        android:layout_width="@dimen/item_right_icon_size"
+        android:layout_height="@dimen/item_right_icon_size"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/item_text_horizontal_margin"
+        android:background="@color/qmui_config_color_transparent"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignStart="@id/item_text"
+        android:layout_alignEnd="@id/item_right_icon"
+        android:layout_alignParentBottom="true"
+        android:background="@color/qmui_config_color_background" />
+
+</RelativeLayout>

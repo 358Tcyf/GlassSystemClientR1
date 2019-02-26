@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.http;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import project.ys.glasssystem_r1.bean.UserBean;
 import retrofit2.http.POST;
@@ -8,9 +7,10 @@ import retrofit2.http.Query;
 
 import static project.ys.glasssystem_r1.constant.HttpConstant.ADD_USER;
 import static project.ys.glasssystem_r1.constant.HttpConstant.LATEST_NO;
-import static project.ys.glasssystem_r1.constant.HttpConstant.USER;
 import static project.ys.glasssystem_r1.constant.HttpConstant.LOGIN;
+import static project.ys.glasssystem_r1.constant.HttpConstant.USER;
 import static project.ys.glasssystem_r1.constant.HttpConstant.USER_DELETE;
+import static project.ys.glasssystem_r1.constant.HttpConstant.USER_INFO;
 import static project.ys.glasssystem_r1.constant.HttpConstant.USER_LIST;
 
 
@@ -18,6 +18,10 @@ public interface HttpContract {
     @POST(USER + LOGIN)
     Observable<RetResult<UserBean>> login(@Query("account") String account,
                                           @Query("password") String password);
+
+    @POST(USER + USER_INFO)
+    Observable<RetResult<UserBean>> userInfo(@Query("no") String no);
+
 
     @POST(USER + USER_LIST)
     Observable<RetResult> userList();

@@ -11,4 +11,11 @@
         <item>@string/detail_tab2</item>
     </string-array>
 
+
+    <string-array name="userSelfDetails">
+        <item>@string/name</item>
+        <item>@string/email</item>
+        <item>@string/phone</item>
+    </string-array>
+
 </resources>

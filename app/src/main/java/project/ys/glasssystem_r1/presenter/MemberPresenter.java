@@ -27,7 +27,6 @@ public class MemberPresenter implements MemberContract.Presenter {
             public void onSuccess(RetResult retResult) {
                 Map<String, Object> userMap = (Map<String, Object>) retResult.getData();
 
-                List<UserBean> useList = (List<UserBean>) retResult.getData();
                 Log.d("Member", "MemberPresenter: "+retResult.getData().toString());
                 memberView.setMap(userMap);
             }

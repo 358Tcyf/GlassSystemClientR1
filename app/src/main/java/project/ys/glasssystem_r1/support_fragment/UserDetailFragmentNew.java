@@ -1,5 +1,6 @@
 package project.ys.glasssystem_r1.support_fragment;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -19,10 +20,20 @@ import java.util.HashMap;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 
+import static project.ys.glasssystem_r1.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.constant.UserConstant.USER_NAME;
+
 @EFragment(R.layout.fragment_qmui_collasping)
 public class UserDetailFragmentNew extends SupportFragment {
-    public static UserDetailFragmentNew newInstance() {
-        return new UserDetailFragmentNew_();
+
+
+    public static UserDetailFragmentNew newInstance(String no, String name) {
+        Bundle args = new Bundle();
+        args.putString(USER_ACCOUNT, no);
+        args.putString(USER_NAME, name);
+        UserDetailFragmentNew fragment = new UserDetailFragmentNew_();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -37,6 +48,8 @@ public class UserDetailFragmentNew extends SupportFragment {
 
     @StringArrayRes(R.array.userDetails)
     String[] detailsTab;
+    private String no;
+    private String name;
 
     @AfterViews
     void afterView() {
@@ -47,6 +60,8 @@ public class UserDetailFragmentNew extends SupportFragment {
     }
 
     private void initTopBar() {
+        name = getArguments().getString(USER_NAME);
+        mCollapsingTopBarLayout.setTitle(name);
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
             //TODO 关闭当前fragment
         });
@@ -66,9 +81,9 @@ public class UserDetailFragmentNew extends SupportFragment {
     private void initPagers() {
         mPages = new HashMap<>();
 
-        SupportFragment pushFragment = new UserSelfInfoFragment().newInstance();
+        SupportFragment pushFragment = new UserSelfInfoFragment().newInstance(no,name);
         mPages.put(Pager.SELF, pushFragment);
-        SupportFragment memberFragment = new UserSelfInfoFragment().newInstance();
+        SupportFragment memberFragment = new UserSectionInfoFragment().newInstance(no,name);
         mPages.put(Pager.SECTION, memberFragment);
 
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getFragmentManager()) {

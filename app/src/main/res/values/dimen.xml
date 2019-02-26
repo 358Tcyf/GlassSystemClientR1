@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+
+
     <!--启动页-->
     <!--登录按钮-->
     <dimen name="splash_login_width">120dp</dimen>
@@ -50,4 +54,14 @@
     <dimen name="setp_button_2_horizontal_margin">8dp</dimen>
     <dimen name="setp_2_text_horizontal_margin">20dp</dimen>
     <dimen name="setp_3_edit_horizontal_margin">30dp</dimen>
+
+
+    <!--主页-成员页-用户详情-->
+    <dimen name="item_text_size">14sp</dimen>
+    <dimen name="item_text_vertical_margin">12dp</dimen>
+    <dimen name="item_text_horizontal_margin">22dp</dimen>
+    <dimen name="item_detail_text_size">18sp</dimen>
+    <dimen name="item_right_icon_size">22dp</dimen>
+    <dimen name="item_card_icon_size">18dp</dimen>
+
 </resources>

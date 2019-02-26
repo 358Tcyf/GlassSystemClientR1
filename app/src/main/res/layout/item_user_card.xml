@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_card"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/qmui_config_color_white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="理想"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="28sp" />
+
+
+        <TextView
+            android:id="@+id/role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_name"
+            android:layout_alignStart="@id/user_contact"
+            android:layout_marginTop="10dp"
+            android:text="部门："
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/user_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/role"
+            android:layout_toEndOf="@id/role"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/role"
+            android:layout_alignStart="@id/role"
+            android:layout_marginTop="5dp"
+            android:text="工号："
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/user_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/no"
+            android:layout_toEndOf="@id/no"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:id="@+id/user_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/email_icon"
+                android:layout_width="@dimen/item_card_icon_size"
+                android:layout_height="@dimen/item_card_icon_size"
+                android:layout_marginTop="30dp"
+                android:background="@color/qmui_config_color_transparent"
+                android:src="@drawable/ic_icon_email_card" />
+
+            <com.qmuiteam.qmui.widget.textview.QMUILinkTextView
+                android:id="@+id/user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/email_icon"
+                android:layout_alignBottom="@id/email_icon"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/email_icon"
+                android:gravity="center_vertical"
+                android:text="2371183243@qq.com"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp" />
+
+
+            <ImageView
+                android:id="@+id/phone_icon"
+                android:layout_width="@dimen/item_card_icon_size"
+                android:layout_height="@dimen/item_card_icon_size"
+                android:layout_alignTop="@id/email_icon"
+                android:layout_alignBottom="@id/email_icon"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@id/user_email"
+                android:background="@color/qmui_config_color_transparent"
+                android:src="@drawable/ic_icon_mobilephone_card" />
+
+            <com.qmuiteam.qmui.widget.textview.QMUILinkTextView
+                android:id="@+id/user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/email_icon"
+                android:layout_alignBottom="@id/email_icon"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/phone_icon"
+                android:gravity="center_vertical"
+                android:text="15858120165"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</android.support.design.card.MaterialCardView>

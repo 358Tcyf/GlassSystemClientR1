@@ -8,6 +8,7 @@ public class HttpConstant {
     public static final String USER = "/user";
     public static final String LOGIN = "/login";
     public static final String USER_LIST = "/userList";
+    public static final String USER_INFO = "/userInfo";
     public static final String USER_DELETE = "/deleteUser";
     public static final String LATEST_NO = "/latestNo";
     public static final String ADD_USER = "/addUser";

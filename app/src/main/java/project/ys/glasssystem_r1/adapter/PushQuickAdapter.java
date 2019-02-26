@@ -24,8 +24,5 @@ public class PushQuickAdapter extends BaseQuickAdapter<PushBean, BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, PushBean item) {
 
-
     }
-
-
 }

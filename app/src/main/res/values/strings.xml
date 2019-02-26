@@ -64,6 +64,7 @@
     <!--主页-成员页-查看详情-->
     <string name="detail_tab1">个人信息</string>
     <string name="detail_tab2">身份信息</string>
-
+    <string name="email">邮箱</string>
+    <string name="phone">电话</string>
 
 </resources>

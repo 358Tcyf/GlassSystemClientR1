@@ -17,7 +17,7 @@ public class HomeActivity extends SupportActivity {
     void afterViews() {
         SupportFragment fragment = findFragment(UserDetailFragmentNew.class);
         if (fragment == null) {
-            loadRootFragment(R.id.fl_container, UserDetailFragmentNew.newInstance());
+            loadRootFragment(R.id.fl_container, UserDetailFragmentNew.newInstance(null, "DEMO"));
         }
     }
 
