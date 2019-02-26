@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/loginBackDark">
+
+        <View
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/logo_height" />
+
+        <RelativeLayout
+            android:id="@+id/accountLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_below="@id/logo"
+            android:layout_margin="@dimen/edit_text_horizon_margin">
+
+            <EditText
+                android:id="@+id/inputAccount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_edit_text"
+                android:hint="@string/inputNo"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingStart="@dimen/edit_text_horizon_padding"
+                android:paddingEnd="@dimen/edit_text_horizon_padding"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/accountIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_account" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_below="@id/accountLayout"
+            android:layout_alignStart="@id/accountLayout"
+            android:layout_alignEnd="@id/accountLayout">
+
+            <EditText
+                android:id="@+id/inputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_edit_text"
+                android:hint="@string/inputPassword"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                android:paddingStart="@dimen/edit_text_horizon_padding"
+                android:paddingEnd="@dimen/edit_text_horizon_padding" />
+
+            <ImageView
+                android:id="@+id/passwordIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_invisible" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:layout_below="@id/passwordLayout"
+            android:layout_alignStart="@id/accountLayout"
+            android:layout_alignEnd="@id/accountLayout"
+            android:layout_marginTop="@dimen/btn_horizon_margin"
+            android:background="@drawable/login_btn"
+            android:gravity="center"
+
+            android:text="@string/login"
+            android:textColor="?attr/colorText_Icon"
+            android:textSize="@dimen/btn_text_size" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginBtn"
+            android:layout_alignStart="@id/loginBtn"
+            android:layout_alignEnd="@id/loginBtn"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/note_vertical_padding"
+            android:text="@string/forgetPassword"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="@dimen/note_text_size" />
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

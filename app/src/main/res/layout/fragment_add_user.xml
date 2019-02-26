@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/qmui_topbar_height"
+        android:fitsSystemWindows="true"
+        app:qmui_topbar_bg_color="?attr/colorPrimaryDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/qmui_config_color_white"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/step_horizontal_margin"
+        android:paddingTop="@dimen/step0_vertical_margin"
+        tools:ignore="UselessParent">
+
+        <moe.feng.common.stepperview.VerticalStepperItemView
+            android:id="@+id/stepper_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:step_index="1"
+            app:step_state="selected"
+            app:step_title="@string/inputName">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/inputName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/button_skip_0"
+                    android:hint="@string/pleaseInputName"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelText="@string/name"
+                    app:met_floatingLabelTextColor="?attr/colorPrimaryDark"
+                    app:met_underlineColor="?attr/colorPrimaryDark" />
+
+
+                <Button
+                    android:id="@+id/button_next_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/inputName"
+                    android:layout_marginTop="@dimen/setp_buttons_vertical_margin"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:text="@string/nextStep"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/button_skip_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/button_next_0"
+                    android:layout_marginStart="@dimen/setp_button_2_horizontal_margin"
+                    android:layout_toEndOf="@id/button_next_0"
+                    android:text="@string/skip" />
+
+            </RelativeLayout>
+
+        </moe.feng.common.stepperview.VerticalStepperItemView>
+
+        <moe.feng.common.stepperview.VerticalStepperItemView
+            android:id="@+id/stepper_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/other_step_vertical_margin"
+            app:step_index="2"
+            app:step_title="@string/createRole">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <com.jaredrummler.materialspinner.MaterialSpinner
+                    android:id="@+id/roleSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/button_prev_1"
+                    android:layout_toEndOf="@id/roleSpinner" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/newUserNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/roleSpinner"
+                    android:layout_alignEnd="@id/button_prev_1"
+                    android:layout_marginStart="@dimen/setp_2_text_horizontal_margin"
+                    android:enabled="false"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelText="@string/userNo"
+                    app:met_hideUnderline="true"
+                    app:met_underlineColor="?attr/colorPrimaryDark" />
+
+                <Button
+                    android:id="@+id/button_next_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/newUserNo"
+                    android:layout_marginTop="@dimen/setp_buttons_vertical_margin"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:text="@string/nextStep"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/button_prev_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/button_next_1"
+                    android:layout_marginStart="@dimen/setp_button_2_horizontal_margin"
+                    android:layout_toEndOf="@id/button_next_1"
+                    android:text="@string/prevStep" />
+
+            </RelativeLayout>
+
+        </moe.feng.common.stepperview.VerticalStepperItemView>
+
+        <moe.feng.common.stepperview.VerticalStepperItemView
+            android:id="@+id/stepper_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/other_step_vertical_margin"
+            app:step_index="3"
+            app:step_is_last="true"
+            app:step_title="@string/otherInfo">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/inputEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/setp_3_edit_horizontal_margin"
+                    android:imeOptions="actionNext"
+                    app:met_iconLeft="@drawable/icon_email_fill"
+                    app:met_iconPadding="0dp"
+                    app:met_singleLineEllipsis="true"
+                    app:met_underlineColor="?attr/colorPrimaryDark" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/inputPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/inputEmail"
+                    android:layout_alignEnd="@id/inputEmail"
+                    android:imeOptions="actionDone"
+                    app:met_iconLeft="@drawable/icon_phone_fill"
+                    app:met_iconPadding="0dp"
+                    app:met_singleLineEllipsis="true"
+                    app:met_underlineColor="?attr/colorPrimaryDark" />
+
+                <Button
+                    android:id="@+id/button_next_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/inputPhone"
+                    android:layout_marginTop="@dimen/setp_buttons_vertical_margin"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:text="@string/complete"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/button_prev_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/button_next_2"
+                    android:layout_marginStart="@dimen/setp_button_2_horizontal_margin"
+                    android:layout_toEndOf="@id/button_next_2"
+                    android:text="@string/prevStep" />
+
+
+            </RelativeLayout>
+
+        </moe.feng.common.stepperview.VerticalStepperItemView>
+
+    </LinearLayout>
+
+</LinearLayout>

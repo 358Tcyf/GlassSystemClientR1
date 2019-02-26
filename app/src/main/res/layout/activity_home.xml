@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/homePager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.chaychan.library.BottomBarLayout
+        android:id="@+id/homeBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_tab_height"
+        android:layout_gravity="center"
+        android:background="@color/tabBackground"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconNormal="@drawable/ic_icon_statistics"
+            app:iconSelected="@drawable/ic_icon_statistics_fill"
+            app:itemText="@string/tabPush"
+            app:itemTextSize="8sp"
+            app:openTouchBg="true"
+            app:textColorNormal="?attr/colorDivider"
+            app:textColorSelected="?attr/colorPrimaryDark"
+            app:touchDrawable="@drawable/bg_selector_tab" />
+
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconNormal="@drawable/ic_icon_meeting"
+            app:iconSelected="@drawable/ic_icon_meeting_fill"
+            app:itemText="@string/tabMember"
+            app:itemTextSize="8sp"
+            app:openTouchBg="true"
+            app:textColorNormal="?attr/colorDivider"
+            app:textColorSelected="?attr/colorPrimaryDark"
+            app:touchDrawable="@drawable/bg_selector_tab" />
+
+        <com.chaychan.library.BottomBarItem
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:iconNormal="@drawable/ic_icon_work"
+            app:iconSelected="@drawable/ic_icon_work_fill"
+            app:itemText="@string/tabAbout"
+            app:itemTextSize="@dimen/main_tab_text_size"
+            app:openTouchBg="true"
+            app:textColorNormal="?attr/colorDivider"
+            app:textColorSelected="?attr/colorPrimaryDark"
+            app:touchDrawable="@drawable/bg_selector_tab" />
+    </com.chaychan.library.BottomBarLayout>
+
+</LinearLayout>

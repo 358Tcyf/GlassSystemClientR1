@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--启动页-->
+    <!--登录按钮-->
+    <dimen name="splash_login_width">120dp</dimen>
+    <dimen name="splash_login_height">50dp</dimen>
+    <dimen name="splash_login_vertical_margin">50dp</dimen>
+    <dimen name="splash_login_text_size">20sp</dimen>
+    <!--登入页-->
+    <!--logo大小-->
+    <dimen name="logo_height">80dp</dimen>
+    <!--输入框边距、大小-->
+    <dimen name="edit_text_horizon_margin">20dp</dimen>
+    <dimen name="edit_text_height">60dp</dimen>
+    <!--输入内容边距-->
+    <dimen name="edit_text_horizon_padding">10dp</dimen>
+    <!--矩形按钮文字大小、边距-->
+    <dimen name="btn_text_size">20sp</dimen>
+    <dimen name="btn_horizon_margin">25dp</dimen>
+    <!--文字按钮文字大小、边距-->
+    <dimen name="note_text_size">16sp</dimen>
+    <dimen name="note_vertical_padding">8dp</dimen>
+
+
+    <!--主页-->
+    <dimen name="home_tab_height">52dp</dimen>
+    <dimen name="main_tab_text_size">12sp</dimen>
+
+    <!--主页-推送页-->
+    <dimen name="item_push_height">80dp</dimen>
+    <dimen name="item_push_bg_height">40dp</dimen>
+    <dimen name="push_pic_size">50dp</dimen>
+    <dimen name="push_pic_horizontal_margin">10dp</dimen>
+    <dimen name="push_text_horizontal_margin">20dp</dimen>
+    <dimen name="push_title_max_width">200dp</dimen>
+
+
+    <!--主页-成员页-->
+    <dimen name="item_member_height">70dp</dimen>
+    <dimen name="avatar_size">50dp</dimen>
+    <dimen name="avatar_horizontal_margin">10dp</dimen>
+    <dimen name="member_name_text_size">20sp</dimen>
+
+    <!--主页-成员页-新建用户-->
+    <dimen name="step_horizontal_margin">10dp</dimen>
+    <dimen name="step0_vertical_margin">40dp</dimen>
+    <dimen name="other_step_vertical_margin">8dp</dimen>
+    <dimen name="setp_buttons_vertical_margin">16dp</dimen>
+    <dimen name="setp_button_2_horizontal_margin">8dp</dimen>
+    <dimen name="setp_2_text_horizontal_margin">20dp</dimen>
+    <dimen name="setp_3_edit_horizontal_margin">30dp</dimen>
+</resources>

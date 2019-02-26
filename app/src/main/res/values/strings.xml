@@ -1,0 +1,69 @@
+<resources>
+    <!--登入页-->
+    <string name="app_name">玻璃信息</string>
+    <string name="inputNo">请输入工号</string>
+    <string name="inputPassword">请输入密码</string>
+    <string name="login">登录</string>
+    <string name="logining">登录中</string>
+    <string name="noEmpty">工号为空</string>
+    <string name="passwordEmpty">密码为空</string>
+    <string name="forgetPassword">忘记密码</string>
+
+    <!--主页面-->
+    <string name="tabPush">推送</string>
+    <string name="tabMember">成员</string>
+    <string name="tabAbout">关于</string>
+    <string name="add">新建</string>
+    <string name="detail">详情</string>
+    <string name="edit">修改</string>
+    <string name="log_off">注销</string>
+    <string name="account">账号</string>
+    <string name="search">搜索</string>
+    <string name="sort">排序</string>
+    <string name="cancel">取消</string>
+    <string name="refresh">重新加载</string>
+    <string name="noData">暂无数据</string>
+    <string name="refreshFail">加载失败</string>
+    <string name="clickRetry">点击重试</string>
+
+
+    <!--主页-设置页-->
+    <string name="userInfo">用户信息</string>
+    <string name="pushSetting">推送设置</string>
+    <string name="appSetting">应用设置</string>
+    <string name="aboutApp">关于应用</string>
+    <string name="checkUpdate">检查更新</string>
+    <string name="callback">反馈</string>
+    <string name="logout">退出</string>
+    <string name="logoutAccount">退出账号</string>
+    <string name="exitApp">关闭应用</string>
+
+
+    <!--主页-成员页-新建成员-->
+    <string name="adding">新建中</string>
+    <string name="addSuccess">新建成功</string>
+
+
+    <string name="inputName">输入姓名</string>
+    <string name="pleaseInputName">请输入姓名</string>
+    <string name="name">姓名</string>
+
+    <string name="createRole">建立角色</string>
+    <string name="managementSection">管理部门</string>
+    <string name="productionSection">生产部门</string>
+    <string name="saleSection">销售部门</string>
+    <string name="userNo">工号</string>
+
+
+    <string name="otherInfo">其他信息</string>
+    <string name="nextStep">下一步</string>
+    <string name="prevStep">上一步</string>
+    <string name="skip">跳过</string>
+    <string name="complete">完成</string>
+
+    <!--主页-成员页-查看详情-->
+    <string name="detail_tab1">个人信息</string>
+    <string name="detail_tab2">身份信息</string>
+
+
+</resources>
