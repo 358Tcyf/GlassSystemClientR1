@@ -49,6 +49,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/qmui_topbar_height"
+                android:background="@color/qmui_config_color_background"
                 app:qmui_tab_has_indicator="true" />
 
             <com.qmuiteam.qmui.widget.QMUIViewPager
@@ -57,4 +58,5 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
 </android.support.design.widget.CoordinatorLayout>

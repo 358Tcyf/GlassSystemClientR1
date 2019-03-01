@@ -62,7 +62,7 @@ public class QMUITipDialogUtil {
                 .setTitle(title)
                 .setMessage(msg)
                 .addAction(act1, (dialog, index) -> dialog.dismiss())
-                .addAction(0, act2, QMUIDialogAction.ACTION_PROP_NEGATIVE,listener)
+                .addAction(0, act2, QMUIDialogAction.ACTION_PROP_NEGATIVE, listener)
                 .create().show();
     }
 }

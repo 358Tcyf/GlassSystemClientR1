@@ -1,17 +1,19 @@
 package project.ys.glasssystem_r1.http;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
-import project.ys.glasssystem_r1.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserBean;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-import static project.ys.glasssystem_r1.constant.HttpConstant.ADD_USER;
-import static project.ys.glasssystem_r1.constant.HttpConstant.LATEST_NO;
-import static project.ys.glasssystem_r1.constant.HttpConstant.LOGIN;
-import static project.ys.glasssystem_r1.constant.HttpConstant.USER;
-import static project.ys.glasssystem_r1.constant.HttpConstant.USER_DELETE;
-import static project.ys.glasssystem_r1.constant.HttpConstant.USER_INFO;
-import static project.ys.glasssystem_r1.constant.HttpConstant.USER_LIST;
+import static project.ys.glasssystem_r1.common.HttpConstant.ADD_USER;
+import static project.ys.glasssystem_r1.common.HttpConstant.LATEST_NO;
+import static project.ys.glasssystem_r1.common.HttpConstant.LOGIN;
+import static project.ys.glasssystem_r1.common.HttpConstant.USER;
+import static project.ys.glasssystem_r1.common.HttpConstant.USER_DELETE;
+import static project.ys.glasssystem_r1.common.HttpConstant.USER_INFO;
+import static project.ys.glasssystem_r1.common.HttpConstant.USER_LIST;
 
 
 public interface HttpContract {
@@ -20,7 +22,7 @@ public interface HttpContract {
                                           @Query("password") String password);
 
     @POST(USER + USER_INFO)
-    Observable<RetResult<UserBean>> userInfo(@Query("no") String no);
+    Observable<RetResult<Map<String, Object>>> userInfo(@Query("account") String account);
 
 
     @POST(USER + USER_LIST)
