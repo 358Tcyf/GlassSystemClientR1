@@ -12,6 +12,9 @@ import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.common.TabSelectedEvent;
+import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 import project.ys.glasssystem_r1.ui.widget.BottomBar;
 import project.ys.glasssystem_r1.ui.widget.BottomBarTab;
 

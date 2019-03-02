@@ -18,6 +18,9 @@ import java.util.HashMap;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 
 import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
 

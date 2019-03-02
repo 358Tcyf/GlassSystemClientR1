@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.second.child;
 
 import android.os.Handler;
 
@@ -37,6 +37,7 @@ public class AddUserFragment extends SupportFragment implements AddUserContract.
 
 
     public static AddUserFragment newInstance() {
+
         return new AddUserFragment_();
     }
 

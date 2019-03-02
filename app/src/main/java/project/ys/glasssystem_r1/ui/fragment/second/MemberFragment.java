@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.second;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -23,8 +23,6 @@ import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
@@ -32,6 +30,10 @@ import project.ys.glasssystem_r1.ui.adapter.UserQuickAdapter;
 import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
 import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
+import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
+import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
+import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
 import static com.alibaba.fastjson.JSON.parseArray;
 import static com.alibaba.fastjson.JSON.toJSONString;
@@ -194,9 +196,9 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         if (tag.equals(strDetail)) {
             //TODO 查看详情
             if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserDetailFragmentNew.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
+                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserFragment.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
             if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(UserDetailFragmentNew.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
+                ((HomeFragment) getParentFragment()).startBrotherFragment(UserFragment.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
         }
         if (tag.equals(strEdit)) {
             //TODO 修改账号

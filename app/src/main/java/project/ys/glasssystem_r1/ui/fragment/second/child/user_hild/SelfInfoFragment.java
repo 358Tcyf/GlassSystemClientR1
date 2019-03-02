@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.second.child.user_hild;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,12 +31,12 @@ import static project.ys.glasssystem_r1.common.UserConstant.PHONE;
 import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_self_detail)
-public class UserSelfInfoFragment extends BaseBackFragment implements UserDetailContract.View {
+public class SelfInfoFragment extends BaseBackFragment implements UserDetailContract.View {
 
-    public static UserSelfInfoFragment newInstance(String no, String name) {
+    public static SelfInfoFragment newInstance(String no, String name) {
         Bundle args = new Bundle();
         args.putString(USER_ACCOUNT, no);
-        UserSelfInfoFragment fragment = new UserSelfInfoFragment_();
+        SelfInfoFragment fragment = new SelfInfoFragment_();
         fragment.setArguments(args);
         return fragment;
     }

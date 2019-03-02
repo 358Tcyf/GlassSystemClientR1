@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.second.child.user_hild;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -21,12 +21,12 @@ import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
 
 
 @EFragment(R.layout.fragment_section_detail)
-public class UserSectionInfoFragment extends BaseBackFragment implements UserDetailContract.View {
+public class SectionInfoFragment extends BaseBackFragment implements UserDetailContract.View {
 
-    public static UserSectionInfoFragment newInstance(String no, String name) {
+    public static SectionInfoFragment newInstance(String no, String name) {
         Bundle args = new Bundle();
         args.putString(USER_ACCOUNT, no);
-        UserSectionInfoFragment fragment = new UserSectionInfoFragment_();
+        SectionInfoFragment fragment = new SectionInfoFragment_();
         fragment.setArguments(args);
         return fragment;
     }

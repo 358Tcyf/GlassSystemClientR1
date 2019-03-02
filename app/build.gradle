@@ -93,6 +93,9 @@ dependencies {
     implementation 'moe.feng:MaterialStepperView:0.2.4.2'
     /*实现TabLayout与CoordinatorLayout相结合的样式*/
     implementation 'cn.hugeterry.coordinatortablayout:coordinatortablayout:1.2.2'
-
+    /*最为核心的MPAndroidChart图表控件*/
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    /*MaterialDrawer*/
+    implementation "com.mikepenz:materialdrawer:6.0.9"
 
 }

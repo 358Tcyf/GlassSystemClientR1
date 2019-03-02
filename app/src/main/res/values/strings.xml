@@ -40,10 +40,12 @@
 
 
     <!--主页-推送页-查看图表-->
+    <string name="produceData">生产数据</string>
     <string name="produceCount">生产量</string>
     <string name="produceModel">生产型号</string>
     <string name="produceQuality">产品质量</string>
     <string name="produceEnergy">生产能耗</string>
+    <string name="saleData">销售数据</string>
     <string name="saleCount">销售额</string>
     <string name="saleProfit">销售利润</string>
     <string name="saleModel">销售型号</string>

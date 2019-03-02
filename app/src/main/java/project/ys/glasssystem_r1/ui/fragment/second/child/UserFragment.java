@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.second.child;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,18 +21,20 @@ import java.util.HashMap;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SectionInfoFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SelfInfoFragment;
 
 import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
 import static project.ys.glasssystem_r1.common.UserConstant.USER_NAME;
 
 @EFragment(R.layout.fragment_qmui_collasping)
-public class UserDetailFragmentNew extends BaseBackFragment {
+public class UserFragment extends BaseBackFragment {
 
-    public static UserDetailFragmentNew newInstance(String no, String name) {
+    public static UserFragment newInstance(String no, String name) {
         Bundle args = new Bundle();
         args.putString(USER_ACCOUNT, no);
         args.putString(USER_NAME, name);
-        UserDetailFragmentNew fragment = new UserDetailFragmentNew_();
+        UserFragment fragment = new UserFragment_();
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,9 +90,9 @@ public class UserDetailFragmentNew extends BaseBackFragment {
 
     private void initPagers() {
         mPages = new HashMap<>();
-        pushFragment = new UserSelfInfoFragment().newInstance(no, name);
+        pushFragment = new SelfInfoFragment().newInstance(no, name);
         mPages.put(Pager.SELF, pushFragment);
-        memberFragment = new UserSectionInfoFragment().newInstance(no, name);
+        memberFragment = new SectionInfoFragment().newInstance(no, name);
         mPages.put(Pager.SECTION, memberFragment);
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override

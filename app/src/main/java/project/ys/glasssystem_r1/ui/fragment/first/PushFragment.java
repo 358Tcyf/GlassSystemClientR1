@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.first;
 
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,20 +18,14 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.PushBean;
-import project.ys.glasssystem_r1.data.bean.UserBean;
-import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
-
-import static com.alibaba.fastjson.JSON.parseArray;
-import static com.alibaba.fastjson.JSON.toJSONString;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showMessageNegativeDialog;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showTipDialog;
+import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
+import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
+import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
 
 @EFragment(R.layout.fragment_push)
 public class PushFragment extends SupportFragment {
@@ -130,9 +124,9 @@ public class PushFragment extends SupportFragment {
         if (tag.equals(strDetail)) {
             //TODO 查看详情
             if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(DataChartsMainFragment.newInstance());
+                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance());
             if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(DataChartsMainFragment.newInstance());
+                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance());
         }
 
     }

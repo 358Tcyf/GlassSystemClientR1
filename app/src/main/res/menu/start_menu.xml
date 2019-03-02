@@ -1,35 +1,46 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:id="@+id/produce_group">
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/data_group"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/produce_count"
-            android:title="@string/produceCount" />
+            android:id="@+id/produce_group"
+            android:checkableBehavior="single"
+            android:title="@string/produceData">
+            <menu>
+                <item
+                    android:id="@+id/produce_count"
+                    android:title="@string/produceCount" />
+                <item
+                    android:id="@+id/produce_model"
+                    android:title="@string/produceModel" />
+                <item
+                    android:id="@+id/produce_quality"
+                    android:title="@string/produceQuality" />
+                <item
+                    android:id="@+id/produce_energy"
+                    android:title="@string/produceEnergy" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/produce_model"
-            android:title="@string/produceModel" />
-        <item
-            android:id="@+id/produce_quality"
-            android:title="@string/produceQuality" />
-        <item
-            android:id="@+id/produce_energy"
-            android:title="@string/produceEnergy" />
+            android:id="@+id/sale_group"
+            android:checkableBehavior="single"
+            android:title="@string/saleData">
+            <menu>
+                <item
+                    android:id="@+id/sale_count"
+                    android:title="@string/saleCount" />
+                <item
+                    android:id="@+id/sale_profit"
+                    android:title="@string/saleProfit" />
+                <item
+                    android:id="@+id/sale_model"
+                    android:title="@string/saleModel" />
+                <item
+                    android:id="@+id/sale_customer"
+                    android:title="@string/saleCount" />
+            </menu>
+        </item>
     </group>
-
-    <group android:id="@+id/sale_group">
-        <item
-            android:id="@+id/sale_count"
-            android:title="@string/saleCount" />
-        <item
-            android:id="@+id/sale_profit"
-            android:title="@string/saleProfit" />
-        <item
-            android:id="@+id/sale_model"
-            android:title="@string/saleModel" />
-        <item
-            android:id="@+id/sale_customer"
-            android:title="@string/saleCount" />
-    </group>
-
-
 </menu>

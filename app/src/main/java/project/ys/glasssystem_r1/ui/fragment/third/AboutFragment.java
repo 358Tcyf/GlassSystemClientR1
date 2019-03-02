@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.third;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
