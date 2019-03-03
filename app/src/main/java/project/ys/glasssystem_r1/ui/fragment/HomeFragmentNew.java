@@ -13,7 +13,7 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.common.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.MemberFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 import project.ys.glasssystem_r1.ui.widget.BottomBar;
 import project.ys.glasssystem_r1.ui.widget.BottomBarTab;
@@ -65,7 +65,7 @@ public class HomeFragmentNew extends BaseMainFragment {
         SupportFragment firstFragment = findChildFragment(PushFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = PushFragment.newInstance();
-            mFragments[SECOND] = MemberFragment.newInstance();
+            mFragments[SECOND] = MemberFragmentNew.newInstance();
             mFragments[THIRD] = AboutFragment.newInstance(no);
 
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
@@ -74,7 +74,7 @@ public class HomeFragmentNew extends BaseMainFragment {
                     mFragments[THIRD]);
         } else {
             mFragments[FIRST] = firstFragment;
-            mFragments[SECOND] = findChildFragment(MemberFragment.class);
+            mFragments[SECOND] = findChildFragment(MemberFragmentNew.class);
             mFragments[THIRD] = findChildFragment(AboutFragment.class);
         }
     }

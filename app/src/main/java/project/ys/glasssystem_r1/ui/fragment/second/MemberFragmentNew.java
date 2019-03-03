@@ -1,8 +1,10 @@
 package project.ys.glasssystem_r1.ui.fragment.second;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -19,42 +21,46 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.indexablerv.IndexableAdapter;
+import me.yokeyword.indexablerv.IndexableLayout;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.ui.adapter.UserQuickAdapter;
 import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
 import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
+import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
+import project.ys.glasssystem_r1.ui.adapter.UserQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
+import project.ys.glasssystem_r1.utils.ToastUtil;
 
-import static com.alibaba.fastjson.JSON.parseArray;
-import static com.alibaba.fastjson.JSON.toJSONString;
 import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showMessageNegativeDialog;
 import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showTipDialog;
 
-@EFragment(R.layout.fragment_member)
-public class MemberFragment extends SupportFragment implements MemberContract.View {
+@EFragment(R.layout.fragment_member_new)
+public class MemberFragmentNew extends SupportFragment implements MemberContract.View {
 
-    public static MemberFragment newInstance() {
-        return new MemberFragment_();
+    public static MemberFragmentNew newInstance() {
+        return new MemberFragmentNew_();
     }
 
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
-    @ViewById(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-    @ViewById(R.id.swipeRefresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    @ViewById(R.id.indexableLayout)
+    IndexableLayout indexableLayout;
 
     @DrawableRes(R.drawable.ic_user_add)
     Drawable icAdd;
@@ -64,6 +70,9 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
     Drawable icSort;
     @DrawableRes(R.drawable.ic_user_refresh)
     Drawable icRefresh;
+
+    @ColorRes(R.color.colorPrimary)
+    int colorPrimary;
 
     @StringRes(R.string.add)
     String strAdd;
@@ -93,7 +102,6 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
     @AfterInject
     void afterInject() {
         memberPresenter = new MemberPresenter(this);
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @AfterViews
@@ -101,12 +109,12 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         initTopBar();
         initAdapter();
         refreshView();
-        initRefreshLayout();
+
     }
 
     private MemberPresenter memberPresenter;
-    private ArrayList<UserBean> mList = new ArrayList<>();
-    private BaseQuickAdapter mAdapter;
+    private ArrayList<UserWithRoleBean> mList = new ArrayList<>();
+    private UserPinyinAdapter mAdapter;
 
     private void initTopBar() {
         mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more).setOnClickListener(new View.OnClickListener() {
@@ -118,45 +126,39 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     }
 
+
     private void initAdapter() {
-        mRecyclerView.setLayoutManager(new VegaLayoutManager());
-        mAdapter = new UserQuickAdapter(_mActivity, mList);
-//        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            userInfo(position);
-            userManage(position);
-
+        indexableLayout.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mAdapter = new UserPinyinAdapter(_mActivity);
+        indexableLayout.setAdapter(mAdapter);
+        indexableLayout.setOverlayStyle_MaterialDesign(colorPrimary);
+        indexableLayout.setCompareMode(IndexableLayout.MODE_ALL_LETTERS);
+        mAdapter.setOnItemContentClickListener((v, originalPosition, currentPosition, entity) -> {
+//            userInfo(entity);
+            userManage(entity);
         });
+
     }
 
-    private void initRefreshLayout() {
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            new Handler().postDelayed(() -> {
-                mSwipeRefreshLayout.setRefreshing(false);
-//                refreshLoad();
-            }, 1000);
 
-        });
-    }
-
-    private void userManage(int i) {
-        String no = mList.get(i).getNo();
+    private void userManage(UserWithRoleBean user) {
+        String no = user.getNo();
         new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                .addItem(R.drawable.ic_user_details, strAccount + strDetail + ": " + mList.get(i).getName(), strDetail)
-                .addItem(R.drawable.ic_user_edit, strEdit + strAccount + ": " + mList.get(i).getName(), strEdit)
-                .addItem(R.drawable.ic_user_delete, strLogOff + strAccount + ": " + mList.get(i).getName(), strLogOff)
+                .addItem(R.drawable.ic_user_details, strAccount + strDetail + ": " + user.getName(), strDetail)
+                .addItem(R.drawable.ic_user_edit, strEdit + strAccount + ": " + user.getName(), strEdit)
+                .addItem(R.drawable.ic_user_delete, strLogOff + strAccount + ": " + user.getName(), strLogOff)
                 .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                     dialog.dismiss();
-                    action(i, tag);
+                    action(user, tag);
                 })
                 .build()
                 .show();
     }
 
-    private void userInfo(int i) {
-        String no = mList.get(i).getNo();
+    private void userInfo(UserWithRoleBean entity) {
+        String no = entity.getNo();
     }
+
 
     private void showBottomSheetList() {
         QMUIBottomSheet.BottomListSheetBuilder builder =
@@ -167,13 +169,13 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
                         .addItem(icRefresh, strRefresh)
                         .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                             dialog.dismiss();
-                            action(0, tag);
+                            action(null, tag);
                         });
         QMUIBottomSheet sheet = builder.build();
         sheet.show();
     }
 
-    private void action(int i, String tag) {
+    private void action(UserWithRoleBean user, String tag) {
         if (tag.equals(strAdd)) {
             //TODO 新建账号
             if (getParentFragment() instanceof HomeFragmentNew)
@@ -196,9 +198,9 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         if (tag.equals(strDetail)) {
             //TODO 查看详情
             if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserFragment.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
+                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserFragment.newInstance(user.getNo(), user.getName()));
             if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(UserFragment.newInstance(mList.get(i).getNo(), mList.get(i).getName()));
+                ((HomeFragment) getParentFragment()).startBrotherFragment(UserFragment.newInstance(user.getNo(), user.getName()));
         }
         if (tag.equals(strEdit)) {
             //TODO 修改账号
@@ -207,44 +209,19 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         if (tag.equals(strLogOff)) {
             // 注销账号
             showMessageNegativeDialog(getContext(), strLogOff + strAccount
-                    , "确定要" + strLogOff + strAccount + ": " + mList.get(i).getName() + "吗？"
+                    , "确定要" + strLogOff + strAccount + ": " + user.getName() + "吗？"
                     , cancel, strLogOff,
                     (dialog, index) -> {
-                        memberPresenter.logOff(mList.get(i).getNo());
+                        memberPresenter.logOff(user.getNo());
                     });
         }
     }
 
-//    private void refreshLoad() {
-////        setData(null);
-//    }
-//
-//    private void loadMore() {
-//        setData(null);
-//    }
-//
-//    private void setData(ArrayList data) {
-//        final int size = data == null ? 0 : data.size();
-//        mAdapter.loadMoreEnd(false); //显示无更多数据
-//    }
-
-
-    @Override
-    public void setList(ArrayList list) {
-        mEmptyView.hide();
-        this.mList = list;
-        setList();
-    }
-
-    @UiThread
-    void setList() {
-        mAdapter.setNewData(mList);
-    }
 
     @Override
     public void refreshView() {
         mEmptyView.show(true);
-        mAdapter.setNewData(null);
+        mAdapter.setDatas(null);
         new Handler().postDelayed(this::refreshComplete, 1000);
     }
 
@@ -263,5 +240,10 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         mEmptyView.show(false, refreshFail, errorMsg, clickRetry, v -> refreshView());
     }
 
-
+    @Override
+    public void setList(ArrayList list) {
+        mEmptyView.hide();
+        mAdapter.setDatas(list);
+        mAdapter.notifyDataSetChanged();
+    }
 }

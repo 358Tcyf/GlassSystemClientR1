@@ -6,6 +6,9 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
+import static project.ys.glasssystem_r1.utils.ToastUtil.showExitToast;
+
+
 public class BaseMainFragment extends SupportFragment {
     // 再点一次退出程序时间设置
     private static final long WAIT_TIME = 2000L;
@@ -22,11 +25,7 @@ public class BaseMainFragment extends SupportFragment {
             _mActivity.finish();
         } else {
             TOUCH_TIME = System.currentTimeMillis();
-            QMUITipDialog tipDialog = new QMUITipDialog.Builder(_mActivity)
-                    .setTipWord("再按一次退出")
-                    .create();
-            tipDialog.show();
-            new Handler().postDelayed(tipDialog::dismiss, 200);
+            showExitToast(_mActivity);
         }
         return true;
     }

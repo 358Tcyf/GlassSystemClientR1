@@ -1,11 +1,11 @@
 package project.ys.glasssystem_r1.data.bean;
 
 public class UserBean {
-    private String no;
+    protected String no;
     private String password;
-    private String name;
-    private String phone;
-    private String email;
+    protected String name;
+    protected String phone;
+    protected String email;
 
     public UserBean() {
     }

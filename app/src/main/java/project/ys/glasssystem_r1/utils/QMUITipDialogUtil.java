@@ -20,11 +20,10 @@ public class QMUITipDialogUtil {
 
     /*进度条提示*/
     public static QMUITipDialog showLoadingDialog(Context context, String tipWord) {
-        QMUITipDialog tipDialog = new QMUITipDialog.Builder(context)
+        return new QMUITipDialog.Builder(context)
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
                 .setTipWord(tipWord)
                 .create();
-        return tipDialog;
     }
 
     /*失败提示*/

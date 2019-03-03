@@ -40,7 +40,7 @@ public class ChartsFragment extends BaseBackFragment {
     void afterViews() {
         if (drawerLayout == null) return;
         initStartDrawerView();
-        showContent("生产量");
+        showContent(navViewStart.getMenu().getItem(0));
     }
 
 
@@ -57,21 +57,15 @@ public class ChartsFragment extends BaseBackFragment {
     }
 
     private boolean onNavigationItemSelected(@NonNull final MenuItem item, final boolean isStartDrawer) {
-//        switch (item.getOrder()) {
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                break;
-//        }
-        Logger.d(item.getTitle().toString());
-        showContent(item.getTitle().toString());
+        if (isStartDrawer) {
+            Logger.d(item.getTitle().toString());
+            showContent(item);
+        }
         closeDrawer();
         return true;
     }
 
-    private void showContent(String mMenu) {
+    private void showContent(MenuItem mMenu) {
         ChartContentFragment fragment = ChartContentFragment.newInstance(mMenu);
         switchContentFragment(fragment);
     }
@@ -94,7 +88,7 @@ public class ChartsFragment extends BaseBackFragment {
         SupportFragment contentFragment = findChildFragment(ChartContentFragment.class);
         if (contentFragment != null) {
             contentFragment.replaceFragment(fragment, false);
-        }else {
+        } else {
             loadRootFragment(R.id.fl_content_container, fragment);
         }
     }
