@@ -27,7 +27,7 @@ import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 
-import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_about)
 public class AboutFragment extends SupportFragment implements UserDetailContract.View {

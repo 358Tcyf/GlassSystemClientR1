@@ -24,8 +24,8 @@ import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SectionInfoFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SelfInfoFragment;
 
-import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
-import static project.ys.glasssystem_r1.common.UserConstant.USER_NAME;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_NAME;
 
 @EFragment(R.layout.fragment_qmui_collasping)
 public class UserFragment extends BaseBackFragment {

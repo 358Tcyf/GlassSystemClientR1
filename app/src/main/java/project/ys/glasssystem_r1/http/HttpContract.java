@@ -7,13 +7,13 @@ import project.ys.glasssystem_r1.data.bean.UserBean;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-import static project.ys.glasssystem_r1.common.HttpConstant.ADD_USER;
-import static project.ys.glasssystem_r1.common.HttpConstant.LATEST_NO;
-import static project.ys.glasssystem_r1.common.HttpConstant.LOGIN;
-import static project.ys.glasssystem_r1.common.HttpConstant.USER;
-import static project.ys.glasssystem_r1.common.HttpConstant.USER_DELETE;
-import static project.ys.glasssystem_r1.common.HttpConstant.USER_INFO;
-import static project.ys.glasssystem_r1.common.HttpConstant.USER_LIST;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.ADD_USER;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.LATEST_NO;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.LOGIN;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.USER;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.USER_DELETE;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.USER_INFO;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.USER_LIST;
 
 
 public interface HttpContract {

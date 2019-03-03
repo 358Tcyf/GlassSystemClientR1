@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.common.constant;
 
 public class HttpConstant {
     private static final String BUGDOGGY = "http://47.102.41.26";

@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.ui.activity.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.common.constant;
 
 public class UserConstant {
     public static final int MANAGEMENT_SECTION = 1;

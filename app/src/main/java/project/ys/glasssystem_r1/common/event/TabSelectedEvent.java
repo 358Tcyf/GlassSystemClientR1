@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.common.event;
 
 public class TabSelectedEvent {
     public int position;

@@ -12,8 +12,8 @@ import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.http.RetrofitUtils;
 
-import static project.ys.glasssystem_r1.common.HttpConstant.PORT;
-import static project.ys.glasssystem_r1.common.HttpConstant.URL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
 
 public class AddUserModel implements AddUserContract.Model {
     @Override

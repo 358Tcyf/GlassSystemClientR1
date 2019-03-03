@@ -25,10 +25,10 @@ import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 
-import static project.ys.glasssystem_r1.common.UserConstant.EMAIL;
-import static project.ys.glasssystem_r1.common.UserConstant.NAME;
-import static project.ys.glasssystem_r1.common.UserConstant.PHONE;
-import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.EMAIL;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.NAME;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.PHONE;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_self_detail)
 public class SelfInfoFragment extends BaseBackFragment implements UserDetailContract.View {

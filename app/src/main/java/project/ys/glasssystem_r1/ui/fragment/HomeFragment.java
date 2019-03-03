@@ -16,14 +16,16 @@ import org.androidannotations.annotations.res.StringRes;
 
 import java.util.HashMap;
 
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.MemberFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 
-import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_home)
 public class HomeFragment extends BaseMainFragment {
@@ -125,6 +127,14 @@ public class HomeFragment extends BaseMainFragment {
 
         homePager.setAdapter(mPageAdapter);
         homeTabs.setupWithViewPager(homePager, false);
+        homeTabs.setOnTabClickListener(new QMUITabSegment.OnTabClickListener() {
+            @Override
+            public void onTabClick(int position) {
+
+                EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(position));
+
+            }
+        });
     }
 
     enum Pager {

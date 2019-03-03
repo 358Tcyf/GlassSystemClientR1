@@ -24,15 +24,18 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.indexablerv.IndexableAdapter;
 import me.yokeyword.indexablerv.IndexableLayout;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
@@ -102,6 +105,7 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
     @AfterInject
     void afterInject() {
         memberPresenter = new MemberPresenter(this);
+        EventBusActivityScope.getDefault(_mActivity).register(this);
     }
 
     @AfterViews
@@ -109,18 +113,20 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
         initTopBar();
         initAdapter();
         refreshView();
-
     }
 
     private MemberPresenter memberPresenter;
     private ArrayList<UserWithRoleBean> mList = new ArrayList<>();
     private UserPinyinAdapter mAdapter;
+    private boolean mInAtTop = true;
+    private boolean mInAtBottom = false;
 
     private void initTopBar() {
         mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottomSheetList();
+                indexableLayout.getRecyclerView().smoothScrollToPosition(0);
+//                showBottomSheetList();
             }
         });
 
@@ -133,6 +139,17 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
         indexableLayout.setAdapter(mAdapter);
         indexableLayout.setOverlayStyle_MaterialDesign(colorPrimary);
         indexableLayout.setCompareMode(IndexableLayout.MODE_ALL_LETTERS);
+        indexableLayout.getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //滑动到底部
+                mInAtBottom = !indexableLayout.getRecyclerView().canScrollVertically(1);
+                //滑动到顶部
+                mInAtTop = !indexableLayout.getRecyclerView().canScrollVertically(-1);
+
+            }
+        });
         mAdapter.setOnItemContentClickListener((v, originalPosition, currentPosition, entity) -> {
 //            userInfo(entity);
             userManage(entity);
@@ -217,6 +234,13 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
         }
     }
 
+    @Subscribe
+    public void onTabSelectedEvent(TabSelectedEvent event) {
+        Logger.d(mInAtTop);
+        if (event.position != HomeFragmentNew.SECOND) return;
+        if (!mInAtTop)
+            indexableLayout.getRecyclerView().smoothScrollToPosition(0);
+    }
 
     @Override
     public void refreshView() {
@@ -245,5 +269,11 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
         mEmptyView.hide();
         mAdapter.setDatas(list);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 }

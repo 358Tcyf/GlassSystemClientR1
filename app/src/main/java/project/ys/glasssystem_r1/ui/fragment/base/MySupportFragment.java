@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.ui.fragment.base;
 
 import android.app.Activity;
 import android.content.Intent;

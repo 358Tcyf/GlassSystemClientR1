@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.common;
+package project.ys.glasssystem_r1.common.event;
 
 import me.yokeyword.fragmentation.SupportFragment;
 

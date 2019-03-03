@@ -11,14 +11,14 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
-import project.ys.glasssystem_r1.common.TabSelectedEvent;
+import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.MemberFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 import project.ys.glasssystem_r1.ui.widget.BottomBar;
 import project.ys.glasssystem_r1.ui.widget.BottomBarTab;
 
-import static project.ys.glasssystem_r1.common.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_home_new)
 public class HomeFragmentNew extends BaseMainFragment {
@@ -89,13 +89,6 @@ public class HomeFragmentNew extends BaseMainFragment {
             @Override
             public void onTabSelected(int position, int prePosition) {
                 showHideFragment(mFragments[position], mFragments[prePosition]);
-//
-//                BottomBarTab tab = mBottomBar.getItem(FIRST);
-//                if (position == FIRST) {
-//                    tab.setUnreadCount(0);
-//                } else {
-//                    tab.setUnreadCount(tab.getUnreadCount() + 1);
-//                }
             }
 
             @Override
@@ -105,8 +98,6 @@ public class HomeFragmentNew extends BaseMainFragment {
 
             @Override
             public void onTabReselected(int position) {
-                // 在FirstPagerFragment,FirstHomeFragment中接收, 因为是嵌套的Fragment
-                // 主要为了交互: 重选tab 如果列表不在顶部则移动到顶部,如果已经在顶部,则刷新
                 EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(position));
             }
         });
