@@ -199,7 +199,6 @@ public class PushFragment extends SupportFragment {
 
     @Subscribe
     public void onTabSelectedEvent(TabSelectedEvent event) {
-        Logger.d(mInAtTop);
         if (event.position != HomeFragmentNew.FIRST) return;
         if (mInAtTop) {
             swipeRefresh();

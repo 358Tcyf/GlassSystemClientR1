@@ -7,16 +7,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
-import com.orhanobut.logger.Logger;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import me.yokeyword.fragmentation.SupportFragment;
+import java.util.HashMap;
+
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.MenuSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.charts_child.ChartContentFragment;
+import project.ys.glasssystem_r1.ui.fragment.first.child.child.ChartContentFragment;
 
 
 @EFragment(R.layout.fragment_charts_root)
@@ -35,18 +36,28 @@ public class ChartsFragment extends BaseBackFragment {
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    private HashMap<MenuItem, ChartContentFragment> mFragments;
+    private MenuItem defaultMenu;
 
     @AfterViews
     void afterViews() {
         if (drawerLayout == null) return;
         initStartDrawerView();
-        showContent(navViewStart.getMenu().getItem(0));
+        initDefaultMenu();
+    }
+
+
+    private void initDefaultMenu() {
+        mFragments = new HashMap<>();
+        defaultMenu = navViewStart.getMenu().getItem(0);
+        ChartContentFragment fragment = ChartContentFragment.newInstance(defaultMenu.getItemId());
+        loadRootFragment(R.id.fl_content_container, fragment);
+        defaultMenu.setChecked(true);
     }
 
 
     @Override
     public boolean onBackPressedSupport() {
-
         return false;
     }
 
@@ -58,17 +69,12 @@ public class ChartsFragment extends BaseBackFragment {
 
     private boolean onNavigationItemSelected(@NonNull final MenuItem item, final boolean isStartDrawer) {
         if (isStartDrawer) {
-            Logger.d(item.getTitle().toString());
-            showContent(item);
+            EventBusActivityScope.getDefault(_mActivity).post(new MenuSelectedEvent(item.getItemId()));
         }
         closeDrawer();
         return true;
     }
 
-    private void showContent(MenuItem mMenu) {
-        ChartContentFragment fragment = ChartContentFragment.newInstance(mMenu);
-        switchContentFragment(fragment);
-    }
 
     private void closeDrawer() {
         if (drawerLayout != null) {
@@ -79,17 +85,5 @@ public class ChartsFragment extends BaseBackFragment {
         }
     }
 
-    /**
-     * 替换加载 内容Fragment
-     *
-     * @param fragment
-     */
-    public void switchContentFragment(ChartContentFragment fragment) {
-        SupportFragment contentFragment = findChildFragment(ChartContentFragment.class);
-        if (contentFragment != null) {
-            contentFragment.replaceFragment(fragment, false);
-        } else {
-            loadRootFragment(R.id.fl_content_container, fragment);
-        }
-    }
+
 }

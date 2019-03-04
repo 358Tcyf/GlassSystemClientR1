@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment.first.child.charts_child.charts;
+package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
 import android.graphics.Paint;
 
@@ -10,7 +10,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
@@ -21,14 +20,14 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
 @EFragment(R.layout.fragment_chart_bar)
-public class BarChartFragment extends SupportFragment {
+public class Item_3Fragment extends BaseBackFragment {
 
-    public static BarChartFragment newInstance() {
-        return new BarChartFragment_();
+    public static Item_3Fragment newInstance() {
+        return new Item_3Fragment_();
     }
 
     @ViewById(R.id.bar_chart)

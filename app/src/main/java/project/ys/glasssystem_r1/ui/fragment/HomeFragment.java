@@ -104,7 +104,6 @@ public class HomeFragment extends BaseMainFragment {
 
     private void initPagers() {
         mPages = new HashMap<Pager, SupportFragment>();
-
         SupportFragment pushFragment = new PushFragment().newInstance();
         mPages.put(HomeFragment.Pager.PUSH, pushFragment);
         SupportFragment memberFragment = new MemberFragmentNew().newInstance();
@@ -116,7 +115,7 @@ public class HomeFragment extends BaseMainFragment {
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return mPages.get(HomeFragment.Pager.getPagerFromPosition(position));
+                return mPages.get(Pager.getPagerFromPosition(position));
             }
 
             @Override
