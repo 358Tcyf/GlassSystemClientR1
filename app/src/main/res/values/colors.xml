@@ -21,4 +21,7 @@
     <color name="pushUnread">#1a237e</color>
     <color name="pushRead">#c62828</color>
 
+    <color name="color1">#123456</color>
+    <color name="color2">#987654</color>
+
 </resources>

@@ -49,7 +49,7 @@ public class ChartsFragment extends BaseBackFragment {
 
     private void initDefaultMenu() {
         mFragments = new HashMap<>();
-        defaultMenu = navViewStart.getMenu().getItem(0);
+        defaultMenu = navViewStart.getMenu().getItem(2);
         ChartContentFragment fragment = ChartContentFragment.newInstance(defaultMenu.getItemId());
         loadRootFragment(R.id.fl_content_container, fragment);
         defaultMenu.setChecked(true);

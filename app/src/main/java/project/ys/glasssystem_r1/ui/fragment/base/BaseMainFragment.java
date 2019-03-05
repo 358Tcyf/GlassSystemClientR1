@@ -1,9 +1,5 @@
 package project.ys.glasssystem_r1.ui.fragment.base;
 
-import android.os.Handler;
-
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-
 import me.yokeyword.fragmentation.SupportFragment;
 
 import static project.ys.glasssystem_r1.utils.ToastUtil.showExitToast;

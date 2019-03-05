@@ -26,9 +26,9 @@ import project.ys.glasssystem_r1.mvp.presenter.LoginPresenter;
 import project.ys.glasssystem_r1.ui.activity.HomeActivity_;
 
 import static android.text.TextUtils.isEmpty;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showFailDialog;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showLoadingDialog;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showTipDialog;
+import static project.ys.glasssystem_r1.utils.TipDialogUtil.showFailDialog;
+import static project.ys.glasssystem_r1.utils.TipDialogUtil.showLoadingDialog;
+import static project.ys.glasssystem_r1.utils.TipDialogUtil.showTipDialog;
 
 @EFragment(R.layout.fragment_login)
 public class LoginFragment extends SupportFragment implements LoginContract.View, View.OnFocusChangeListener {

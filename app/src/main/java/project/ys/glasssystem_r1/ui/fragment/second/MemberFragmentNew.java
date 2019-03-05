@@ -1,20 +1,15 @@
 package project.ys.glasssystem_r1.ui.fragment.second;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
-import com.stone.vega.library.VegaLayoutManager;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -27,29 +22,23 @@ import org.androidannotations.annotations.res.StringRes;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.indexablerv.IndexableAdapter;
 import me.yokeyword.indexablerv.IndexableLayout;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
-import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
 import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
-import project.ys.glasssystem_r1.ui.adapter.UserQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
-import project.ys.glasssystem_r1.utils.ToastUtil;
 
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showMessageNegativeDialog;
-import static project.ys.glasssystem_r1.utils.QMUITipDialogUtil.showTipDialog;
+import static project.ys.glasssystem_r1.utils.TipDialogUtil.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.utils.TipDialogUtil.showTipDialog;
 
 @EFragment(R.layout.fragment_member_new)
 public class MemberFragmentNew extends SupportFragment implements MemberContract.View {

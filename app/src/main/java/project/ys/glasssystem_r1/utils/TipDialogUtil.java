@@ -8,7 +8,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
-public class QMUITipDialogUtil {
+public class TipDialogUtil {
     /*简单提示*/
     public static void showTipDialog(Context context, String tipWord) {
         QMUITipDialog tipDialog = new QMUITipDialog.Builder(context)
