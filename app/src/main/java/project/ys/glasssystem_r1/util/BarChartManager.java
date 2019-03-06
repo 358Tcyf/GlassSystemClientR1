@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.utils;
+package project.ys.glasssystem_r1.util;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.R;
+
 
 public class BarChartManager {
     private BarChart mBarChart;
@@ -61,6 +62,21 @@ public class BarChartManager {
         //不显示描述信息
         mBarChart.getDescription().setEnabled(false);
 
+        //图例设置
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        //图例文字的大小
+        legend.setFormSize(14f);
+        legend.setTextSize(12f);
+        //显示位置
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setDrawInside(false);
+
+        legend.setXEntrySpace(7f);//x轴的间距
+        legend.setTextColor(Color.parseColor("#a1a1a1")); //图例文字的颜色
+        legend.setTextSize(14);  //图例文字的大小
+
     }
 
     private void initAxis() {
@@ -82,31 +98,19 @@ public class BarChartManager {
         leftAxis.setDrawGridLines(true);//绘制Y轴的网格线
         leftAxis.setTextSize(14f);
         leftAxis.setTextColor(Color.parseColor("#757575"));
-        leftAxis.setTypeface(Typeface.DEFAULT_BOLD);//X轴字体样式
-
-        //图例设置
-        legend.setForm(Legend.LegendForm.CIRCLE);
-        //图例文字的大小
-        legend.setFormSize(14f);
-        legend.setTextSize(12f);
-        //显示位置
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        legend.setDrawInside(false);
-
+        leftAxis.setTypeface(Typeface.DEFAULT);//X轴字体样式
     }
 
     /**
      * 展示柱状图(一条)
      */
-    public void showBarChart(List<BarEntry> entry, String label, String[] xValues, int color, boolean center) {
+    public void showBarChart(List<BarEntry> entries, String label, String[] xValues, int color, boolean center) {
         initChart();
         initAxis();
         if (center)
             xAxis.setCenterAxisLabels(true);//设置X轴文字剧中对齐
         // 每一个BarDataSet代表一类柱状图
-        BarDataSet barDataSet = new BarDataSet(entry, label);
+        BarDataSet barDataSet = new BarDataSet(entries, label);
         barDataSet.setColor(color);
         //文字的大小
         barDataSet.setValueTextSize(10f);
@@ -116,7 +120,7 @@ public class BarChartManager {
         //设置宽度
         data.setBarWidth(0.5f);
         //设置X轴的刻度数
-        xAxis.setLabelCount(entry.size() + 1, true);
+        xAxis.setLabelCount(entries.size() + 1, true);
         xAxis.setDrawLabels(true);
         IAxisValueFormatter xAxisFormatter = new XAxisValueFormatter(xValues);
         xAxis.setValueFormatter(xAxisFormatter);
@@ -127,7 +131,7 @@ public class BarChartManager {
     /**
      * 展示柱状图(多条)
      */
-    public void showMoreBarChart(final List<Float> xAxisValues, List<List<Float>> yAxisValues, List<String> labels,List<String> xValues, List<Integer> colours) {
+    public void showMoreBarChart(final List<Float> xAxisValues, List<List<Float>> yAxisValues, List<String> labels, List<String> xValues, List<Integer> colours) {
         initChart();
         initAxis();
         xAxis.setCenterAxisLabels(true);//设置X轴文字剧中对齐
@@ -169,7 +173,7 @@ public class BarChartManager {
         leftAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return  mFormat.format(value) + "%";
+                return mFormat.format(value) + "%";
             }
         });
         data.groupBars(0, groupSpace, barSpace);
@@ -287,4 +291,6 @@ public class BarChartManager {
         TextView description = relativeLayout.findViewById(R.id.description);
         description.setText(str);
     }
+
+
 }

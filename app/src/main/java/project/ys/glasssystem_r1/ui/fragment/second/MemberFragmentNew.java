@@ -37,8 +37,8 @@ import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
-import static project.ys.glasssystem_r1.utils.TipDialogUtil.showMessageNegativeDialog;
-import static project.ys.glasssystem_r1.utils.TipDialogUtil.showTipDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_member_new)
 public class MemberFragmentNew extends SupportFragment implements MemberContract.View {

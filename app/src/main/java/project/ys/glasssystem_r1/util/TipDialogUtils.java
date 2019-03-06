@@ -1,14 +1,13 @@
-package project.ys.glasssystem_r1.utils;
+package project.ys.glasssystem_r1.util;
 
 import android.content.Context;
 import android.os.Handler;
-import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
-public class TipDialogUtil {
+public class TipDialogUtils {
     /*简单提示*/
     public static void showTipDialog(Context context, String tipWord) {
         QMUITipDialog tipDialog = new QMUITipDialog.Builder(context)

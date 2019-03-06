@@ -1,21 +1,18 @@
 package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
-import android.graphics.Color;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarEntry;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.res.ColorRes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.utils.BarChartManager;
+import project.ys.glasssystem_r1.util.BarChartManager;
 
 @EFragment(R.layout.fragment_chart_bar)
 public class Item_3Fragment extends BaseBackFragment {
@@ -42,11 +39,9 @@ public class Item_3Fragment extends BaseBackFragment {
         List<Integer> colours = new ArrayList<>();
         List<String> models = new ArrayList<>();
 
-
         List<Float> x1 = new ArrayList<>();
         List<Float> x2 = new ArrayList<>();
         List<Float> x3 = new ArrayList<>();
-
 
         for (int i = 0; i < xValues.length; i++) {
             models.add(xValues[i]);

@@ -3,9 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="12dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/top"
+        android:layout_alignBottom="@id/top"
+        android:layout_toEndOf="@id/top"
+        android:paddingStart="5dp"
+        android:text="这是一段描述"
+        android:textSize="20sp" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom"
+        android:layout_below="@id/top"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
 
+    <View
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

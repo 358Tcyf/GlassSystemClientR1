@@ -28,9 +28,9 @@ import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.mvp.presenter.AddUserPresenter;
 
-import static project.ys.glasssystem_r1.utils.TipDialogUtil.showFailDialog;
-import static project.ys.glasssystem_r1.utils.TipDialogUtil.showLoadingDialog;
-import static project.ys.glasssystem_r1.utils.TipDialogUtil.showSuccessDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showSuccessDialog;
 
 @EFragment(R.layout.fragment_add_user)
 public class AddUserFragment extends SupportFragment implements AddUserContract.View {
