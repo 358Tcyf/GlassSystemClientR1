@@ -1,25 +1,18 @@
 package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.res.ColorRes;
-import org.androidannotations.annotations.res.ColorStateListRes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.PieChartManager;
+import project.ys.glasssystem_r1.util.manager.PieChartManager;
 
 @EFragment(R.layout.fragment_chart_pie)
 public class Item_2Fragment extends BaseBackFragment {

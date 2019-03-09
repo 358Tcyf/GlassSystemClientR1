@@ -24,6 +24,7 @@ import org.androidannotations.annotations.res.StringRes;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 
@@ -228,18 +229,18 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     @Override
-    public void setDetail(UserBean user, String roleName) {
-        resetCard(user, roleName);
+    public void setDetail(UserWithRoleBean user) {
+        resetCard(user);
     }
 
     @UiThread
-    void resetCard(UserBean user, String roleName) {
+    void resetCard(UserWithRoleBean user) {
         if (mEmptyView != null)
             mEmptyView.hide();
         if (userName != null)
             userName.setText(user.getName());
         if (userRole != null)
-            userRole.setText(roleName);
+            userRole.setText(user.getRole());
         if (userNo != null)
             userNo.setText(user.getNo());
         if (userEmail != null)

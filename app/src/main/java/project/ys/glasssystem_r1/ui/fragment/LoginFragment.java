@@ -136,8 +136,8 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     }
 
     public void toHomeFragment() {
-        getActivity().setTheme(R.style.AppTheme);
-        start(HomeFragment.newInstance());
+        _mActivity.setTheme(R.style.AppTheme);
+        startWithPop(HomeFragment.newInstance());
     }
 
     @Override
@@ -177,5 +177,10 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

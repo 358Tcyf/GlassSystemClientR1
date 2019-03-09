@@ -5,10 +5,15 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 
@@ -43,6 +48,7 @@ public class DatabaseHelper {
 
     public void insertPush(Push push) {
         pushDao.insert(push);
+        Logger.d("新增成功");
     }
 
     public ArrayList<Push> getAllPush() {
@@ -50,4 +56,17 @@ public class DatabaseHelper {
         return (ArrayList<Push>) list;
     }
 
+
+    public static void showDebugDBAddressLogToast(Context context) {
+        if (BuildConfig.DEBUG) {
+            try {
+                Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
+                Method getAddressLog = debugDB.getMethod("getAddressLog");
+                Object value = getAddressLog.invoke(null);
+                Toast.makeText(context, (String) value, Toast.LENGTH_LONG).show();
+            } catch (Exception ignore) {
+
+            }
+        }
+    }
 }

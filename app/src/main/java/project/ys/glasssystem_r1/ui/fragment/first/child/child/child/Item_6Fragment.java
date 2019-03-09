@@ -1,17 +1,7 @@
 package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
-import android.graphics.Paint;
-
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -22,7 +12,7 @@ import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.LineChartManager;
+import project.ys.glasssystem_r1.util.manager.LineChartManager;
 
 @EFragment(R.layout.fragment_chart_line)
 public class Item_6Fragment extends BaseBackFragment {

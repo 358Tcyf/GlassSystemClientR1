@@ -18,6 +18,7 @@ import org.androidannotations.annotations.res.StringArrayRes;
 import java.util.ArrayList;
 
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.data.bean.MenuItemBean;
@@ -87,7 +88,7 @@ public class SelfInfoFragment extends BaseBackFragment implements UserDetailCont
     }
 
     @Override
-    public void setDetail(UserBean user, String roleName) {
+    public void setDetail(UserWithRoleBean user) {
         mList.get(NAME).setDetailText(user.getName());
         mList.get(EMAIL).setDetailText(user.getEmail());
         mList.get(PHONE).setDetailText(user.getPhone());

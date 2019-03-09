@@ -7,6 +7,15 @@ import android.arch.persistence.room.Entity;
 @Entity(tableName = "push_table")
 public class Push extends BaseEntity {
 
+
+    public Push() {
+
+    }
+
+    public Push(String content) {
+        this.content = content;
+    }
+
     @ColumnInfo(name = "push_title")
     private String title;
 

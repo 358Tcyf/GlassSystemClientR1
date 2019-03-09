@@ -1,8 +1,11 @@
 package project.ys.glasssystem_r1.mvp.presenter;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.Map;
 
 import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
@@ -29,11 +32,8 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
             @Override
             public void onSuccess(RetResult retResult) {
                 Map<String, Object> userMap = (Map<String, Object>) retResult.getData();
-                UserBean userBean = parseObject(toJSONString(userMap.get("user")), UserBean.class);
-                Map<String, Object> roleMap = (Map<String, Object>) userMap.get("role");
-                String roleName = (String) roleMap.get("roleName");
-
-                userDetailView.setDetail(userBean, roleName);
+                UserWithRoleBean userBean = parseObject(toJSONString(userMap), UserWithRoleBean.class);
+                userDetailView.setDetail(userBean);
             }
 
             @Override

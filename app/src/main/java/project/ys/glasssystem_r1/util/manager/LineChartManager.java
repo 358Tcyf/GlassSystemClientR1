@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.util;
+package project.ys.glasssystem_r1.util.manager;
 
 import android.graphics.Color;
 import android.widget.RelativeLayout;

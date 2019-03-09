@@ -34,7 +34,6 @@ public class MemberModel implements MemberContract.Model {
                     public void onNext(RetResult retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
-                            Log.d("Member", "MemberModel: " + retResult.getData().toString());
                         }
                     }
 

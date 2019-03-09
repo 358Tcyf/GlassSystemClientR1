@@ -12,7 +12,7 @@ import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.PieChartManager;
+import project.ys.glasssystem_r1.util.manager.PieChartManager;
 
 @EFragment(R.layout.fragment_chart_pie)
 public class Item_7Fragment extends BaseBackFragment {

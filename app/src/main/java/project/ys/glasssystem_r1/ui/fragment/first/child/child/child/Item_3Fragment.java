@@ -12,7 +12,7 @@ import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.BarChartManager;
+import project.ys.glasssystem_r1.util.manager.BarChartManager;
 
 @EFragment(R.layout.fragment_chart_bar)
 public class Item_3Fragment extends BaseBackFragment {

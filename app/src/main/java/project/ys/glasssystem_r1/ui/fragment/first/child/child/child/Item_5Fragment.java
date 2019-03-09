@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
-import com.airbnb.lottie.L;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.LineChartManager;
+import project.ys.glasssystem_r1.util.manager.LineChartManager;
 
 @EFragment(R.layout.fragment_chart_line)
 public class Item_5Fragment extends BaseBackFragment {

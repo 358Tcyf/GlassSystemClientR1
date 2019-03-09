@@ -31,9 +31,9 @@ public class MemberPresenter implements MemberContract.Presenter {
             public void onSuccess(RetResult retResult) {
                 Map<String, Object> userMap = (Map<String, Object>) retResult.getData();
                 List<Map<String, Object>> userMapList = (List<Map<String, Object>>) userMap.get("staffs");
-                ArrayList<UserBean> userList = new ArrayList<>();
+                ArrayList<UserWithRoleBean> userList = new ArrayList<>();
                 for (Map<String, Object> user : userMapList) {
-                    UserWithRoleBean userBean = parseObject(toJSONString(user.get("user")), UserWithRoleBean.class);
+                    UserWithRoleBean userBean = parseObject(toJSONString(user), UserWithRoleBean.class);
                     userList.add(userBean);
                 }
                 memberView.setList(userList);

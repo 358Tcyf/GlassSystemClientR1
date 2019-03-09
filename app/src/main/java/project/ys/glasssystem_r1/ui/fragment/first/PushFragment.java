@@ -30,14 +30,16 @@ import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.bean.PushBean;
+import project.ys.glasssystem_r1.mvp.contract.PushContract;
+import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
+import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew_;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
 
 @EFragment(R.layout.fragment_push)
-public class PushFragment extends SupportFragment {
+public class PushFragment extends SupportFragment implements PushContract.View {
     public static PushFragment newInstance() {
         return new PushFragment_();
     }
@@ -62,8 +64,10 @@ public class PushFragment extends SupportFragment {
     @StringRes(R.string.clickRetry)
     String clickRetry;
 
+
     @AfterInject
     void afterInject() {
+        pushPresenter = new PushPresenter(this,_mActivity);
         EventBusActivityScope.getDefault(_mActivity).register(this);
     }
 
@@ -76,6 +80,7 @@ public class PushFragment extends SupportFragment {
         initRefreshLayout();
     }
 
+    private PushPresenter pushPresenter;
     private ArrayList<PushBean> mList = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private boolean mInAtTop = true;

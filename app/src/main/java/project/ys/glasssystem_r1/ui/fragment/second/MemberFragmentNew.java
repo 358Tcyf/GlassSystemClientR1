@@ -225,7 +225,6 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
 
     @Subscribe
     public void onTabSelectedEvent(TabSelectedEvent event) {
-        Logger.d(mInAtTop);
         if (event.position != HomeFragmentNew.SECOND) return;
         if (!mInAtTop)
             indexableLayout.getRecyclerView().smoothScrollToPosition(0);
