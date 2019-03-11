@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/setp_3_edit_horizontal_margin"
                     android:imeOptions="actionNext"
-                    app:met_iconLeft="@drawable/icon_email_fill"
+                    app:met_iconLeft="@mipmap/icon_email_fill"
                     app:met_iconPadding="0dp"
                     app:met_singleLineEllipsis="true"
                     app:met_underlineColor="?attr/colorPrimaryDark" />
@@ -152,7 +152,7 @@
                     android:layout_below="@id/inputEmail"
                     android:layout_alignEnd="@id/inputEmail"
                     android:imeOptions="actionDone"
-                    app:met_iconLeft="@drawable/icon_phone_fill"
+                    app:met_iconLeft="@mipmap/icon_phone_fill"
                     app:met_iconPadding="0dp"
                     app:met_singleLineEllipsis="true"
                     app:met_underlineColor="?attr/colorPrimaryDark" />

@@ -2,12 +2,13 @@ package project.ys.glasssystem_r1.data.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 
 
 @Entity(tableName = "push_table")
 public class Push extends BaseEntity {
 
-
+    @Ignore
     public Push() {
 
     }
@@ -28,6 +29,8 @@ public class Push extends BaseEntity {
     @ColumnInfo(name = "push_uuid")
     private String pushUuid;
 
+    @ColumnInfo(name = "receiver_default_see")
+    private String defaultSubMenu;
     @ColumnInfo(name = "push_createTime")
     private long createTime;
 
@@ -64,6 +67,14 @@ public class Push extends BaseEntity {
 
     public void setPushUuid(String pushUuid) {
         this.pushUuid = pushUuid;
+    }
+
+    public String getDefaultSubMenu() {
+        return defaultSubMenu;
+    }
+
+    public void setDefaultSubMenu(String defaultSubMenu) {
+        this.defaultSubMenu = defaultSubMenu;
     }
 
     public long getCreateTime() {

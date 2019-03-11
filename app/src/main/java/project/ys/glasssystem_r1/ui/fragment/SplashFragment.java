@@ -67,7 +67,7 @@ public class SplashFragment extends SupportFragment {
     @Click(R.id.loginBtn)
     public void toLoginFragment() {
         getActivity().setTheme(R.style.LoginTheme);
-        start(LoginFragment.newInstance());
+        startWithPop(LoginFragmentNew.newInstance());
     }
 
     public void toHome() {
@@ -78,6 +78,6 @@ public class SplashFragment extends SupportFragment {
 
     public void toHomeFragment() {
         getActivity().setTheme(R.style.AppTheme);
-        start(HomeFragment.newInstance());
+        startWithPop(HomeFragment.newInstance());
     }
 }

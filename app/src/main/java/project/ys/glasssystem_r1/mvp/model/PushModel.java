@@ -32,4 +32,8 @@ public class PushModel implements PushContract.Model {
     public List<Push> getPushList(String receiver) {
         return helper.getAllPush();
     }
+
+    public void setRead(Push push) {
+        helper.setPushRead(push);
+    }
 }

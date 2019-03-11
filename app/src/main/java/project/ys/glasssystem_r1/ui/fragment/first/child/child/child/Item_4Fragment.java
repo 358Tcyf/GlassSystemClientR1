@@ -34,7 +34,6 @@ public class Item_4Fragment extends BaseBackFragment {
     private void showPieChart() {
         PieChartManager pieChartManager = new PieChartManager(mPieChart);
 
-        //设置每份的颜色
         List<Integer> colors = new ArrayList<>();
         colors.add(_mActivity.getColor(R.color.colorPrimaryDark));
         colors.add(_mActivity.getColor(R.color.color1));

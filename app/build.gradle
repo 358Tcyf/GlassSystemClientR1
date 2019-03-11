@@ -118,5 +118,6 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     /*usual Toast*/
     implementation 'com.github.GrenderG:Toasty:1.4.0'
-
+    /*时间计算器*/
+    implementation 'com.chootdev:timezago:1.1.8'
 }

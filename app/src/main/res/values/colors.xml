@@ -24,4 +24,8 @@
     <color name="color1">#123456</color>
     <color name="color2">#987654</color>
 
+    <color name="textInputLayout">#96ffffff</color>
+    <color name="textSubTip">#9affffff</color>
+
+
 </resources>

@@ -17,6 +17,9 @@ public interface PushDao {
     @Query("select * from push_table order by push_createTime asc")
     List<Push> getAll();
 
+    @Query("select * from push_table where id = :id")
+    Push getOne(int id);
+
     @Insert
     void insert(Push... entities);
 
@@ -28,4 +31,5 @@ public interface PushDao {
 
     @Update
     void update(Push entity);
+
 }

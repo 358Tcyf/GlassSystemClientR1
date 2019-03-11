@@ -15,8 +15,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.orhanobut.logger.Logger;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -129,42 +131,70 @@ public class BarChartManager {
 
 
     /**
+     * 展示柱状图(一条多组)
+     */
+    public void showListBarChart(List<List<BarEntry>> entries, List<String> labels, String[] xValues, List<Integer> colours, boolean center) {
+        initChart();
+        initAxis();
+        if (center)
+            xAxis.setCenterAxisLabels(true);//设置X轴文字剧中对齐
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        for (int i = 0; i < entries.size(); i++) {
+            BarDataSet barDataSet = new BarDataSet(entries.get(i), labels.get(i));
+            barDataSet.setColor(colours.get(i));
+            barDataSet.setValueTextSize(10f);
+            dataSets.add(barDataSet);
+        }
+        BarData data = new BarData(dataSets);
+        //设置宽度
+        data.setBarWidth(0.5f);
+        //设置X轴的刻度数
+        xAxis.setLabelCount(xValues.length
+                , true);
+        xAxis.setDrawLabels(true);
+        IAxisValueFormatter xAxisFormatter = new XAxisValueFormatter(xValues);
+        xAxis.setValueFormatter(xAxisFormatter);
+        mBarChart.setData(data);
+    }
+
+
+    /**
      * 展示柱状图(多条)
      */
-    public void showMoreBarChart(final List<Float> xAxisValues, List<List<Float>> yAxisValues, List<String> labels, List<String> xValues, List<Integer> colours) {
+    public void showMoreBarChart(List<List<BarEntry>> listEntries, List<String> labels, String[] xValues, List<Integer> colours) {
         initChart();
         initAxis();
         xAxis.setCenterAxisLabels(true);//设置X轴文字剧中对齐
+        for (String str : xValues) {
+            if (str.length() >= 6)
+                xAxis.setTextSize(10f);
+        }
         BarData data = new BarData();
-        for (int i = 0; i < yAxisValues.size(); i++) {
-            ArrayList<BarEntry> entries = new ArrayList<>();
-            for (int j = 0; j < yAxisValues.get(i).size(); j++) {
+        for (int i = 0; i < listEntries.size(); i++) {
 
-                entries.add(new BarEntry(xAxisValues.get(j), yAxisValues.get(i).get(j)));
-            }
+            List<BarEntry> entries = listEntries.get(i);
             BarDataSet barDataSet = new BarDataSet(entries, labels.get(i));
-
             barDataSet.setColor(colours.get(i));
             barDataSet.setValueTextColor(colours.get(i));
             barDataSet.setValueTextSize(10f);
             barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             data.addDataSet(barDataSet);
         }
-        int amount = yAxisValues.size();
+        int amount = listEntries.size();
 
         float groupSpace = 0.3f; //柱状图组之间的间距
         float barSpace = (float) ((1 - 0.12) / amount / 10);
         float barWidth = (float) ((1 - 0.3) / amount / 10 * 9);
 
         // (0.2 + 0.02) * 4 + 0.08 = 1.00 -> interval per "group"
-        xAxis.setLabelCount(xAxisValues.size() - 1, false);
+        xAxis.setLabelCount(labels.size(), false);
         data.setBarWidth(barWidth);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                for (int i = 0; i < xAxisValues.size(); i++) {
-                    if (value == (xAxisValues.get(i) - 1)) {
-                        return xValues.get(i);
+                for (int i = 0; i < xValues.length; i++) {
+                    if (value == i) {
+                        return xValues[i];
                     }
                 }
                 return "";
@@ -209,6 +239,7 @@ public class BarChartManager {
         }
 
     }
+
 
     /**
      * 设置Y轴值

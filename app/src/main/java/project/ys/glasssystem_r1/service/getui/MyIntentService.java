@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Message;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
@@ -94,7 +95,7 @@ public class MyIntentService extends GTIntentService {
 
     private void sendMessage(Context context, String data, int what) {
         DatabaseHelper helper = new DatabaseHelper(context);
-        Push push = new Push(data);
+        Push push = JSON.parseObject(data, Push.class);
         helper.insertPush(push);
         Logger.d(data);
     }

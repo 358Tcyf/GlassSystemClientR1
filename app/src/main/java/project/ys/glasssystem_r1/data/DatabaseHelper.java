@@ -69,4 +69,9 @@ public class DatabaseHelper {
             }
         }
     }
+
+    public void setPushRead(Push push) {
+        push.setHaveRead(true);
+        pushDao.update(push);
+    }
 }

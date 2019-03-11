@@ -4,16 +4,12 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
-import com.stone.vega.library.VegaLayoutManager;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -29,9 +25,8 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
-import project.ys.glasssystem_r1.data.bean.PushBean;
+import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
-import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
 import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
@@ -67,7 +62,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @AfterInject
     void afterInject() {
-        pushPresenter = new PushPresenter(this,_mActivity);
+        pushPresenter = new PushPresenter(this, _mActivity);
         EventBusActivityScope.getDefault(_mActivity).register(this);
     }
 
@@ -81,7 +76,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     }
 
     private PushPresenter pushPresenter;
-    private ArrayList<PushBean> mList = new ArrayList<>();
+    private ArrayList<Push> mList = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private boolean mInAtTop = true;
     private boolean mInAtBottom = false;
@@ -89,7 +84,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private void initTopBar() {
         mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more)
                 .setOnClickListener(view -> {
-                    scrollToTop();
                     //                showBottomSheetList();
                 });
 
@@ -97,13 +91,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     private void initList() {
         mEmptyView.show(true);
-        new Handler().postDelayed(mEmptyView::hide, 1000);
         mList.clear();
-        for (int i = 1; i <= 10; i++) {
-            PushBean push = new PushBean();
-            push.setTitle("Push" + i);
-            mList.add(push);
-        }
+        pushPresenter.getList("");
     }
 
     private void initAdapter() {
@@ -123,7 +112,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             }
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            action(0, strDetail);
+            action(position, strDetail);
         });
     }
 
@@ -155,11 +144,18 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         if (tag.equals(strDetail)) {
             //TODO 查看详情
             if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance());
+                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i).getContent()));
             if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance());
+                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i).getContent()));
+
+            setRead(mList.get(i));
         }
 
+
+    }
+
+    private void setRead(Push push) {
+        pushPresenter.setRead(push);
     }
 
 //    private void refreshLoad() {
@@ -175,7 +171,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 //        mAdapter.loadMoreEnd(false); //显示无更多数据
 //    }
 
-
+    @Override
     public void setList(ArrayList list) {
         mEmptyView.hide();
         this.mList = list;
@@ -192,9 +188,9 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mAdapter.setNewData(null);
     }
 
-
+    @Override
     public void refreshFail() {
-        mEmptyView.show(noData, null);
+        mEmptyView.show(noData, "可能时还没有发过推送");
     }
 
     public void showErrorMsg(String errorMsg) {
@@ -228,5 +224,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         super.onDestroyView();
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
+
 
 }
