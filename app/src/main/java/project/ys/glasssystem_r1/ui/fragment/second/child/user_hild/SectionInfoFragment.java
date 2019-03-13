@@ -14,7 +14,6 @@ import org.androidannotations.annotations.ViewById;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 
@@ -71,14 +70,14 @@ public class SectionInfoFragment extends BaseBackFragment implements UserDetailC
     }
 
     @Override
-    public void showErrorMsg(String errorMsg) {
+    public void showErrorView(String errorMsg) {
 
     }
 
     @UiThread
     void resetCard(UserWithRoleBean user) {
         userName.setText(user.getName());
-        userRole.setText(user.getRole());
+        userRole.setText(user.getRoleName());
         userNo.setText(user.getNo());
         userEmail.setText(user.getEmail());
         userPhone.setText(user.getPhone());

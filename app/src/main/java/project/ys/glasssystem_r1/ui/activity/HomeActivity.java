@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.igexin.sdk.PushManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -36,7 +37,8 @@ public class HomeActivity extends SupportActivity {
         showDebugDBAddressLogToast(this);
         SupportFragment fragment = findFragment(HomeFragment.class);
         if (fragment == null) {
-            loadRootFragment(R.id.fl_container, HomeFragment.newInstance("S0001"));
+            MMKV user = MMKV.defaultMMKV();
+            loadRootFragment(R.id.fl_container, HomeFragment.newInstance(user.decodeString("userAccount")));
         }
     }
 

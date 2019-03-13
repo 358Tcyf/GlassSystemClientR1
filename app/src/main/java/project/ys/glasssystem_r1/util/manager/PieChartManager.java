@@ -214,7 +214,7 @@ public class PieChartManager {
         Description description = new Description();
         description.setText(str);//描述内容
         description.setTextColor(Color.parseColor("#212121"));//描述字体颜色
-        description.setTextSize(20f);//描述字体大小
+        description.setTextSize(16f);//描述字体大小
         description.setTextAlign(Paint.Align.LEFT);//文字左对齐
         description.setPosition(100, 100);//设置图表描述
         mPieChart.setDescription(description);

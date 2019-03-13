@@ -8,7 +8,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.greenrobot.eventbus.Subscribe;
 
-
 import java.util.HashMap;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
@@ -16,16 +15,9 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonPieChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreBarChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyBarChart;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_1Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_2Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_3Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_4Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_5Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_6Fragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.Item_7Fragment;
+import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonPieChart;
 
 import static project.ys.glasssystem_r1.data.entity.BaseChart.bar_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.line_chart;
@@ -67,7 +59,6 @@ public class ChartContentFragment extends BaseBackFragment {
         return fragment;
     }
 
-
     @AfterInject
     void afterInject() {
         Bundle args = getArguments();
@@ -95,39 +86,6 @@ public class ChartContentFragment extends BaseBackFragment {
         loadRootFragment(R.id.fl_content_container, fragment);
     }
 
-
-    private BaseBackFragment chartsContent(int itemId) {
-        BaseBackFragment fragment = null;
-        switch (itemId) {
-            case R.id.produce_count:
-                fragment = Item_1Fragment.newInstance();
-                break;
-            case R.id.produce_model:
-                fragment = Item_2Fragment.newInstance();
-                break;
-            case R.id.produce_quality:
-                fragment = Item_3Fragment.newInstance();
-                break;
-            case R.id.produce_energy:
-                fragment = Item_4Fragment.newInstance();
-                break;
-            case R.id.sale_count:
-                fragment = Item_5Fragment.newInstance();
-                break;
-            case R.id.sale_profit:
-                fragment = Item_6Fragment.newInstance();
-                break;
-            case R.id.sale_model:
-                fragment = Item_7Fragment.newInstance();
-                break;
-            case R.id.sale_customer:
-                fragment = Item_7Fragment.newInstance();
-                break;
-            default:
-
-        }
-        return fragment;
-    }
 
 
     private BaseBackFragment chartsContent(BaseChart baseChart) {

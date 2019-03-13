@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--AppTheme-->
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#0288D1</color>
-    <color name="colorPrimaryLight">#B3E5FC</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorPrimary">#a5d4c8</color>
+    <color name="colorPrimaryDark">#33aa91</color>
+    <color name="colorAccent">#a5d4c8</color>
 
     <!--CommonTheme-->
     <color name="colorText_Icon">#FFFFFF</color>
@@ -12,19 +11,35 @@
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#BDBDBD</color>
 
-    <color name="loginBackDark">#243048</color>
-    <color name="tabBackground">#F3F5F4</color>
 
-    <color name="colorBlueIcon">#1F88D9</color>
+    <color name="pushViewUnread">#eefcf9</color>
+    <color name="pushViewRead">#a5d4c8</color>
+    <color name="dateTextUnread">#212121</color>
+    <color name="dateTextRead">#FFFFFF</color>
+    <color name="dateViewUnread">#6633aa91</color>
+    <color name="dateViewRead">#6694d9c9</color>
+    <color name="titleTextUnread">#39aa91</color>
+    <color name="titleTextRead">#96659c90</color>
+    <color name="timeTextUnread">#9633aa91</color>
+    <color name="timeTextRead">#96a5d4c8</color>
+    <color name="pushUnread">#b84e4e</color>
+    <color name="pushRead">#1a237e</color>
+
+    <color name="loginBackDark">#243048</color>
+    <color name="tabBackground">#eefcf9</color>
+
+    <color name="colorItemIcon">#33aa91</color>
     <color name="tab_unselect">#c9c9c9</color>
 
-    <color name="pushUnread">#1a237e</color>
-    <color name="pushRead">#c62828</color>
 
-    <color name="color1">#123456</color>
-    <color name="color2">#987654</color>
+    <color name="color1">#365650</color>
+    <color name="color2">#6A8372</color>
+    <color name="color3">#227D51</color>
+    <color name="color4">#5DAC81</color>
+    <color name="color5">#A8D8B9</color>
 
     <color name="textInputLayout">#96ffffff</color>
+    <color name="textInputLayoutPrimary">#96212121</color>
     <color name="textSubTip">#9affffff</color>
 
 

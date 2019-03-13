@@ -57,8 +57,8 @@ public class CommonOnlyBarChart extends BaseBackFragment {
         String[] xValues = mBaseChart.getxValues();
         List<String> labels = mBaseChart.getLabels();
         List<Integer> colours = new ArrayList<>();
-        colours.add(_mActivity.getColor(R.color.color2));
-        colours.add(_mActivity.getColor(R.color.color1));
+        colours.add(_mActivity.getColor(R.color.color4));
+        colours.add(_mActivity.getColor(R.color.color3));
 //        barChartManager.showBarChart(setData(), label, xValues, _mActivity.getColor(R.color.colorPrimaryDark), false);
         barChartManager.showListBarChart(setListData(), labels, xValues, colours, false);
         barChartManager.setDescription(mBaseChart.getTitle());

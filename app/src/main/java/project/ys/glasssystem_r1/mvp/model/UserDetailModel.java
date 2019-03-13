@@ -11,13 +11,14 @@ import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.http.RetrofitUtils;
 
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
-import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
 public class UserDetailModel implements UserDetailContract.Model {
     @Override
     public void getDetail(String no, OnHttpCallBack<RetResult> callBack) {
-        RetrofitUtils.newInstance(URL + PORT + "/")
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
                 .userInfo(no)
                 .subscribeOn(Schedulers.newThread())

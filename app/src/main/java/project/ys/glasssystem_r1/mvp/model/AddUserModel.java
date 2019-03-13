@@ -5,20 +5,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import project.ys.glasssystem_r1.data.bean.UserBean;
-import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.http.RetrofitUtils;
+import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
-import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
 public class AddUserModel implements AddUserContract.Model {
     @Override
     public void getLatestNo(int roleId, OnHttpCallBack<RetResult> callBack) {
-        RetrofitUtils.newInstance(URL + PORT + "/")
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
                 .getLatestNo(roleId)
                 .subscribeOn(Schedulers.newThread())
@@ -50,7 +51,7 @@ public class AddUserModel implements AddUserContract.Model {
 
     @Override
     public void addUser(UserBean user, int roleId, OnHttpCallBack<RetResult> callBack) {
-        RetrofitUtils.newInstance(URL + PORT + "/")
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
                 .addUser(user.getName(), user.getNo(), user.getEmail(), user.getPhone(), roleId)
                 .subscribeOn(Schedulers.newThread())

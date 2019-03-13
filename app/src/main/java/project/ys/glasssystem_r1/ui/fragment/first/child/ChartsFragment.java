@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.logger.Logger;
-import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
@@ -27,8 +26,10 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.MenuSelectedEvent;
 import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
+import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.mvp.contract.ChartContract;
+import project.ys.glasssystem_r1.mvp.presenter.ChartPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.ChartContentFragment;
 
@@ -36,7 +37,7 @@ import static com.alibaba.fastjson.JSON.toJSONString;
 
 
 @EFragment(R.layout.fragment_charts_root)
-public class ChartsFragment extends BaseBackFragment {
+public class ChartsFragment extends BaseBackFragment implements ChartContract.View {
 
     public static ChartsFragment newInstance() {
         Bundle args = new Bundle();
@@ -45,11 +46,15 @@ public class ChartsFragment extends BaseBackFragment {
         return fragment;
     }
 
+    public static final String PUSH = "push";
     public static final String PUSH_CONTENT = "push_content";
+    public static final String DEFAULT_SUBMENU = "default_submenu";
 
-    public static ChartsFragment newInstance(String content) {
+    public static ChartsFragment newInstance(Push push) {
         Bundle args = new Bundle();
-        args.putString(PUSH_CONTENT, content);
+        args.putParcelable(PUSH, push);
+        args.putString(PUSH_CONTENT, push.getContent());
+        args.putString(DEFAULT_SUBMENU, push.getDefaultSubMenu());
         ChartsFragment fragment = new ChartsFragment_();
         fragment.setArguments(args);
         return fragment;
@@ -63,6 +68,7 @@ public class ChartsFragment extends BaseBackFragment {
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    private Push push;
     private String content;
     private List<BaseChart> charts = new ArrayList<>();
     private List<String> subMenus = new ArrayList<>();
@@ -70,25 +76,26 @@ public class ChartsFragment extends BaseBackFragment {
     private HashMap<MenuItem, ChartContentFragment> mFragments;
     private MenuItem defaultMenu;
     private String defaultSubMenu;
+    private ChartPresenter chartPresenter;
 
     @AfterInject
     void afterInject() {
-        content = getArguments().getString(PUSH_CONTENT);
-        if (content != null) {
+        chartPresenter = new ChartPresenter(this, _mActivity);
+        push = getArguments().getParcelable(PUSH);
+        if (push != null) {
+            content = getArguments().getString(PUSH_CONTENT);
             charts = JSON.parseArray(content, BaseChart.class);
-            Logger.d(charts);
             for (BaseChart chart : charts) {
                 subMenus.add(chart.getSubmenu());
             }
-            defaultSubMenu = subMenus.get(0);
-
+            defaultSubMenu = getArguments().getString(DEFAULT_SUBMENU);
         }
     }
 
     @AfterViews
     void afterViews() {
         if (drawerLayout == null) return;
-        initStartDrawerView();
+//        initStartDrawerView();
         initDefaultMenu();
         initTopBar();
     }
@@ -107,11 +114,13 @@ public class ChartsFragment extends BaseBackFragment {
     @UiThread
     void initDefaultMenu() {
         mFragments = new HashMap<>();
-//        defaultMenu = navViewStart.getMenu().getItem(0);
-//        ChartContentFragment fragment = ChartContentFragment.newInstance(defaultMenu.getItemId());
-        ChartContentFragment fragment = ChartContentFragment.newInstance(charts.get(0));
+        BaseChart defaultChart = charts.get(0);
+        for (BaseChart chart : charts) {
+            if (chart.getSubmenu().equals(defaultSubMenu))
+                defaultChart = chart;
+        }
+        ChartContentFragment fragment = ChartContentFragment.newInstance(defaultChart);
         loadRootFragment(R.id.fl_content_container, fragment);
-//        defaultMenu.setChecked(true);
     }
 
 
@@ -152,6 +161,7 @@ public class ChartsFragment extends BaseBackFragment {
         }
         builder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
             EventBusActivityScope.getDefault(_mActivity).post(new SubMenuSelectedEvent(charts.get(position)));
+            chartPresenter.setDefault(content, subMenus.get(position));
             dialog.dismiss();
         });
         QMUIBottomSheet sheet = builder.build();

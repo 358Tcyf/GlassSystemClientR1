@@ -29,4 +29,19 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void resetPassword(String account) {
+        loginModel.resetPassword(account, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+                loginView.showOkMsg((String) retResult.getMsg());
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                loginView.showErrorMsg(errorMsg);
+            }
+        });
+    }
 }

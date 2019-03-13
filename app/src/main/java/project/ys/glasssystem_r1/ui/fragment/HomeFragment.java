@@ -22,7 +22,7 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.MemberFragmentNew;
+import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
@@ -106,7 +106,7 @@ public class HomeFragment extends BaseMainFragment {
         mPages = new HashMap<Pager, SupportFragment>();
         SupportFragment pushFragment = new PushFragment().newInstance();
         mPages.put(HomeFragment.Pager.PUSH, pushFragment);
-        SupportFragment memberFragment = new MemberFragmentNew().newInstance();
+        SupportFragment memberFragment = new MemberFragment().newInstance();
         mPages.put(HomeFragment.Pager.PEOPLE, memberFragment);
         no = getArguments().getString(USER_ACCOUNT);
         SupportFragment settingFragment = new AboutFragment().newInstance(no);

@@ -96,7 +96,7 @@ public class SelfInfoFragment extends BaseBackFragment implements UserDetailCont
     }
 
     @Override
-    public void showErrorMsg(String errorMsg) {
+    public void showErrorView(String errorMsg) {
 
     }
 

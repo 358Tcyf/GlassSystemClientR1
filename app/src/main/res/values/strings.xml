@@ -5,6 +5,7 @@
     <string name="inputPassword">请输入密码</string>
     <string name="login">登录</string>
     <string name="logining">登录中</string>
+    <string name="updating">提交中</string>
     <string name="noEmpty">工号为空</string>
     <string name="passwordEmpty">密码为空</string>
     <string name="forgetPassword">忘记密码</string>
@@ -18,6 +19,7 @@
     <string name="add">新建</string>
     <string name="detail">详情</string>
     <string name="edit">修改</string>
+    <string name="delete">删除</string>
     <string name="log_off">注销</string>
     <string name="account">账号</string>
     <string name="search">搜索</string>
@@ -40,6 +42,10 @@
     <string name="logoutAccount">退出账号</string>
     <string name="exitApp">关闭应用</string>
 
+
+    <!--主页-推送页-->
+    <string name="sort_by_date">推送时间优先</string>
+    <string name="sort_by_read">未读推送优先</string>
 
     <!--主页-推送页-查看图表-->
     <string name="produceData">生产数据</string>

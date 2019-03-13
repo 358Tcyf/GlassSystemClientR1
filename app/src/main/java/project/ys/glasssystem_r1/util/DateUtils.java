@@ -16,6 +16,8 @@ import java.util.Date;
 public class DateUtils {
     public final static String format1 = "yyyy-MM-dd HH:mm:ss";
     public final static String format2 = "yyyy-MM-dd";
+    public final static String MM = "MM";
+    public final static String dd = "dd";
 
 
     public static String dateToStr(Date date, String format) {
@@ -63,6 +65,17 @@ public class DateUtils {
         return res;
     }
 
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDate(String s, String format) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
+    }
 
     public static String stampToStr(Context mContext, long time) {
         Date date = new Date(time);

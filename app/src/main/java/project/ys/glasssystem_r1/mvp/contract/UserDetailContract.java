@@ -13,7 +13,7 @@ public interface UserDetailContract {
     interface View {
         void setDetail(UserWithRoleBean user );
 
-        void showErrorMsg(String errorMsg);
+        void showErrorView(String errorMsg);
 
     }
 

@@ -1,9 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
+
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -17,6 +19,15 @@
             android:src="@mipmap/good_morning_img" />
 
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/changeUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_details" />
 
     <RelativeLayout
         android:id="@+id/tipLayout"
@@ -95,42 +106,47 @@
         android:paddingRight="@dimen/input_event_horizon_margin">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputAccountLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/textInputLayout"
-            android:theme="@style/EditScreenTextInputLayoutStyle">
+            android:theme="@style/EditTextInputLayoutUnselect"
+            app:hintEnabled="false">
 
             <EditText
                 android:id="@+id/inputAccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_email_white_24dp"
+                android:drawableStart="@drawable/ic_account_white"
                 android:drawablePadding="@dimen/input_drawable_padding"
                 android:fontFamily="@font/calibri"
                 android:hint="@string/inputNo"
-                android:inputType="text"
+                android:inputType="textLongMessage"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
+                android:textColorHint="@color/textInputLayout"
                 android:textSize="@dimen/input_text_size" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputPasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/textInputLayout"
-            android:theme="@style/EditScreenTextInputLayoutStyle">
+            android:theme="@style/EditTextInputLayoutUnselect"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true">
 
             <EditText
                 android:id="@+id/inputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableStart="@drawable/ic_lock_white_24dp"
+                android:drawableStart="@drawable/ic_lock_white"
                 android:drawablePadding="@dimen/input_drawable_padding"
                 android:fontFamily="@font/calibri"
                 android:hint="@string/inputPassword"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
+                android:textColorHint="@color/textInputLayout"
                 android:textSize="@dimen/input_text_size" />
         </android.support.design.widget.TextInputLayout>
 
@@ -148,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/login_horizon_margin"
                 android:layout_marginEnd="@dimen/login_horizon_margin"
-                android:background="@drawable/buttonshapewhitebg"
+                android:background="@drawable/bt_login_btn"
                 android:fontFamily="@font/calibri"
                 android:text="@string/login"
                 android:textAllCaps="false"
@@ -160,6 +176,7 @@
 
 
         <TextView
+            android:id="@+id/forgot_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_event_margin_top"

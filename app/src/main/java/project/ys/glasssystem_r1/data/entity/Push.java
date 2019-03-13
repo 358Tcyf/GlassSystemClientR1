@@ -3,10 +3,12 @@ package project.ys.glasssystem_r1.data.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
 @Entity(tableName = "push_table")
-public class Push extends BaseEntity {
+public class Push extends BaseEntity implements Parcelable {
 
     @Ignore
     public Push() {
@@ -36,6 +38,28 @@ public class Push extends BaseEntity {
 
     @ColumnInfo(name = "receiver_haveRead")
     private boolean haveRead;
+
+    protected Push(Parcel in) {
+        title = in.readString();
+        content = in.readString();
+        receiver = in.readString();
+        pushUuid = in.readString();
+        defaultSubMenu = in.readString();
+        createTime = in.readLong();
+        haveRead = in.readByte() != 0;
+    }
+
+    public static final Creator<Push> CREATOR = new Creator<Push>() {
+        @Override
+        public Push createFromParcel(Parcel in) {
+            return new Push(in);
+        }
+
+        @Override
+        public Push[] newArray(int size) {
+            return new Push[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -91,5 +115,21 @@ public class Push extends BaseEntity {
 
     public void setHaveRead(boolean haveRead) {
         this.haveRead = haveRead;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(receiver);
+        dest.writeString(pushUuid);
+        dest.writeString(defaultSubMenu);
+        dest.writeLong(createTime);
+        dest.writeByte((byte) (haveRead ? 1 : 0));
     }
 }

@@ -14,11 +14,17 @@ import project.ys.glasssystem_r1.data.entity.Push;
 @Dao
 public interface PushDao {
 
-    @Query("select * from push_table order by push_createTime asc")
+    @Query("select * from push_table order by push_createTime desc")
     List<Push> getAll();
+
+    @Query("select * from push_table order by receiver_haveRead asc")
+    List<Push> getAllByRead();
 
     @Query("select * from push_table where id = :id")
     Push getOne(int id);
+
+    @Query("select * from push_table where push_content = :content")
+    Push findByContent(String content);
 
     @Insert
     void insert(Push... entities);

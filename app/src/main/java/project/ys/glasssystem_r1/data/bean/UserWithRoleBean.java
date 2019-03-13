@@ -5,14 +5,14 @@ import me.yokeyword.indexablerv.IndexableEntity;
 public class UserWithRoleBean extends UserBean implements IndexableEntity {
 
     private String pinyin;
-    private String role;
+    private String roleName;
 
     public UserWithRoleBean() {
     }
 
     public UserWithRoleBean(String name, String role) {
         this.name = name;
-        this.role = role;
+        this.roleName = role;
     }
 
 
@@ -24,12 +24,12 @@ public class UserWithRoleBean extends UserBean implements IndexableEntity {
         this.pinyin = pinyin;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     @Override

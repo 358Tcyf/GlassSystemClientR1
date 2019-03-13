@@ -1,10 +1,7 @@
 package project.ys.glasssystem_r1.mvp.presenter;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.Map;
 
-import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
@@ -38,7 +35,7 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
 
             @Override
             public void onFailed(String errorMsg) {
-                userDetailView.showErrorMsg(errorMsg);
+                userDetailView.showErrorView(errorMsg);
             }
         });
     }

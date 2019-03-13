@@ -21,9 +21,11 @@ import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
 
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.mvp.presenter.AddUserPresenter;
@@ -173,6 +175,7 @@ public class AddUserFragment extends SupportFragment implements AddUserContract.
             loading.dismiss();
             showSuccessDialog(getContext(), addSuccess);
         }, 500);
+        EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent());
     }
 
     @Override

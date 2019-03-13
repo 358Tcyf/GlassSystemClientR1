@@ -1,17 +1,24 @@
 package project.ys.glasssystem_r1.ui.fragment.third;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.textview.QMUILinkTextView;
+import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -21,19 +28,30 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
+import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
+import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
+import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
 
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SupportFragment implements UserDetailContract.View {
+public class AboutFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
+    @ViewById(R.id.user_card)
+    CardView userCard;
 
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
@@ -109,18 +127,24 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     private UserDetailPresenter userDetailPresenter;
+    private PushSetPresenter pushSetPresenter;
     private String no;
 
     @AfterInject
     void afterInject() {
         userDetailPresenter = new UserDetailPresenter(this);
+        pushSetPresenter = new PushSetPresenter(this);
         no = getArguments().getString(USER_ACCOUNT);
     }
 
     @AfterViews
     void afterViews() {
-        initCard();
-        initTopBar();
+        if (no.startsWith("A")) {
+            userCard.setVisibility(View.GONE);
+            mEmptyView.hide();
+        } else {
+            initCard();
+        }
         initGroupListView();
     }
 
@@ -131,15 +155,6 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
 
     }
 
-    private void initTopBar() {
-        mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                showBottomSheetList();
-            }
-        });
-
-    }
 
     private void initGroupListView() {
         QMUICommonListItemView userInfoItem = mGroupListView.createItemView(
@@ -172,8 +187,15 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
                 null,
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        addNewSection(userInfoItem, pushSettingItem, appSettingItem, aboutSystemItem, logoutItem);
-//        addNewSection(logoutItem);
+        if (no.startsWith("A")) {
+            addNewSection(pushSettingItem);
+            addNewSection(appSettingItem);
+            addNewSection(aboutSystemItem);
+            addNewSection(logoutItem);
+
+        } else {
+            addNewSection(userInfoItem, pushSettingItem, appSettingItem, aboutSystemItem, logoutItem);
+        }
 
     }
 
@@ -181,7 +203,6 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
         for (int i = 0; i < itemView.length; i++) {
             section.addItemView(itemView[i], onClickListener);
-
         }
         section.addTo(mGroupListView);
     }
@@ -190,11 +211,9 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
 
     private void onClick(View v) {
         if (v instanceof QMUICommonListItemView) {
-            CharSequence text = ((QMUICommonListItemView) v).getText();
-            if (text.equals(strDetails))
-                showAboutApp();
-            if (text.equals(strLogout))
-                showLogoutSheet();
+            CharSequence tag = ((QMUICommonListItemView) v).getText();
+            action(tag.toString());
+
         }
     }
 
@@ -204,10 +223,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
                 .addItem(icCallback, strCallback)
                 .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                     dialog.dismiss();
-                    switch (tag) {
-
-                        default:
-                    }
+                    action(tag);
                 })
                 .build()
                 .show();
@@ -219,13 +235,65 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
                 .addItem(icExit, strExitApp)
                 .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                     dialog.dismiss();
-                    switch (tag) {
-
-                        default:
-                    }
+                    action(tag);
                 })
                 .build()
                 .show();
+    }
+
+
+    private void action(String tag) {
+        if (tag.equals(strUserInfo)) {
+            //TODO 用户信息
+            userInfo();
+        }
+
+        if (tag.equals(strPushSetting)) {
+            //TODO 推送设置
+            pushSet();
+        }
+
+        if (tag.equals(strSetting
+        )) {
+            //TODO 应用设置
+            appSet();
+        }
+
+        if (tag.equals(strDetails)) {
+            //TODO 关于应用
+            showAboutApp();
+        }
+
+        if (tag.equals(strUpdate)) {
+            //TODO 检查更新
+            showTipDialog(getContext(), tag);
+        }
+        if (tag.equals(strCallback)) {
+            //TODO 反馈
+            showTipDialog(getContext(), tag);
+        }
+        if (tag.equals(strLogout)) {
+            //TODO 退出
+            showLogoutSheet();
+        }
+        if (tag.equals(strLogoutAccount)) {
+            //TODO 退出账号
+            logoutDialog();
+        }
+        if (tag.equals(strExitApp)) {
+            //TODO 关闭应用
+            _mActivity.moveTaskToBack(false);
+        }
+    }
+
+    private void userInfo() {
+    }
+
+    private void pushSet() {
+        pushSetPresenter.getTags(no);
+    }
+
+    private void appSet() {
     }
 
     @Override
@@ -240,7 +308,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         if (userName != null)
             userName.setText(user.getName());
         if (userRole != null)
-            userRole.setText(user.getRole());
+            userRole.setText(user.getRoleName());
         if (userNo != null)
             userNo.setText(user.getNo());
         if (userEmail != null)
@@ -250,7 +318,68 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     @Override
-    public void showErrorMsg(String errorMsg) {
+    public void showErrorView(String errorMsg) {
         mEmptyView.show(false, refreshFail, errorMsg, clickRetry, v -> initCard());
     }
+
+    @Override
+    public void showTagsChoices(List<Integer> checks) {
+        final String[] items = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
+        final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(getActivity())
+                .addItems(items, (dialog, which) -> {
+                });
+        if (checks != null) {{
+            int[] checkedIndexes = new int[checks.size()];
+            for(int i =0;i<checks.size();i++){
+                checkedIndexes[i] = checks.get(i);
+            }
+            builder.setCheckedItems(checkedIndexes);
+        }
+        }
+        builder.addAction("取消", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+            }
+        });
+        builder.addAction("提交", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                List<String> tags = new ArrayList<>();
+                for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
+                    tags.add(items[builder.getCheckedItemIndexes()[i]]);
+                }
+                pushSetPresenter.updateTags(no,tags);
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public void showErrorMsg(String errorMsg) {
+        new Handler().postDelayed(() -> {
+            showFailDialog(getContext(), errorMsg);
+        }, 2000);
+    }
+
+    private void logoutDialog() {
+        QMUIDialog.CheckBoxMessageDialogBuilder logoutDailog = new QMUIDialog.CheckBoxMessageDialogBuilder(_mActivity);
+        logoutDailog.setTitle("退出后是否删除账号信息?")
+                .setMessage("删除账号信息")
+                .setChecked(false)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("退出", (dialog, index) -> {
+                    if (logoutDailog.isChecked()) {
+                        MMKV user = MMKV.defaultMMKV();
+                        user.encode("userAccount", "");
+                        user.encode("userPassword", "");
+                    }
+                    startActivity(new Intent(_mActivity, LoginActivity_.class));
+                    _mActivity.finish();
+                    dialog.dismiss();
+                }).show();
+    }
+
+
 }

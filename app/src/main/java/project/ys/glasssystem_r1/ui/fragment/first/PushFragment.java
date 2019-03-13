@@ -1,9 +1,11 @@
 package project.ys.glasssystem_r1.ui.fragment.first;
 
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIResHelper;
@@ -16,6 +18,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -24,6 +27,8 @@ import java.util.ArrayList;
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.RefreshListEvent;
+import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
@@ -32,6 +37,8 @@ import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
+
+import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_push)
 public class PushFragment extends SupportFragment implements PushContract.View {
@@ -49,8 +56,29 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @ViewById(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+
+    @DrawableRes(R.drawable.ic_user_search)
+    Drawable icSearch;
+    @DrawableRes(R.drawable.ic_user_sort)
+    Drawable icSort;
+    @DrawableRes(R.drawable.ic_user_refresh)
+    Drawable icRefresh;
+
+
     @StringRes(R.string.detail)
     String strDetail;
+    @StringRes(R.string.search)
+    String strSearch;
+    @StringRes(R.string.sort)
+    String strSort;
+    @StringRes(R.string.sort_by_date)
+    String sortByDate;
+    @StringRes(R.string.sort_by_read)
+    String sortByRead;
+    @StringRes(R.string.delete)
+    String strDelete;
+    @StringRes(R.string.refresh)
+    String strRefresh;
 
     @StringRes(R.string.noData)
     String noData;
@@ -58,7 +86,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     String refreshFail;
     @StringRes(R.string.clickRetry)
     String clickRetry;
-
 
     @AfterInject
     void afterInject() {
@@ -69,9 +96,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @AfterViews
     void afterViews() {
         initTopBar();
-        initList();
         initAdapter();
-//        refreshView();
+        refreshView();
         initRefreshLayout();
     }
 
@@ -82,23 +108,29 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private boolean mInAtBottom = false;
 
     private void initTopBar() {
-        mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more)
+        mTopBar.addLeftImageButton(R.drawable.ic_icon_workmore, R.id.more)
                 .setOnClickListener(view -> {
-                    //                showBottomSheetList();
+                    showBottomSheetList();
                 });
 
     }
 
-    private void initList() {
+    @Override
+    public void refreshView() {
         mEmptyView.show(true);
         mList.clear();
+        new Handler().postDelayed(this::refreshComplete, 1000);
+    }
+
+    @UiThread
+    void refreshComplete() {
         pushPresenter.getList("");
     }
+
 
     private void initAdapter() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new PushQuickAdapter(_mActivity, mList);
-//        mAdapter.setOnLoadMoreListener(this::loadMore, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -113,6 +145,22 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         });
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             action(position, strDetail);
+        });
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            int i = position;
+            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
+                    .addItem(R.drawable.ic_user_delete, strDelete, strDetail)
+                    .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+                        @Override
+                        public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                            dialog.dismiss();
+                            action(i, tag);
+                        }
+                    })
+                    .build()
+                    .show();
+            return false;
         });
     }
 
@@ -132,6 +180,9 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private void showBottomSheetList() {
         QMUIBottomSheet.BottomListSheetBuilder builder =
                 new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                        .addItem(icSearch, strSearch)
+                        .addItem(icSort, strSort)
+                        .addItem(icRefresh, strRefresh)
                         .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                             dialog.dismiss();
                             action(0, tag);
@@ -142,34 +193,45 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     private void action(int i, String tag) {
         if (tag.equals(strDetail)) {
+            new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
             //TODO 查看详情
             if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i).getContent()));
+                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
             if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i).getContent()));
-
+                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
             setRead(mList.get(i));
         }
+        if (tag.equals(strDelete)) {
+            //TODO 删除
+            showTipDialog(getContext(), tag);
+        }
+        if (tag.equals(strSearch)) {
+            //TODO 搜索
+            showTipDialog(getContext(), tag);
+        }
+        if (tag.equals(strSort)) {
+            //TODO 排序
+            QMUIBottomSheet.BottomListSheetBuilder builder =
+                    new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                            .addItem(sortByDate)
+                            .addItem(sortByRead)
+                            .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+                                pushPresenter.sortList("", tag1);
+                                dialog.dismiss();
+                            });
+            QMUIBottomSheet sheet = builder.build();
+            sheet.show();
+        }
 
-
+        if (tag.equals(strRefresh)) {
+            //TODO 重新加载
+            refreshView();
+        }
     }
 
     private void setRead(Push push) {
         pushPresenter.setRead(push);
     }
-
-//    private void refreshLoad() {
-////        setData(null);
-//    }
-//
-//    private void loadMore() {
-//        setData(null);
-//    }
-//
-//    private void setData(ArrayList data) {
-//        final int size = data == null ? 0 : data.size();
-//        mAdapter.loadMoreEnd(false); //显示无更多数据
-//    }
 
     @Override
     public void setList(ArrayList list) {
@@ -181,11 +243,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @UiThread
     void setList() {
         mAdapter.setNewData(mList);
-    }
-
-    public void refreshView() {
-        mEmptyView.show(true);
-        mAdapter.setNewData(null);
     }
 
     @Override
@@ -208,10 +265,18 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         }
     }
 
+    @Subscribe
+    public void onRefreshList(RefreshListEvent event) {
+        pushPresenter.getList("");
+    }
+
     @UiThread
     void swipeRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-        new Handler().postDelayed(() -> mSwipeRefreshLayout.setRefreshing(false), 1000);
+        new Handler().postDelayed(() -> {
+            pushPresenter.getList("");
+            mSwipeRefreshLayout.setRefreshing(false);
+        }, 1000);
     }
 
     @UiThread

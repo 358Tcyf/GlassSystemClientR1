@@ -11,11 +11,13 @@ public interface PushContract {
         void addPushItem(String content);
 
         List<Push> getPushList(String receiver);
-
+        List<Push> sortPushList(String receiver,String tag);
         void setRead(Push push);
     }
 
     interface View {
+        void refreshView();
+
         void refreshFail();
 
         void setList(ArrayList list);
@@ -23,6 +25,8 @@ public interface PushContract {
 
     interface Presenter {
         void getList(String account);
+
+        void sortList(String account,String tag);
 
         void setRead(Push push);
     }

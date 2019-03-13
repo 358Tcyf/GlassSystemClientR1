@@ -57,7 +57,7 @@ public class CommonMoreBarChart extends BaseBackFragment {
         List<Integer> colours = new ArrayList<>();
         colours.add(_mActivity.getColor(R.color.color1));
         colours.add(_mActivity.getColor(R.color.color2));
-        colours.add(_mActivity.getColor(R.color.colorPrimaryDark));
+        colours.add(_mActivity.getColor(R.color.color3));
         barChartManager.showMoreBarChart(setListData(), mBaseChart.getLabels(), mBaseChart.getxValues(), colours);
         barChartManager.setXAxis(mBaseChart.getxValues().length, 0, mBaseChart.getxValues().length);
         barChartManager.setYAxis(100, 0, 10);

@@ -63,7 +63,7 @@ public class MyIntentService extends GTIntentService {
 
     @Override
     public void onReceiveClientId(Context context, String clientid) {
-        Logger.d("onReceiveClientId -> " + "clientid = " + clientid, TAG);
+//        Logger.d("onReceiveClientId -> " + "clientid = " + clientid, TAG);
     }
 
     @Override

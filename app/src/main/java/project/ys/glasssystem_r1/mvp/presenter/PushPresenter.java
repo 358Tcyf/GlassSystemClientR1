@@ -14,17 +14,18 @@ public class PushPresenter implements PushContract.Presenter {
     private PushModel pushModel;
     private Context mContext;
 
-    public PushPresenter(PushContract.View view) {
-        this.pushView = view;
+    public PushPresenter(PushContract.View pushView) {
+        this.pushView = pushView;
         pushModel = new PushModel();
     }
 
-    public PushPresenter(PushContract.View view, Context mContext) {
-        this.pushView = view;
+    public PushPresenter(PushContract.View pushView, Context mContext) {
+        this.pushView = pushView;
         this.mContext = mContext;
         pushModel = new PushModel(mContext);
     }
 
+    @Override
     public void getList(String account) {
         List<Push> pushList = pushModel.getPushList("");
         if (pushList.size() == 0) {
@@ -33,7 +34,17 @@ public class PushPresenter implements PushContract.Presenter {
             pushView.setList((ArrayList) pushList);
         }
     }
+    @Override
+    public void sortList(String account,String tag) {
+        List<Push> pushList = pushModel.sortPushList("",tag);
+        if (pushList.size() == 0) {
+            pushView.refreshFail();
+        } else {
+            pushView.setList((ArrayList) pushList);
+        }
+    }
 
+    @Override
     public void setRead(Push push) {
         pushModel.setRead(push);
     }

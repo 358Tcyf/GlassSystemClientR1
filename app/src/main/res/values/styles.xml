@@ -6,8 +6,10 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="qmui_topbar_bg_color">@color/colorPrimary</item>
+        <item name="qmui_round_btn_border_color">@color/colorPrimary</item>
+        <item name="qmui_round_btn_text_color">@color/colorPrimary</item>
 
         <item name="colorText_Icon">@color/colorText_Icon</item>
         <item name="colorPrimaryText">@color/colorPrimaryText</item>
@@ -19,20 +21,27 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/loginBackDark</item>
-        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:background">@drawable/bg_splash</item>
+        <item name="android:background">@drawable/bg_empty</item>
     </style>
 
-    <style name="EditScreenTextInputLayoutStyle" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="EditTextInputLayoutUnselect" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@color/textInputLayout</item>
         <item name="colorControlActivated">@color/textInputLayout</item>
         <item name="colorControlHighlight">@color/textInputLayout</item>
-        <item name="colorAccent">@color/textInputLayout</item>
         <item name="android:textColorHint">@color/textInputLayout</item>
+        <item name="android:colorAccent">@color/textInputLayout</item>
+    </style>
+
+    <style name="EditTextInputLayoutSelect" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryText</item>
+        <item name="colorControlActivated">@color/colorPrimaryText</item>
+        <item name="colorControlHighlight">@color/colorPrimaryText</item>
+        <item name="android:colorAccent">@color/colorPrimaryText</item>
+        <item name="android:textColorHint">@color/colorPrimaryText</item>
     </style>
 </resources>

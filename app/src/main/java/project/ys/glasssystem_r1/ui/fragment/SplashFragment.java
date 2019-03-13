@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -16,6 +17,8 @@ import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.activity.HomeActivity_;
 import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
+
+import static android.text.TextUtils.isEmpty;
 
 @EFragment(R.layout.fragment_splash)
 public class SplashFragment extends SupportFragment {
@@ -43,7 +46,13 @@ public class SplashFragment extends SupportFragment {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                toLoginFragment();
+                MMKV user = MMKV.defaultMMKV();
+                String account = user.decodeString("userAccount");
+                String password = user.decodeString("userPassword");
+                if (isEmpty(account) | isEmpty(password))
+                    toLogin();
+                else
+                    toHome();
             }
 
             @Override
@@ -58,16 +67,16 @@ public class SplashFragment extends SupportFragment {
         });
     }
 
+    @Click(R.id.loginBtn)
     public void toLogin() {
         Intent intent = new Intent(getContext(), LoginActivity_.class);
         startActivity(intent);
         getActivity().finish();
     }
 
-    @Click(R.id.loginBtn)
     public void toLoginFragment() {
         getActivity().setTheme(R.style.LoginTheme);
-        startWithPop(LoginFragmentNew.newInstance());
+        startWithPop(LoginFragment.newInstance());
     }
 
     public void toHome() {

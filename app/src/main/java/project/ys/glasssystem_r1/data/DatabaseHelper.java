@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.BuildConfig;
+import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 
@@ -56,6 +57,15 @@ public class DatabaseHelper {
         return (ArrayList<Push>) list;
     }
 
+    public ArrayList<Push> sortAllPush(String receiver, String tag) {
+        List<Push> list = new ArrayList<>();
+        if (tag.equals(context.getString(R.string.sort_by_date)))
+            list = pushDao.getAll();
+        if (tag.equals(context.getString(R.string.sort_by_read)))
+            list = pushDao.getAllByRead();
+        return (ArrayList<Push>) list;
+    }
+
 
     public static void showDebugDBAddressLogToast(Context context) {
         if (BuildConfig.DEBUG) {
@@ -72,6 +82,16 @@ public class DatabaseHelper {
 
     public void setPushRead(Push push) {
         push.setHaveRead(true);
+        pushDao.update(push);
+    }
+
+
+    public void setDefault(String content, String submenu) {
+        Logger.d(content + "///" + submenu);
+        Push push = pushDao.findByContent(content);
+        push.setDefaultSubMenu(submenu);
+        Logger.d("///" + push);
+
         pushDao.update(push);
     }
 }

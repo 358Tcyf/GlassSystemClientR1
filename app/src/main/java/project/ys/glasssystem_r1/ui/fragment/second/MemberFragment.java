@@ -4,9 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
@@ -27,6 +25,7 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.indexablerv.IndexableLayout;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
@@ -40,11 +39,11 @@ import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 import static project.ys.glasssystem_r1.util.TipDialogUtils.showMessageNegativeDialog;
 import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
 
-@EFragment(R.layout.fragment_member_new)
-public class MemberFragmentNew extends SupportFragment implements MemberContract.View {
+@EFragment(R.layout.fragment_member)
+public class MemberFragment extends SupportFragment implements MemberContract.View {
 
-    public static MemberFragmentNew newInstance() {
-        return new MemberFragmentNew_();
+    public static MemberFragment newInstance() {
+        return new MemberFragment_();
     }
 
     @ViewById(R.id.topBar)
@@ -58,8 +57,6 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
     Drawable icAdd;
     @DrawableRes(R.drawable.ic_user_search)
     Drawable icSearch;
-    @DrawableRes(R.drawable.ic_user_sort)
-    Drawable icSort;
     @DrawableRes(R.drawable.ic_user_refresh)
     Drawable icRefresh;
 
@@ -111,13 +108,9 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
     private boolean mInAtBottom = false;
 
     private void initTopBar() {
-        mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                indexableLayout.getRecyclerView().smoothScrollToPosition(0);
-//                showBottomSheetList();
-            }
-        });
+        mTopBar.addLeftImageButton(R.drawable.ic_icon_workmore, R.id.more)
+                .setOnClickListener(view ->
+                        showBottomSheetList());
 
     }
 
@@ -140,8 +133,12 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
             }
         });
         mAdapter.setOnItemContentClickListener((v, originalPosition, currentPosition, entity) -> {
-//            userInfo(entity);
+            action(entity,strDetail);
+        });
+        mAdapter.setOnItemContentLongClickListener((v, originalPosition, currentPosition, entity) -> {
+            //            userInfo(entity);
             userManage(entity);
+            return false;
         });
 
     }
@@ -171,7 +168,6 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
                 new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                         .addItem(icAdd, strAdd)
                         .addItem(icSearch, strSearch)
-                        .addItem(icSort, strSort)
                         .addItem(icRefresh, strRefresh)
                         .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
                             dialog.dismiss();
@@ -229,7 +225,10 @@ public class MemberFragmentNew extends SupportFragment implements MemberContract
         if (!mInAtTop)
             indexableLayout.getRecyclerView().smoothScrollToPosition(0);
     }
-
+    @Subscribe
+    public void onRefreshList(RefreshListEvent event) {
+        memberPresenter.userList();
+    }
     @Override
     public void refreshView() {
         mEmptyView.show(true);

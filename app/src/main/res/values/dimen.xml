@@ -6,10 +6,13 @@
 
 
     <!--启动页-->
+    <dimen name="lottie_view_size">300dp</dimen>
+    <dimen name="lottie_view_margin">100dp</dimen>
+
     <!--登录按钮-->
     <dimen name="splash_login_width">120dp</dimen>
     <dimen name="splash_login_height">50dp</dimen>
-    <dimen name="splash_login_vertical_margin">50dp</dimen>
+    <dimen name="splash_login_vertical_margin">120dp</dimen>
     <dimen name="splash_login_text_size">20sp</dimen>
     <!--登入页-->
     <!--logo大小-->

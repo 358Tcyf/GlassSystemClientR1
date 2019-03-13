@@ -1,7 +1,10 @@
 package project.ys.glasssystem_r1.common.constant;
 
+import com.tencent.mmkv.MMKV;
+
 public class HttpConstant {
-    private static final String BUGDOGGY = "http://47.102.41.26";
+    public static final String HTTP = "http://";
+    private static final String BUGDOGGY = "47.102.41.26";
     public static final String URL = BUGDOGGY;
     public static final String PORT = ":9898";
     public static final String USER = "/user";
@@ -11,4 +14,23 @@ public class HttpConstant {
     public static final String USER_DELETE = "/deleteUser";
     public static final String LATEST_NO = "/latestNo";
     public static final String ADD_USER = "/addUser";
+    public static final String RESET_PASSWORD = "/resetPassword";
+    public static final String UPDATE_TAGS = "/updateTags";
+    public static final String GET_TAGS = "/getTags";
+
+
+    public static void changeURL(String url) {
+        MMKV http = MMKV.defaultMMKV();
+        http.encode("url", url);
+    }
+
+    public static String getURL() {
+        MMKV http = MMKV.defaultMMKV();
+        String url = http.decodeString("url");
+        if (url.equals(""))
+            return URL;
+        else
+            return url;
+
+    }
 }

@@ -53,23 +53,19 @@ public class CommonPieChart extends BaseBackFragment {
     private void showPieChart() {
         PieChartManager pieChartManager = new PieChartManager(mPieChart);
 
-        List<Integer> colors = new ArrayList<>();
-        colors.add(_mActivity.getColor(R.color.colorPrimaryDark));
-        colors.add(_mActivity.getColor(R.color.color1));
-        colors.add(_mActivity.getColor(R.color.color2));
-        colors.add(_mActivity.getColor(R.color.colorPrimaryLight));
 
         if (mBaseChart.getChart_type() == BaseChart.pie_chart)
-            pieChartManager.showSolidPieChart(setData(), mBaseChart.getLabel()
+            pieChartManager.showSolidPieChart(setData(), ""
                     , Arrays.asList(_mActivity.getColor(R.color.colorPrimaryDark)
                             , _mActivity.getColor(R.color.color1)
                             , _mActivity.getColor(R.color.color2)
-                            , _mActivity.getColor(R.color.colorPrimaryLight)));
+                            , _mActivity.getColor(R.color.color3)));
         if (mBaseChart.getChart_type() == BaseChart.ring_chart)
-            pieChartManager.showRingPieChart(setData(), mBaseChart.getLabel(), "电量单位：kW·h\n煤单位：吨\n水单位：吨"
-                    , Arrays.asList(_mActivity.getColor(R.color.colorPrimaryDark)
-                            , _mActivity.getColor(R.color.color1)
-                            , _mActivity.getColor(R.color.color2)));
+            pieChartManager.showRingPieChart(setData(), ""
+                    , "电量单位：kW·h\n煤单位：吨\n水单位：吨"
+                    , Arrays.asList(_mActivity.getColor(R.color.color1)
+                            , _mActivity.getColor(R.color.color2)
+                            , _mActivity.getColor(R.color.color3)));
         pieChartManager.setDescription(mBaseChart.getTitle());
         pieChartManager.setSubDescription(mBaseChart.getDescription());
 
@@ -77,30 +73,11 @@ public class CommonPieChart extends BaseBackFragment {
     }
 
 
-    private List<PieEntry> setData1() {
-        String[] xValues = {"产品1", "产品2", "产品3", "产品4"};
-        List<PieEntry> data = new ArrayList<>();
-        data.add(new PieEntry(254, xValues[0]));
-        data.add(new PieEntry(167, xValues[1]));
-        data.add(new PieEntry(243, xValues[2]));
-        data.add(new PieEntry(700, xValues[3]));
-        return data;
-    }
-
-    private List<PieEntry> setData2() {
-        String[] xValues = {"电消耗", "煤消耗", "水消耗"};
-        List<PieEntry> data = new ArrayList<>();
-        data.add(new PieEntry(254, xValues[0]));
-        data.add(new PieEntry(167, xValues[1]));
-        data.add(new PieEntry(243, xValues[2]));
-        return data;
-    }
-
     private List<PieEntry> setData() {
         List<PieEntry> data = new ArrayList<>();
         List<BaseEntry> entries = mBaseChart.getyValues();
         for (BaseEntry entry : entries) {
-            data.add(new PieEntry(Float.valueOf(entry.getyValue().toString()), entry.getxValue()));
+            data.add(new PieEntry(Float.valueOf(entry.getyValue().toString()), String.valueOf(entry.getxValue())));
         }
         return data;
     }
