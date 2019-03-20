@@ -4,24 +4,14 @@ import android.content.Context;
 import android.os.Message;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.igexin.sdk.GTIntentService;
-import com.igexin.sdk.PushConsts;
-import com.igexin.sdk.PushManager;
-import com.igexin.sdk.message.BindAliasCmdMessage;
-import com.igexin.sdk.message.FeedbackCmdMessage;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
-import com.igexin.sdk.message.SetTagCmdMessage;
-import com.igexin.sdk.message.UnBindAliasCmdMessage;
-import com.orhanobut.logger.Logger;
 
-import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.DatabaseHelper;
-import project.ys.glasssystem_r1.data.entity.Push;
+import static com.igexin.sdk.PushManager.getInstance;
 
-import static project.ys.glasssystem_r1.util.StringUtils.hexStr2Str;
+import project.ys.glasssystem_r1.CustomerApp;
 
 public class MyIntentService extends GTIntentService {
     public MyIntentService() {
@@ -35,18 +25,18 @@ public class MyIntentService extends GTIntentService {
     }
 
     @Override
-    public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
+    public void onReceiveMessageData(Context context, GTTransmitMessage message) {
         // 透传消息的处理，详看SDK demo
-        byte[] payload = msg.getPayload();
-        String appid = msg.getAppid();
-        String taskid = msg.getTaskId();
-        String messageid = msg.getMessageId();
-        String pkg = msg.getPkgName();
+        byte[] payload = message.getPayload();
+        String appid = message.getAppid();
+        String taskid = message.getTaskId();
+        String messageid = message.getMessageId();
+        String pkg = message.getPkgName();
         Log.e(TAG, "receiver payload = null");
-        String cid = msg.getClientId();
+        String cid = message.getClientId();
 
         // 第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
-        boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
+        boolean result = getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
         if (payload == null) {
         } else {
         }
@@ -54,7 +44,7 @@ public class MyIntentService extends GTIntentService {
         Log.d(TAG, "receiver payload = " + data);
         try {
 
-            sendMessage(context, data, 0);//这里调用方法 将透传消息发送给App类进行处理
+            sendMessage(data, 0);//这里调用方法 将透传消息发送给App类进行处理
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,11 +83,10 @@ public class MyIntentService extends GTIntentService {
 //                + message.getTitle() + "\ncontent = " + message.getContent(), TAG);
     }
 
-    private void sendMessage(Context context, String data, int what) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        Push push = JSON.parseObject(data, Push.class);
-        helper.insertPush(push);
-        Logger.d(data);
+    private void sendMessage(String data, int what) {
+        Message msg = Message.obtain();
+        msg.what = what;
+        msg.obj = data;
+        CustomerApp.getInstance().sendMessage(data);
     }
-
 }

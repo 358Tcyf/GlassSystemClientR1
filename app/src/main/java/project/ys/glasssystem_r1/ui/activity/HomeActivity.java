@@ -27,13 +27,10 @@ public class HomeActivity extends SupportActivity {
 
     @AfterInject
     void afterInject() {
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @AfterViews
     void afterViews() {
-
-        initPushManager();
         showDebugDBAddressLogToast(this);
         SupportFragment fragment = findFragment(HomeFragment.class);
         if (fragment == null) {
@@ -47,11 +44,4 @@ public class HomeActivity extends SupportActivity {
         super.onBackPressedSupport();
     }
 
-
-    private void initPushManager() {
-        PushManager.getInstance().initialize(this.getApplicationContext(), MyPushService.class);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), MyIntentService.class);
-        String cid = PushManager.getInstance().getClientid(this);
-//        Logger.i(cid);
-    }
 }

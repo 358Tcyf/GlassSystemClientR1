@@ -40,10 +40,10 @@ import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showLoadingDialog;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showSuccessDialog;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_login_new)
 public class LoginFragment extends SupportFragment implements LoginContract.View {

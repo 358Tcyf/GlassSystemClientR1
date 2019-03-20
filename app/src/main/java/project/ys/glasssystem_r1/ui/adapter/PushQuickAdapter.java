@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.ui.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -14,11 +13,11 @@ import java.util.Date;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.Push;
 
-import static project.ys.glasssystem_r1.util.DateUtils.MM;
-import static project.ys.glasssystem_r1.util.DateUtils.dataToStr;
-import static project.ys.glasssystem_r1.util.DateUtils.dd;
-import static project.ys.glasssystem_r1.util.DateUtils.stampToDate;
-import static project.ys.glasssystem_r1.util.DateUtils.stampToStr;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.MM;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.dataToStr;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.dd;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.stampToDate;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.stampToStr;
 
 
 public class PushQuickAdapter extends BaseQuickAdapter<Push, BaseViewHolder> {

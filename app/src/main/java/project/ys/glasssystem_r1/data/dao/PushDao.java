@@ -26,6 +26,9 @@ public interface PushDao {
     @Query("select * from push_table where push_content = :content")
     Push findByContent(String content);
 
+    @Query("select * from push_table where id = :id")
+    Push findById(int id);
+
     @Insert
     void insert(Push... entities);
 

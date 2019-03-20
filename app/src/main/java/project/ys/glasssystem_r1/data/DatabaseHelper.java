@@ -47,6 +47,10 @@ public class DatabaseHelper {
         pushDao = giisDatabase.pushDao();
     }
 
+    public PushDao getPushDao() {
+        return pushDao;
+    }
+
     public void insertPush(Push push) {
         pushDao.insert(push);
         Logger.d("新增成功");
@@ -93,5 +97,9 @@ public class DatabaseHelper {
         Logger.d("///" + push);
 
         pushDao.update(push);
+    }
+
+    public void deletePush(int id) {
+        pushDao.delete(pushDao.findById(id));
     }
 }

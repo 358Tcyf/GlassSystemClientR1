@@ -2,7 +2,7 @@ package project.ys.glasssystem_r1.ui.fragment.base;
 
 import me.yokeyword.fragmentation.SupportFragment;
 
-import static project.ys.glasssystem_r1.util.ToastUtils.showExitToast;
+import static project.ys.glasssystem_r1.util.utils.ToastUtils.showExitToast;
 
 
 public class BaseMainFragment extends SupportFragment {

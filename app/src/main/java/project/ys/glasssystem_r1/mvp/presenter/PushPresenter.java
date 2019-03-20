@@ -48,4 +48,12 @@ public class PushPresenter implements PushContract.Presenter {
     public void setRead(Push push) {
         pushModel.setRead(push);
     }
+
+    @Override
+    public void deleteOne(int id) {
+        pushModel.deleteOne(id);
+        pushView.refreshView();
+    }
+
+
 }

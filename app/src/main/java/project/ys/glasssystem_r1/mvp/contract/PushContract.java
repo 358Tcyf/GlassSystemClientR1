@@ -11,8 +11,12 @@ public interface PushContract {
         void addPushItem(String content);
 
         List<Push> getPushList(String receiver);
-        List<Push> sortPushList(String receiver,String tag);
+
+        List<Push> sortPushList(String receiver, String tag);
+
         void setRead(Push push);
+
+        void deleteOne(int id);
     }
 
     interface View {
@@ -26,8 +30,10 @@ public interface PushContract {
     interface Presenter {
         void getList(String account);
 
-        void sortList(String account,String tag);
+        void sortList(String account, String tag);
 
         void setRead(Push push);
+
+        void deleteOne(int id);
     }
 }

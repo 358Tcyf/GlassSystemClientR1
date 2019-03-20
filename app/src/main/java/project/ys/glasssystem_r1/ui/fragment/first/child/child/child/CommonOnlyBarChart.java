@@ -11,14 +11,13 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.manager.BarChartManager;
+import project.ys.glasssystem_r1.util.managers.BarChartManager;
 
 @EFragment(R.layout.fragment_chart_bar)
 public class CommonOnlyBarChart extends BaseBackFragment {

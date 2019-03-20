@@ -28,7 +28,6 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
-import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
@@ -38,7 +37,8 @@ import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
 import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
 
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_push)
 public class PushFragment extends SupportFragment implements PushContract.View {
@@ -77,9 +77,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     String sortByRead;
     @StringRes(R.string.delete)
     String strDelete;
+    @StringRes(R.string.push)
+    String push;
+    @StringRes(R.string.cancel)
+    String cancel;
     @StringRes(R.string.refresh)
     String strRefresh;
-
     @StringRes(R.string.noData)
     String noData;
     @StringRes(R.string.refreshFail)
@@ -150,7 +153,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             int i = position;
             new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                     .addItem(R.drawable.ic_push_details, strDetail, strDetail)
-                    .addItem(R.drawable.ic_user_delete, strDelete, strDetail)
+                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
                     .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
                         @Override
                         public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
@@ -204,6 +207,14 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         if (tag.equals(strDelete)) {
             //TODO 删除
             showTipDialog(getContext(), tag);
+            // 注销账号
+            showMessageNegativeDialog(getContext(), strDelete + push
+                    , "确定要" + strDelete + push + ": " + mList.get(i).getTitle() + "吗？"
+                    , cancel, strDelete,
+                    (dialog, index) -> {
+                        pushPresenter.deleteOne(mList.get(i).getId());
+                        dialog.dismiss();
+                    });
         }
         if (tag.equals(strSearch)) {
             //TODO 搜索

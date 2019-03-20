@@ -18,7 +18,7 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.util.manager.PieChartManager;
+import project.ys.glasssystem_r1.util.managers.PieChartManager;
 
 @EFragment(R.layout.fragment_chart_pie)
 public class CommonPieChart extends BaseBackFragment {

@@ -20,7 +20,6 @@ public class LoginActivity extends SupportActivity {
 
     @AfterInject
     void afterInject() {
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
 

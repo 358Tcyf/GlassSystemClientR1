@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.util.manager;
+package project.ys.glasssystem_r1.util.managers;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,10 +15,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.orhanobut.logger.Logger;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

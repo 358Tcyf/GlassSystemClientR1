@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.ui.fragment.third;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -29,8 +27,6 @@ import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import me.yokeyword.fragmentation.SupportFragment;
@@ -43,8 +39,8 @@ import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
 
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_about)
 public class AboutFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {

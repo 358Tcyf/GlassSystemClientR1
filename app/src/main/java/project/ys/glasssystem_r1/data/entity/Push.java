@@ -132,4 +132,18 @@ public class Push extends BaseEntity implements Parcelable {
         dest.writeLong(createTime);
         dest.writeByte((byte) (haveRead ? 1 : 0));
     }
+
+
+    @Override
+    public String toString() {
+        return "Push{" +
+                "title='" + title + '\'' +
+                ",\n content='" + content + '\'' +
+                ",\n receiver='" + receiver + '\'' +
+                ",\n pushUuid='" + pushUuid + '\'' +
+                ",\n defaultSubMenu='" + defaultSubMenu + '\'' +
+                ",\n createTime=" + createTime +
+                ",\n haveRead=" + haveRead +
+                '}';
+    }
 }

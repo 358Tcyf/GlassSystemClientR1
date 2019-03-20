@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.util.manager;
+package project.ys.glasssystem_r1.util.managers;
 
 import android.graphics.Color;
 import android.graphics.Paint;

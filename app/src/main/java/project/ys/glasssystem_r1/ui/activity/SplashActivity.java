@@ -19,7 +19,6 @@ import project.ys.glasssystem_r1.ui.fragment.SplashFragment;
 public class SplashActivity extends SupportActivity {
     @AfterInject
     void afterInject() {
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @AfterViews

@@ -1,10 +1,9 @@
-package project.ys.glasssystem_r1.util.manager;
+package project.ys.glasssystem_r1.util.managers;
 
 import android.graphics.Color;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;

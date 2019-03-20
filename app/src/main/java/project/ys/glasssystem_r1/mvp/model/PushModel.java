@@ -36,10 +36,16 @@ public class PushModel implements PushContract.Model {
 
     @Override
     public List<Push> sortPushList(String receiver, String tag) {
-        return helper.sortAllPush(receiver,tag);
+        return helper.sortAllPush(receiver, tag);
     }
 
+    @Override
     public void setRead(Push push) {
         helper.setPushRead(push);
+    }
+
+    @Override
+    public void deleteOne(int id) {
+        helper.deletePush(id);
     }
 }

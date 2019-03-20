@@ -120,4 +120,7 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.4.0'
     /*时间计算器*/
     implementation 'com.chootdev:timezago:1.1.8'
+    /*Simplified notification construction for Android.*/
+    def notify_version = "1.2.0"
+//    implementation "io.karn:notify:$notify_version"
 }
