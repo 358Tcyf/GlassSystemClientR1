@@ -31,7 +31,6 @@ public class HomeActivity extends SupportActivity {
 
     @AfterViews
     void afterViews() {
-        showDebugDBAddressLogToast(this);
         SupportFragment fragment = findFragment(HomeFragment.class);
         if (fragment == null) {
             MMKV user = MMKV.defaultMMKV();

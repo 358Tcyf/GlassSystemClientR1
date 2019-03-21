@@ -13,10 +13,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
+
+import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
 
 public class DatabaseHelper {
     private Context context;
@@ -77,7 +80,8 @@ public class DatabaseHelper {
                 Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
                 Method getAddressLog = debugDB.getMethod("getAddressLog");
                 Object value = getAddressLog.invoke(null);
-                Toast.makeText(context, (String) value, Toast.LENGTH_LONG).show();
+                if (!value.equals("not available"))
+                    notifyDefault(context, "DebugDB", (String) value);
             } catch (Exception ignore) {
 
             }

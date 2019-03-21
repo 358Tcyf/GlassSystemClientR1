@@ -23,6 +23,9 @@ import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.service.getui.MyIntentService;
 import project.ys.glasssystem_r1.service.getui.MyPushService;
 
+import static project.ys.glasssystem_r1.data.DatabaseHelper.showDebugDBAddressLogToast;
+import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
+
 @EApplication
 public class CustomerApp extends Application {
 
@@ -79,11 +82,10 @@ public class CustomerApp extends Application {
 //        Logger.d(cid);
     }
 
-    /**
-     * 初始化数据库
-     */
+
     private void initDatabases() {
         helper = new DatabaseHelper(this);
+        showDebugDBAddressLogToast(this);
     }
 
     public PushDao getPushDao() {
@@ -141,6 +143,7 @@ public class CustomerApp extends Application {
         Push push = JSON.parseObject(data, Push.class);
         Logger.d(push.toString());
         helper.insertPush(push);
+        notifyDefault(this, "数据推送", push.getTitle());
     }
 
 

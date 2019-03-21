@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <!-- 浮动通知权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!--文件读写权限-->
+    <!-- 文件读写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -63,9 +63,9 @@
             android:exported="true"
             android:label="PushService"
             android:process=":pushservice" />
-
         <service android:name=".service.getui.MyIntentService" />
 
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
