@@ -26,16 +26,19 @@ import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.indexablerv.IndexableLayout;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
+import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
 import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
+import project.ys.glasssystem_r1.ui.fragment.common.HomeFragment;
+import project.ys.glasssystem_r1.ui.fragment.common.HomeFragmentNew;
+import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
+import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
@@ -133,7 +136,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
             }
         });
         mAdapter.setOnItemContentClickListener((v, originalPosition, currentPosition, entity) -> {
-            action(entity,strDetail);
+            action(entity, strDetail);
         });
         mAdapter.setOnItemContentLongClickListener((v, originalPosition, currentPosition, entity) -> {
             //            userInfo(entity);
@@ -180,10 +183,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
     private void action(UserWithRoleBean user, String tag) {
         if (tag.equals(strAdd)) {
             //TODO 新建账号
-            if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(AddUserFragment.newInstance());
-            if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(AddUserFragment.newInstance());
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(AddUserFragment.newInstance()));
         }
         if (tag.equals(strSearch)) {
             //TODO 搜索
@@ -199,10 +199,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         }
         if (tag.equals(strDetail)) {
             //TODO 查看详情
-            if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(UserFragment.newInstance(user.getNo(), user.getName()));
-            if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(UserFragment.newInstance(user.getNo(), user.getName()));
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user.getNo(), user.getName())));
         }
         if (tag.equals(strEdit)) {
             //TODO 修改账号
@@ -221,14 +218,16 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     @Subscribe
     public void onTabSelectedEvent(TabSelectedEvent event) {
-        if (event.position != HomeFragmentNew.SECOND) return;
+        if (event.position != SECOND) return;
         if (!mInAtTop)
             indexableLayout.getRecyclerView().smoothScrollToPosition(0);
     }
+
     @Subscribe
     public void onRefreshList(RefreshListEvent event) {
         memberPresenter.userList();
     }
+
     @Override
     public void refreshView() {
         mEmptyView.show(true);

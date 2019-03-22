@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.common;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,22 +9,28 @@ import android.support.v4.view.ViewPager;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
-import project.ys.glasssystem_r1.ui.fragment.first.PushFragment;
+import project.ys.glasssystem_r1.ui.fragment.first.FirstTabFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 
+import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
+import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
+import static project.ys.glasssystem_r1.common.constant.Constant.THIRD;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_home)
@@ -42,6 +48,13 @@ public class HomeFragment extends BaseMainFragment {
     String tabMember;
     @StringRes(R.string.tabAbout)
     String tabAbout;
+
+    @AfterInject
+    void afterInject() {
+        no = getArguments().getString(USER_ACCOUNT);
+        EventBusActivityScope.getDefault(_mActivity).register(this);
+    }
+
 
     @AfterViews
     void afterViews() {
@@ -74,7 +87,7 @@ public class HomeFragment extends BaseMainFragment {
 
     @SuppressWarnings("ConstantConditions")
     private void initTabs() {
-        int normalColor = QMUIResHelper.getAttrColor(getContext(), R.attr.colorDivider);
+        int normalColor = QMUIResHelper.getAttrColor(getContext(), R.attr.colorPrimary);
         int selectColor = QMUIResHelper.getAttrColor(getContext(), R.attr.colorPrimaryDark);
         homeTabs.setDefaultNormalColor(normalColor);
         homeTabs.setDefaultSelectedColor(selectColor);
@@ -100,22 +113,21 @@ public class HomeFragment extends BaseMainFragment {
                 .addTab(about);
     }
 
-    private HashMap<Pager, SupportFragment> mPages;
+    private HashMap<Integer, SupportFragment> mPages;
 
     private void initPagers() {
-        mPages = new HashMap<Pager, SupportFragment>();
-        SupportFragment pushFragment = new PushFragment().newInstance();
-        mPages.put(HomeFragment.Pager.PUSH, pushFragment);
+        mPages = new HashMap<>();
+        SupportFragment pushFragment = new FirstTabFragment().newInstance();
+        mPages.put(FIRST, pushFragment);
         SupportFragment memberFragment = new MemberFragment().newInstance();
-        mPages.put(HomeFragment.Pager.PEOPLE, memberFragment);
-        no = getArguments().getString(USER_ACCOUNT);
+        mPages.put(SECOND, memberFragment);
         SupportFragment settingFragment = new AboutFragment().newInstance(no);
-        mPages.put(HomeFragment.Pager.SETTING, settingFragment);
+        mPages.put(THIRD, settingFragment);
 
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return mPages.get(Pager.getPagerFromPosition(position));
+                return mPages.get(position);
             }
 
             @Override
@@ -126,31 +138,19 @@ public class HomeFragment extends BaseMainFragment {
 
         homePager.setAdapter(mPageAdapter);
         homeTabs.setupWithViewPager(homePager, false);
-        homeTabs.setOnTabClickListener(new QMUITabSegment.OnTabClickListener() {
-            @Override
-            public void onTabClick(int position) {
-
-                EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(position));
-
-            }
-        });
+        homeTabs.setOnTabClickListener(position ->
+                EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(position)));
     }
 
-    enum Pager {
-        PUSH, PEOPLE, SETTING;
+    @Subscribe
+    public void onStartBrotherEvent(StartBrotherEvent event) {
+        start(event.targetFragment);
+    }
 
-        public static HomeFragment.Pager getPagerFromPosition(int position) {
-            switch (position) {
-                case 0:
-                    return PUSH;
-                case 1:
-                    return PEOPLE;
-                case 2:
-                    return SETTING;
-                default:
-                    return PUSH;
-            }
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 
     /**

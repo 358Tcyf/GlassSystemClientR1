@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="search" type="id" />
     <item name="more" type="id" />
     <item name="sort" type="id" />
 
+    <item name="tab" type="id" />
 
 
     <item name="login" type="id" />
     <item name="main" type="id" />
     <item name="setting" type="id" />
     <item name="splash" type="id" />
-    <item name="search" type="id" />
     <item name="back" type="id" />
     <item name="save" type="id" />
     <item name="next" type="id" />

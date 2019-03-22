@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragment_;
+import project.ys.glasssystem_r1.ui.fragment.common.HomeFragment_;
 
 public class NotificationUtils {
 
@@ -132,7 +132,7 @@ public class NotificationUtils {
 //        //先设定RemoteViews
 //        RemoteViews view_custom = new RemoteViews(context.getPackageName(), R.layout.view_custom);
 //        //设置对应IMAGEVIEW的ID的资源图片
-//        view_custom.setImageViewResource(R.id.custom_icon, R.mipmap.icon);
+//        view_custom.setImageViewResource(R.id.custom_icon, R.mipmap.defaultIcon);
 //        view_custom.setTextViewText(R.id.tv_custom_title, "今日头条");
 //        view_custom.setTextColor(R.id.tv_custom_title, Color.BLACK);
 //        view_custom.setTextViewText(R.id.tv_custom_content, "金州勇士官方宣布球队已经解雇了主帅马克-杰克逊，随后宣布了最后的结果。");
@@ -144,7 +144,7 @@ public class NotificationUtils {
 //                .setTicker("有新资讯")
 //                .setPriority(Notification.PRIORITY_HIGH)// 设置该通知优先级
 //                .setOngoing(false)//不是正在进行的   true为正在进行  效果和.flag一样
-//                .setSmallIcon(R.mipmap.icon);
+//                .setSmallIcon(R.mipmap.defaultIcon);
 //        Notification notify = mBuilder.build();
 //        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 //        notificationManager.notify(4, notify);

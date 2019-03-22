@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment;
+package project.ys.glasssystem_r1.ui.fragment.common;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -35,6 +35,7 @@ import project.ys.glasssystem_r1.common.KeyboardChangeListener;
 import project.ys.glasssystem_r1.mvp.contract.LoginContract;
 import project.ys.glasssystem_r1.mvp.presenter.LoginPresenter;
 import project.ys.glasssystem_r1.ui.activity.HomeActivity_;
+
 
 import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;

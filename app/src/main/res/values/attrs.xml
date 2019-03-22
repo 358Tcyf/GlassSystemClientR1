@@ -6,7 +6,12 @@
         <item>@string/saleSection</item>
     </string-array>
 
-    <string-array name="userDetails">
+    <string-array name="pushTabs">
+        <item>@string/push_tab1</item>
+        <item>@string/push_tab2</item>
+    </string-array>
+
+    <string-array name="userTabs">
         <item>@string/detail_tab1</item>
         <item>@string/detail_tab2</item>
     </string-array>

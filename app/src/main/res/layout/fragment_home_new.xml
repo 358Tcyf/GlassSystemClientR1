@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/home_tab_height" />
 
-    <project.ys.glasssystem_r1.ui.widget.BottomBar
+    <project.ys.glasssystem_r1.ui.widget.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_tab_height"

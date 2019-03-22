@@ -2,10 +2,10 @@ package project.ys.glasssystem_r1.ui.fragment.second.child.user_hild;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.stone.vega.library.VegaLayoutManager;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -18,13 +18,12 @@ import org.androidannotations.annotations.res.StringArrayRes;
 import java.util.ArrayList;
 
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
-import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.data.bean.MenuItemBean;
-import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
+import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
+import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
 import static project.ys.glasssystem_r1.common.constant.UserConstant.EMAIL;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.NAME;
@@ -82,7 +81,7 @@ public class SelfInfoFragment extends BaseBackFragment implements UserDetailCont
     }
 
     private void initAdapter() {
-        mRecyclerView.setLayoutManager(new VegaLayoutManager());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new MenuItemQuickAdapter(getActivity(), mList);
         mRecyclerView.setAdapter(mAdapter);
     }

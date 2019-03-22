@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_tab_container"
+        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <project.ys.glasssystem_r1.ui.widget.bottomnavigation.BottomNavigation
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:mbn_backgroundBottomColor="@color/tabBackground"
+        app:mbn_defaultIconColor="?attr/colorPrimary"
+        app:mbn_rippleColor="@color/colorSecondaryText"
+        app:mbn_selectedIconColor="?attr/colorPrimaryDark"
+        app:mbn_shadowColor="@color/colorPrimaryText" />
+
+
+</RelativeLayout>

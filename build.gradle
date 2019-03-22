@@ -1,12 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.21'
+    ext.kotlin_version = '1.3.11'
     ext.AAVersion = '4.6.0'
     ext.butterknife_version = '9.0.0'
     ext.room_version = "1.1.0"
     ext.lottie_version = "2.7.0"
+    ext.gson_version = "2.8.5"
+    ext.debug_db_version = "1.0.6"
+    ext.retrofit2_version = "2.3.0"
+    ext.rxandroid_version = "2.2.1"
+    ext.rxjava_version = "2.2.7"
     ext.notify_version = "1.0.0"
+    ext.android_support_version = "28.0.0"
 
     repositories {
         mavenCentral()

@@ -1,5 +1,6 @@
-package project.ys.glasssystem_r1.ui.widget;
+package project.ys.glasssystem_r1.ui.widget.bottombar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import project.ys.glasssystem_r1.R;
 
+@SuppressLint("ViewConstructor")
 public class BottomBarTab extends FrameLayout {
     private ImageView mIcon;
     private int mIconUnselected;
@@ -28,8 +30,8 @@ public class BottomBarTab extends FrameLayout {
 
     private TextView mTvUnreadCount;
 
-//    public BottomBarTab(Context context, @DrawableRes int icon, CharSequence title) {
-//        this(context, null, icon, title);
+//    public BottomBarTab(Context context, @DrawableRes int defaultIcon, CharSequence title) {
+//        this(context, null, defaultIcon, title);
 //    }
 
     public BottomBarTab(Context context, @DrawableRes int iconUnselected, @DrawableRes int iconSelected, CharSequence title) {
@@ -40,13 +42,13 @@ public class BottomBarTab extends FrameLayout {
         this(context, null, 0, iconSelected, iconSelected, title);
     }
 
-//    public BottomBarTab(Context context, AttributeSet attrs, int icon, CharSequence title) {
-//        this(context, attrs, 0, icon, title);
+//    public BottomBarTab(Context context, AttributeSet attrs, int defaultIcon, CharSequence title) {
+//        this(context, attrs, 0, defaultIcon, title);
 //    }
 //
-//    public BottomBarTab(Context context, AttributeSet attrs, int defStyleAttr, int icon, CharSequence title) {
+//    public BottomBarTab(Context context, AttributeSet attrs, int defStyleAttr, int defaultIcon, CharSequence title) {
 //        super(context, attrs, defStyleAttr);
-//        init(context, icon, title);
+//        init(context, defaultIcon, title);
 //    }
 
     public BottomBarTab(Context context, AttributeSet attrs, int defStyleAttr, @DrawableRes int iconUnselected, @DrawableRes int iconSelected, CharSequence title) {

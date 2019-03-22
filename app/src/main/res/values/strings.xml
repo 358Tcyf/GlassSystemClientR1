@@ -44,8 +44,11 @@
 
 
     <!--主页-推送页-->
-    <string name="sort_by_date">推送时间优先</string>
-    <string name="sort_by_read">未读推送优先</string>
+    <string name="order_by">排序方式：</string>
+    <string name="push_tab1">数据推送</string>
+    <string name="push_tab2">数据预警</string>
+    <string name="sort_by_date">推送时间</string>
+    <string name="sort_by_read">未读推送</string>
     <string name="push">推送</string>
 
     <!--主页-推送页-查看图表-->
@@ -88,5 +91,7 @@
     <string name="detail_tab2">身份信息</string>
     <string name="email">邮箱</string>
     <string name="phone">电话</string>
+
+
 
 </resources>

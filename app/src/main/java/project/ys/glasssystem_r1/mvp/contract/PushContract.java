@@ -24,6 +24,8 @@ public interface PushContract {
 
         void refreshFail();
 
+        void showErrorMsg(String errorMsg);
+
         void setList(ArrayList list);
     }
 

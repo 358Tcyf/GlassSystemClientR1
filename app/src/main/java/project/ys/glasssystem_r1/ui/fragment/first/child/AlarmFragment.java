@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment.first;
+package project.ys.glasssystem_r1.ui.fragment.first.child;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -10,7 +10,6 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
-import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import org.androidannotations.annotations.AfterInject;
@@ -25,29 +24,26 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
-import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.common.event.FirstTabMenuEvent;
+import project.ys.glasssystem_r1.common.event.FirstTabSelectedEvent;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
-import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
+import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
 import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragmentNew;
-import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
+import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
+import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
-@EFragment(R.layout.fragment_push)
-public class PushFragment extends SupportFragment implements PushContract.View {
-    public static PushFragment newInstance() {
-        return new PushFragment_();
+@EFragment(R.layout.fragment_alarm)
+public class AlarmFragment extends BaseBackFragment implements PushContract.View {
+    public static AlarmFragment newInstance() {
+        return new AlarmFragment_();
     }
-
-    @ViewById(R.id.topBar)
-    QMUITopBarLayout mTopBar;
 
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
@@ -55,7 +51,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     RecyclerView mRecyclerView;
     @ViewById(R.id.swipeRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-
 
     @DrawableRes(R.drawable.ic_user_search)
     Drawable icSearch;
@@ -98,7 +93,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @AfterViews
     void afterViews() {
-        initTopBar();
         initAdapter();
         refreshView();
         initRefreshLayout();
@@ -110,13 +104,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private boolean mInAtTop = true;
     private boolean mInAtBottom = false;
 
-    private void initTopBar() {
-        mTopBar.addLeftImageButton(R.drawable.ic_icon_workmore, R.id.more)
-                .setOnClickListener(view -> {
-                    showBottomSheetList();
-                });
-
-    }
 
     @Override
     public void refreshView() {
@@ -180,28 +167,17 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     }
 
 
-    private void showBottomSheetList() {
-        QMUIBottomSheet.BottomListSheetBuilder builder =
-                new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                        .addItem(icSearch, strSearch)
-                        .addItem(icSort, strSort)
-                        .addItem(icRefresh, strRefresh)
-                        .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-                            dialog.dismiss();
-                            action(0, tag);
-                        });
-        QMUIBottomSheet sheet = builder.build();
-        sheet.show();
-    }
-
     private void action(int i, String tag) {
         if (tag.equals(strDetail)) {
             new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
             //TODO 查看详情
-            if (getParentFragment() instanceof HomeFragmentNew)
-                ((HomeFragmentNew) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
-            if (getParentFragment() instanceof HomeFragment)
-                ((HomeFragment) getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(ChartsFragment.newInstance(mList.get(i))));
+//            if (getParentFragment() instanceof HomeFragmentNew)
+//                ((HomeFragmentNew) getParentFragment().getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
+//            if (getParentFragment() instanceof HomeFragment)
+//                ((HomeFragment) getParentFragment().getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
+//            if (getParentFragment() instanceof HomeFragmentPlus)
+//                ((HomeFragmentPlus) getParentFragment().getParentFragment()).startBrotherFragment(ChartsFragment.newInstance(mList.get(i)));
             setRead(mList.get(i));
         }
         if (tag.equals(strDelete)) {
@@ -267,13 +243,20 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     }
 
     @Subscribe
-    public void onTabSelectedEvent(TabSelectedEvent event) {
-        if (event.position != HomeFragmentNew.FIRST) return;
+    public void onTabSelectedEvent(FirstTabSelectedEvent event) {
+        if (event.position != SECOND) return;
         if (mInAtTop) {
             swipeRefresh();
         } else {
             scrollToTop();
         }
+    }
+
+    @Subscribe
+    public void onTabSelectedEvent(FirstTabMenuEvent event) {
+        if (event.position != SECOND) return;
+        if (event.tag == null) return;
+        action(0, event.tag);
     }
 
     @Subscribe
@@ -300,6 +283,5 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         super.onDestroyView();
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
-
 
 }

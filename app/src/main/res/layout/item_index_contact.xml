@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_index"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="20dp"
+    android:background="@color/qmui_config_color_background"
+    android:gravity="center_vertical"
+    android:paddingStart="18dp"
+    android:text="A"
+    android:textColor="@color/colorSecondaryText"
+    android:textSize="12sp"
+    tools:ignore="RtlSymmetry" />
 
-    <TextView
-        android:id="@+id/tv_index"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/qmui_config_color_background"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="A"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="12sp"
-        tools:ignore="RtlSymmetry" />
-
-</FrameLayout>

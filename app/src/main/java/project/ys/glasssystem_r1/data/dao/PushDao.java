@@ -17,7 +17,7 @@ public interface PushDao {
     @Query("select * from push_table order by push_createTime desc")
     List<Push> getAll();
 
-    @Query("select * from push_table order by receiver_haveRead asc")
+    @Query("select * from push_table order by receiver_haveRead asc , push_createTime desc")
     List<Push> getAllByRead();
 
     @Query("select * from push_table where id = :id")
@@ -28,6 +28,12 @@ public interface PushDao {
 
     @Query("select * from push_table where id = :id")
     Push findById(int id);
+
+    @Query("select * from push_table where push_title like :search or push_content like  :search order by push_createTime desc")
+    List<Push> findWithReceiverAndSearchText(String search);
+
+    @Query("select * from push_table where push_title like :search or push_content like  :search order by receiver_haveRead asc , push_createTime desc")
+    List<Push> findWithReceiverAndSearchTextOrderByRead(String search);
 
     @Insert
     void insert(Push... entities);

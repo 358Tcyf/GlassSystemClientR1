@@ -49,7 +49,7 @@ public class UserFragment extends BaseBackFragment {
     @ViewById(R.id.pager)
     ViewPager mPager;
 
-    @StringArrayRes(R.array.userDetails)
+    @StringArrayRes(R.array.userTabs)
     String[] detailsTab;
     private String no;
     private String name;
@@ -85,15 +85,15 @@ public class UserFragment extends BaseBackFragment {
     }
 
     private HashMap<Pager, SupportFragment> mPages;
-    private SupportFragment pushFragment;
-    private SupportFragment memberFragment;
+    private SupportFragment selfInfoFragment;
+    private SupportFragment sectionInfoFragment;
 
     private void initPagers() {
         mPages = new HashMap<>();
-        pushFragment = new SelfInfoFragment().newInstance(no, name);
-        mPages.put(Pager.SELF, pushFragment);
-        memberFragment = new SectionInfoFragment().newInstance(no, name);
-        mPages.put(Pager.SECTION, memberFragment);
+        selfInfoFragment = new SelfInfoFragment().newInstance(no, name);
+        mPages.put(Pager.SELF, selfInfoFragment);
+        sectionInfoFragment = new SectionInfoFragment().newInstance(no, name);
+        mPages.put(Pager.SECTION, sectionInfoFragment);
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

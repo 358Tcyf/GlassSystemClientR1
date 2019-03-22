@@ -5,7 +5,6 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
@@ -13,12 +12,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.dmoral.toasty.Toasty;
 import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 
+import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
 
 public class DatabaseHelper {
@@ -64,11 +63,26 @@ public class DatabaseHelper {
         return (ArrayList<Push>) list;
     }
 
-    public ArrayList<Push> sortAllPush(String receiver, String tag) {
+    public ArrayList<Push> searchPush(String receiver, String order, String searchText) {
         List<Push> list = new ArrayList<>();
-        if (tag.equals(context.getString(R.string.sort_by_date)))
+        Logger.d(order);
+        Logger.d(searchText);
+        if (order.equals(context.getString(R.string.sort_by_date))) {
+            Logger.d(order);
+            list = pushDao.findWithReceiverAndSearchText("%" + searchText + "%");
+        }
+        if (order.equals(context.getString(R.string.sort_by_read))) {
+            Logger.d(order);
+            list = pushDao.findWithReceiverAndSearchTextOrderByRead("%" + searchText + "%");
+        }
+        return (ArrayList<Push>) list;
+    }
+
+    public ArrayList<Push> sortAllPush(String receiver, String order) {
+        List<Push> list = new ArrayList<>();
+        if (order.equals(context.getString(R.string.sort_by_date)))
             list = pushDao.getAll();
-        if (tag.equals(context.getString(R.string.sort_by_read)))
+        if (order.equals(context.getString(R.string.sort_by_read)))
             list = pushDao.getAllByRead();
         return (ArrayList<Push>) list;
     }

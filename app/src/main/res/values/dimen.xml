@@ -3,6 +3,7 @@
 
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
 
 
     <!--启动页-->
@@ -46,9 +47,11 @@
 
     <!--主页-->
     <dimen name="home_tab_height">52dp</dimen>
+    <dimen name="home_navigation_height">80dp</dimen>
     <dimen name="main_tab_text_size">12sp</dimen>
 
     <!--主页-推送页-->
+    <dimen name="header_push_height">50dp</dimen>
     <dimen name="item_push_height">80dp</dimen>
     <dimen name="item_push_bg_height">40dp</dimen>
     <dimen name="push_pic_size">50dp</dimen>

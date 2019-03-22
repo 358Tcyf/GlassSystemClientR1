@@ -2,9 +2,6 @@ package project.ys.glasssystem_r1.ui.activity;
 
 import android.annotation.SuppressLint;
 
-import com.igexin.sdk.PushManager;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterInject;
@@ -14,12 +11,7 @@ import org.androidannotations.annotations.EActivity;
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.DatabaseHelper;
-import project.ys.glasssystem_r1.service.getui.MyIntentService;
-import project.ys.glasssystem_r1.service.getui.MyPushService;
-import project.ys.glasssystem_r1.ui.fragment.HomeFragment;
-
-import static project.ys.glasssystem_r1.data.DatabaseHelper.showDebugDBAddressLogToast;
+import project.ys.glasssystem_r1.ui.fragment.common.HomeFragmentPlus;
 
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_main)
@@ -31,10 +23,10 @@ public class HomeActivity extends SupportActivity {
 
     @AfterViews
     void afterViews() {
-        SupportFragment fragment = findFragment(HomeFragment.class);
+        SupportFragment fragment = findFragment(HomeFragmentPlus.class);
         if (fragment == null) {
             MMKV user = MMKV.defaultMMKV();
-            loadRootFragment(R.id.fl_container, HomeFragment.newInstance(user.decodeString("userAccount")));
+            loadRootFragment(R.id.fl_container, HomeFragmentPlus.newInstance(user.decodeString("userAccount")));
         }
     }
 
