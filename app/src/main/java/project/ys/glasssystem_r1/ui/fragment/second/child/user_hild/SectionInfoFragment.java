@@ -11,9 +11,9 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
+import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 
@@ -21,7 +21,7 @@ import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUN
 
 
 @EFragment(R.layout.fragment_section_detail)
-public class SectionInfoFragment extends BaseBackFragment implements UserDetailContract.View {
+public class SectionInfoFragment extends SupportFragment implements UserDetailContract.View {
 
     public static SectionInfoFragment newInstance(String no, String name) {
         Bundle args = new Bundle();
@@ -65,7 +65,7 @@ public class SectionInfoFragment extends BaseBackFragment implements UserDetailC
     }
 
     @Override
-    public void setDetail(UserWithRoleBean user) {
+    public void setDetail(UserBeanOrderByName user) {
         resetCard(user);
     }
 
@@ -75,7 +75,7 @@ public class SectionInfoFragment extends BaseBackFragment implements UserDetailC
     }
 
     @UiThread
-    void resetCard(UserWithRoleBean user) {
+    void resetCard(UserBeanOrderByName user) {
         userName.setText(user.getName());
         userRole.setText(user.getRoleName());
         userNo.setText(user.getNo());

@@ -7,17 +7,18 @@
     android:foreground="?attr/selectableItemBackground">
 
     <View
-        android:layout_width="2dp"
+        android:layout_width="6dp"
         android:layout_height="@dimen/item_push_height"
-        android:layout_marginStart="37.5dp"
-        android:background="@drawable/bg_time_line"
+        android:layout_marginStart="62.5dp"
+        android:foreground="@drawable/bg_time_line"
+        android:background="@color/colorSecondaryText"
         android:layerType="software" />
 
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
         android:id="@+id/date_view"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="45dp"
         android:background="@mipmap/ic_launcher_round"
         android:src="@color/dateViewUnread"

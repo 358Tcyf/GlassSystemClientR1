@@ -50,6 +50,7 @@
     <string name="sort_by_date">推送时间</string>
     <string name="sort_by_read">未读推送</string>
     <string name="push">推送</string>
+    <string name="push_detail">推送详情</string>
 
     <!--主页-推送页-查看图表-->
     <string name="produceData">生产数据</string>
@@ -62,6 +63,11 @@
     <string name="saleProfit">销售利润</string>
     <string name="saleModel">销售型号</string>
     <string name="saleCustomer">买家分布</string>
+
+
+    <!--主页-成员页-->
+    <string name="order_by_name">姓名</string>
+    <string name="order_by_role">部门</string>
 
 
     <!--主页-成员页-新建成员-->

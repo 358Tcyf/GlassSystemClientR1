@@ -17,13 +17,13 @@ import org.androidannotations.annotations.res.StringArrayRes;
 
 import java.util.ArrayList;
 
+import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.MenuItemBean;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
+import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
 import static project.ys.glasssystem_r1.common.constant.UserConstant.EMAIL;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.NAME;
@@ -31,7 +31,7 @@ import static project.ys.glasssystem_r1.common.constant.UserConstant.PHONE;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_self_detail)
-public class SelfInfoFragment extends BaseBackFragment implements UserDetailContract.View {
+public class SelfInfoFragment extends SupportFragment implements UserDetailContract.View {
 
     public static SelfInfoFragment newInstance(String no, String name) {
         Bundle args = new Bundle();
@@ -87,7 +87,7 @@ public class SelfInfoFragment extends BaseBackFragment implements UserDetailCont
     }
 
     @Override
-    public void setDetail(UserWithRoleBean user) {
+    public void setDetail(UserBeanOrderByName user) {
         mList.get(NAME).setDetailText(user.getName());
         mList.get(EMAIL).setDetailText(user.getEmail());
         mList.get(PHONE).setDetailText(user.getPhone());

@@ -2,27 +2,19 @@ package project.ys.glasssystem_r1.data.bean;
 
 import me.yokeyword.indexablerv.IndexableEntity;
 
-public class UserWithRoleBean extends UserBean implements IndexableEntity {
+public class UserBeanOrderByName extends UserBean implements IndexableEntity {
 
-    private String pinyin;
-    private String roleName;
+    protected String roleName;
 
-    public UserWithRoleBean() {
+    public UserBeanOrderByName() {
     }
 
-    public UserWithRoleBean(String name, String role) {
+    public UserBeanOrderByName(String name, String role) {
         this.name = name;
         this.roleName = role;
     }
 
 
-    public String getPinyin() {
-        return pinyin;
-    }
-
-    public void setPinyin(String pinyin) {
-        this.pinyin = pinyin;
-    }
 
     public String getRoleName() {
         return roleName;
@@ -44,6 +36,5 @@ public class UserWithRoleBean extends UserBean implements IndexableEntity {
 
     @Override
     public void setFieldPinyinIndexBy(String pinyin) {
-        this.pinyin = pinyin; // 保存排序field的拼音,在执行比如搜索等功能时有用 （若不需要，空实现该方法即可）
     }
 }

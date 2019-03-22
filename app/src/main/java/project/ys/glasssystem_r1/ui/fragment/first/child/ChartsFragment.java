@@ -2,10 +2,14 @@ package project.ys.glasssystem_r1.ui.fragment.first.child;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 import com.orhanobut.logger.Logger;
@@ -36,7 +40,7 @@ import project.ys.glasssystem_r1.ui.fragment.first.child.child.ChartContentFragm
 import static com.alibaba.fastjson.JSON.toJSONString;
 
 
-@EFragment(R.layout.fragment_charts_root)
+@EFragment
 public class ChartsFragment extends BaseBackFragment implements ChartContract.View {
 
     public static ChartsFragment newInstance() {
@@ -96,15 +100,23 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
     void afterViews() {
         if (drawerLayout == null) return;
 //        initStartDrawerView();
+        drawerLayout.removeView(navViewStart);
         initDefaultMenu();
         initTopBar();
     }
-
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_charts_root, container, false);
+        return attachToSwipeBack(view);
+    }
 
     private void initTopBar() {
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
             pop();
         });
+        mTopBar.setTitle(R.string.push_detail).setTextColor(R.color.colorText_Icon);
         mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more)
                 .setOnClickListener(view -> {
                     showBottomSheetList();

@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import me.yokeyword.indexablerv.IndexableAdapter;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
+import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
 
-public class UserPinyinAdapter extends IndexableAdapter<UserWithRoleBean> {
+public class UserPinyinAdapter extends IndexableAdapter<UserBeanOrderByName> {
 
     private LayoutInflater mInflater;
 
@@ -38,7 +38,7 @@ public class UserPinyinAdapter extends IndexableAdapter<UserWithRoleBean> {
     }
 
     @Override
-    public void onBindContentViewHolder(RecyclerView.ViewHolder holder, UserWithRoleBean entity) {
+    public void onBindContentViewHolder(RecyclerView.ViewHolder holder, UserBeanOrderByName entity) {
         ContentVH vh = (ContentVH) holder;
         vh.tvName.setText(entity.getName());
     }

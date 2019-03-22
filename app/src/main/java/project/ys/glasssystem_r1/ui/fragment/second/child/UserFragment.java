@@ -1,9 +1,13 @@
 package project.ys.glasssystem_r1.ui.fragment.second.child;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
@@ -27,7 +31,7 @@ import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SelfInfoFrag
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_NAME;
 
-@EFragment(R.layout.fragment_qmui_collasping)
+@EFragment
 public class UserFragment extends BaseBackFragment {
 
     public static UserFragment newInstance(String no, String name) {
@@ -55,7 +59,7 @@ public class UserFragment extends BaseBackFragment {
     private String name;
 
     @AfterInject
-    void afterInject(){
+    void afterInject() {
         no = getArguments().getString(USER_ACCOUNT);
         name = getArguments().getString(USER_NAME);
     }
@@ -66,6 +70,14 @@ public class UserFragment extends BaseBackFragment {
         initTabs();
         initPagers();
 
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_qmui_collasping, container, false);
+        return attachToSwipeBack(view);
     }
 
     private void initTopBar() {

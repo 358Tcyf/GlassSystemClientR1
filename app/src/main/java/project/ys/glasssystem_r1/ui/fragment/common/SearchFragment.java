@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,20 +23,28 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
+import me.yokeyword.indexablerv.IndexableLayout;
+import me.yokeyword.indexablerv.SimpleHeaderAdapter;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
+import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.SearchContract;
 import project.ys.glasssystem_r1.mvp.presenter.SearchPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
+import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_CLASS;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_PUSH;
+import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_USER;
+import static project.ys.glasssystem_r1.ui.fragment.second.MemberFragment.divideByRole;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends BaseBackFragment implements SearchContract.View {
@@ -58,9 +65,13 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
 
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
-    @ViewById(R.id.recyclerView)
-    RecyclerView mRecyclerView;
 
+    @ViewById(R.id.order_by)
+    TextView orderBy;
+
+    RecyclerView mRecyclerView;
+    @ViewById(R.id.indexableLayout)
+    IndexableLayout indexableLayout;
 
     @StringRes(R.string.detail)
     String strDetail;
@@ -72,18 +83,27 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
     String sortByDate;
     @StringRes(R.string.sort_by_read)
     String sortByRead;
+    @StringRes(R.string.order_by_name)
+    String orderByName;
+    @StringRes(R.string.order_by_role)
+    String orderByRole;
     @StringRes(R.string.noData)
     String noData;
     @StringRes(R.string.refreshFail)
     String refreshFail;
 
     SearchView searchBar;
-    TextView orderBy;
     private int searchClass;
     private SearchPresenter searchPresenter;
     private BaseQuickAdapter mAdapter;
+    private UserPinyinAdapter userAdapter;
+    private SimpleHeaderAdapter adapter1;
+    private SimpleHeaderAdapter adapter2;
+    private SimpleHeaderAdapter adapter3;
+
     private ArrayList<Push> pushList = new ArrayList<>();
     private String searchText;
+    private String order;
 
     @AfterInject
     void afterInject() {
@@ -95,7 +115,8 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
     void afterView() {
         initTopBar();
         initAdapter();
-        mEmptyView.show(noData, "");    }
+        mEmptyView.show(noData, "");
+    }
 
 
     private void initTopBar() {
@@ -122,20 +143,78 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 return false;
             }
         });
+        orderBy.setOnClickListener(v -> action(strSort));
     }
 
+
+
     private void initAdapter() {
+        mRecyclerView = indexableLayout.getRecyclerView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        if (searchClass == SEARCH_PUSH) {
-            mAdapter = new PushQuickAdapter(_mActivity, pushList);
+        switch (searchClass) {
+            case SEARCH_PUSH:
+                mAdapter = new PushQuickAdapter(_mActivity, pushList);
+                mAdapter.setOnItemClickListener((adapter, view, position) -> action(position, strDetail));
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            case SEARCH_USER:
+                indexableLayout.setLayoutManager(new LinearLayoutManager(_mActivity));
+                userAdapter = new UserPinyinAdapter(_mActivity);
+                indexableLayout.setAdapter(userAdapter);
+                indexableLayout.setOverlayStyle_Center();
+                indexableLayout.setCompareMode(IndexableLayout.MODE_FAST);
+                userAdapter.setOnItemContentClickListener((v, originalPosition, currentPosition, entity) -> {
+                    action(entity, strDetail);
+                });
+                break;
         }
-        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     private void searchText() {
-        addHeaderView();
-        if (searchClass == SEARCH_PUSH) {
-            searchPresenter.searchPush("", searchText);
+        initOrderBar();
+        switch (searchClass) {
+            case SEARCH_PUSH:
+                searchPresenter.searchPush(order, searchText);
+                break;
+            case SEARCH_USER:
+                searchPresenter.searchUser(order, searchText);
+                break;
+        }
+
+    }
+
+    private void action(String tag) {
+        if (tag.equals(strSort)) {
+            //TODO 排序
+            searchBar.clearFocus();
+            QMUIBottomSheet.BottomListSheetBuilder builder =
+                    new QMUIBottomSheet.BottomListSheetBuilder(_mActivity);
+            switch (searchClass) {
+                case SEARCH_PUSH:
+                    builder.addItem(sortByDate)
+                            .addItem(sortByRead);
+                    builder.setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+                        order = tag1;
+                        orderBy.setText(strOrderBy + " " + order + "v");
+                        searchPresenter.sortList("", order, searchText);
+                        dialog.dismiss();
+                    });
+                    break;
+                case SEARCH_USER:
+                    builder.addItem(orderByName)
+                            .addItem(orderByRole);
+                    builder.setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+                        order = tag1;
+                        orderBy.setText(strOrderBy + " " + order + "v");
+                        searchPresenter.searchUser( order, searchText);
+                        dialog.dismiss();
+                    });
+                    break;
+            }
+
+            QMUIBottomSheet sheet = builder.build();
+            sheet.show();
         }
     }
 
@@ -148,22 +227,12 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 setRead(pushList.get(i));
             }
         }
-        if (tag.equals(strSort)) {
-            //TODO 排序
-            searchBar.clearFocus();
-            QMUIBottomSheet.BottomListSheetBuilder builder =
-                    new QMUIBottomSheet.BottomListSheetBuilder(_mActivity);
-            if (searchClass == SEARCH_PUSH) {
-                builder.addItem(sortByDate)
-                        .addItem(sortByRead);
-            }
-            builder.setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
-                orderBy.setText(strOrderBy + " " + tag1 + "v");
-                searchPresenter.sortList("", tag1, searchText);
-                dialog.dismiss();
-            });
-            QMUIBottomSheet sheet = builder.build();
-            sheet.show();
+    }
+
+    private void action(UserBeanOrderByName user, String tag) {
+        if (tag.equals(strDetail)) {
+            //TODO 查看详情
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user.getNo(), user.getName())));
         }
     }
 
@@ -174,7 +243,6 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
 
     @Override
     public void showNoData() {
-        mAdapter.removeAllHeaderView();
         mEmptyView.show(noData, "查不到结果");
     }
 
@@ -187,24 +255,45 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
     @Override
     public void setList(ArrayList list) {
         mEmptyView.hide();
-        this.pushList = list;
-        mAdapter.setNewData(pushList);
+        switch (searchClass) {
+            case SEARCH_PUSH:
+                this.pushList = list;
+                mAdapter.setNewData(pushList);
+                break;
+            case SEARCH_USER:
+                indexableLayout.removeHeaderAdapter(adapter1);
+                indexableLayout.removeHeaderAdapter(adapter2);
+                indexableLayout.removeHeaderAdapter(adapter3);
+                if (order.equals(orderByName)) {
+                    userAdapter.setDatas(list);
+                } else if (order.equals(orderByRole)) {
+                    List<List<UserBeanOrderByName>> lists = divideByRole(list);
+                    adapter1 = new SimpleHeaderAdapter<>(userAdapter, "G", "管理员", lists.get(0));
+                    adapter2 = new SimpleHeaderAdapter<>(userAdapter, "S", "生产人员", lists.get(1));
+                    adapter3 = new SimpleHeaderAdapter<>(userAdapter, "X", "销售人员", lists.get(2));
+                    userAdapter.getItems().clear();
+                    indexableLayout.addHeaderAdapter(adapter1);
+                    indexableLayout.addHeaderAdapter(adapter2);
+                    indexableLayout.addHeaderAdapter(adapter3);
+                }
+                userAdapter.notifyDataSetChanged();
+                break;
+        }
+
     }
 
 
-    private void addHeaderView() {
-        LayoutInflater inflater = LayoutInflater.from(_mActivity);
-        if (searchClass == SEARCH_PUSH) {
-            orderBy = (TextView) inflater.inflate(R.layout.head_push, null);
-            orderBy.setText(strOrderBy + " " + sortByDate + "v");
-            orderBy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    action(0, strSort);
-                }
-            });
-            mAdapter.setHeaderView(orderBy);
+    private void initOrderBar() {
+        switch (searchClass) {
+            case SEARCH_PUSH:
+                order = sortByDate;
+                break;
+            case SEARCH_USER:
+                order = orderByName;
+                break;
         }
+        orderBy.setText(strOrderBy + " " + order + "v");
+        orderBy.setOnClickListener(v -> action(strSort));
     }
 
 }

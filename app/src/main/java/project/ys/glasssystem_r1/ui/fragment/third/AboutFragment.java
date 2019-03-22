@@ -31,7 +31,7 @@ import java.util.List;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserWithRoleBean;
+import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
 import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
@@ -293,12 +293,12 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     @Override
-    public void setDetail(UserWithRoleBean user) {
+    public void setDetail(UserBeanOrderByName user) {
         resetCard(user);
     }
 
     @UiThread
-    void resetCard(UserWithRoleBean user) {
+    void resetCard(UserBeanOrderByName user) {
         if (mEmptyView != null)
             mEmptyView.hide();
         if (userName != null)

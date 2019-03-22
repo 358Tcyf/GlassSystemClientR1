@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
+import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.FirstTabMenuEvent;
 import project.ys.glasssystem_r1.common.event.FirstTabSelectedEvent;
@@ -40,7 +41,7 @@ import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNeg
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_alarm)
-public class AlarmFragment extends BaseBackFragment implements PushContract.View {
+public class AlarmFragment extends SupportFragment implements PushContract.View {
     public static AlarmFragment newInstance() {
         return new AlarmFragment_();
     }

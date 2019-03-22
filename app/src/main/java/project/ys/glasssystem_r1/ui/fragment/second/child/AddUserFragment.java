@@ -1,6 +1,11 @@
 package project.ys.glasssystem_r1.ui.fragment.second.child;
 
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -23,19 +28,21 @@ import java.util.ArrayList;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.data.bean.UserBean;
 import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.mvp.presenter.AddUserPresenter;
+import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
 
-@EFragment(R.layout.fragment_add_user)
-public class AddUserFragment extends SupportFragment implements AddUserContract.View {
+@EFragment
+public class AddUserFragment extends BaseBackFragment implements AddUserContract.View {
 
 
     public static AddUserFragment newInstance() {
@@ -90,6 +97,14 @@ public class AddUserFragment extends SupportFragment implements AddUserContract.
         initTopBar();
         initSteppers();
         initSpinner();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_add_user, container, false);
+        return attachToSwipeBack(view);
     }
 
     private void initTopBar() {

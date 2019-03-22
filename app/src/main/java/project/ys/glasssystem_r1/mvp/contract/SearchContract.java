@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.http.OnHttpCallBack;
+import project.ys.glasssystem_r1.http.RetResult;
 
 public interface SearchContract {
     interface Model {
@@ -12,6 +14,8 @@ public interface SearchContract {
         List<Push> getPushList(String receiver, String order, String search);
 
         void setRead(Push push);
+
+        void getUserList(String searchText, OnHttpCallBack<RetResult> onHttpCallBack);
     }
 
     interface View {
@@ -29,5 +33,7 @@ public interface SearchContract {
         void sortList(String s, String tag, String searchText);
 
         void setRead(Push push);
+
+        void searchUser(String order,String searchText);
     }
 }
