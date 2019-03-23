@@ -26,7 +26,7 @@ public class HomeActivity extends SupportActivity {
         SupportFragment fragment = findFragment(HomeFragmentPlus.class);
         if (fragment == null) {
             MMKV user = MMKV.defaultMMKV();
-            loadRootFragment(R.id.fl_container, HomeFragmentPlus.newInstance(user.decodeString("userAccount")));
+            loadRootFragment(R.id.fl_container, HomeFragmentPlus.newInstance());
         }
     }
 

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
-import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
@@ -21,6 +20,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.ColorRes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +36,6 @@ import project.ys.glasssystem_r1.mvp.contract.ChartContract;
 import project.ys.glasssystem_r1.mvp.presenter.ChartPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.ChartContentFragment;
-
-import static com.alibaba.fastjson.JSON.toJSONString;
 
 
 @EFragment
@@ -72,6 +70,9 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
     @ViewById(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+
+    @ColorRes(R.color.colorText_Icon)
+    int topbarText;
     private Push push;
     private String content;
     private List<BaseChart> charts = new ArrayList<>();
@@ -99,11 +100,11 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
     @AfterViews
     void afterViews() {
         if (drawerLayout == null) return;
-//        initStartDrawerView();
         drawerLayout.removeView(navViewStart);
         initDefaultMenu();
         initTopBar();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
             pop();
         });
-        mTopBar.setTitle(R.string.push_detail).setTextColor(R.color.colorText_Icon);
+        mTopBar.setTitle(R.string.push_detail).setTextColor(topbarText);
         mTopBar.addRightImageButton(R.drawable.ic_more_vert, R.id.more)
                 .setOnClickListener(view -> {
                     showBottomSheetList();

@@ -1,41 +1,47 @@
 package project.ys.glasssystem_r1.mvp.model;
 
+import java.io.File;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import project.ys.glasssystem_r1.data.bean.UserBean;
-import project.ys.glasssystem_r1.mvp.contract.LoginContract;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.http.RetrofitUtils;
+import project.ys.glasssystem_r1.mvp.contract.UserEditContract;
+import project.ys.glasssystem_r1.util.utils.MediaUtil;
 
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
-public class LoginModel implements LoginContract.Model {
-
+public class UserEditModel implements UserEditContract.Model {
     @Override
-    public void login(String account, String password, OnHttpCallBack<RetResult> callBack) {
+    public void uploadPic(File file, String account, OnHttpCallBack<RetResult> callBack) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),
+                MediaUtil.getByteFromFile(file));
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
         RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
-                .login(account, password)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.io())
+                .upload(body, account)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RetResult<UserBean>>() {
+                .subscribe(new Observer<RetResult>() {
                     @Override
                     public void onSubscribe(Disposable d) {
+
                     }
 
                     @Override
-                    public void onNext(RetResult<UserBean> retResult) {
+                    public void onNext(RetResult retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
-
                         }
                     }
 
@@ -46,15 +52,16 @@ public class LoginModel implements LoginContract.Model {
 
                     @Override
                     public void onComplete() {
+
                     }
                 });
     }
 
     @Override
-    public void resetPassword(String account, OnHttpCallBack<RetResult> callBack) {
+    public void updateUser(String account, String email, String phone, OnHttpCallBack<RetResult> callBack) {
         RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
-                .resetPassword(account)
+                .updateUser(account, email, phone)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

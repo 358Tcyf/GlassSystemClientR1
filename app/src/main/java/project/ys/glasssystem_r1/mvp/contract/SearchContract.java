@@ -34,6 +34,6 @@ public interface SearchContract {
 
         void setRead(Push push);
 
-        void searchUser(String order,String searchText);
+        void searchUser(String searchText);
     }
 }

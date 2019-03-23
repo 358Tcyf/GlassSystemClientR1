@@ -2,13 +2,17 @@ package project.ys.glasssystem_r1.ui.fragment.third;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -26,24 +30,29 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
-import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
+import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
-import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
+import project.ys.glasssystem_r1.ui.fragment.third.child.PushSetFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.child.UserEditFragment;
 
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
+import static android.text.TextUtils.isEmpty;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {
+public class AboutFragment extends SupportFragment implements UserDetailContract.View {
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
     @ViewById(R.id.user_card)
@@ -76,11 +85,12 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     Drawable icExit;
     @ViewById(R.id.user_name)
     TextView userName;
-
     @ViewById(R.id.user_role)
     TextView userRole;
     @ViewById(R.id.user_no)
     TextView userNo;
+    @ViewById(R.id.user_pic)
+    QMUIRadiusImageView userPic;
     @ViewById(R.id.user_email)
     QMUILinkTextView userEmail;
     @ViewById(R.id.user_phone)
@@ -110,32 +120,29 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     @StringRes(R.string.clickRetry)
     String clickRetry;
 
+
+    @StringRes(R.string.cancel)
+    String cancel;
+    @StringRes(R.string.logout)
+    String logout;
+
     public static AboutFragment newInstance() {
         return new AboutFragment_();
     }
 
-    public static AboutFragment newInstance(String no) {
-        Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
-        AboutFragment fragment = new AboutFragment_();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     private UserDetailPresenter userDetailPresenter;
-    private PushSetPresenter pushSetPresenter;
-    private String no;
+    private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
         userDetailPresenter = new UserDetailPresenter(this);
-        pushSetPresenter = new PushSetPresenter(this);
-        no = getArguments().getString(USER_ACCOUNT);
+        currentUser = CustomerApp.getInstance().getCurrentUser();
     }
 
     @AfterViews
     void afterViews() {
-        if (no.startsWith("A")) {
+        initTopBar();
+        if (currentUser.getNo().startsWith("A")) {
             userCard.setVisibility(View.GONE);
             mEmptyView.hide();
         } else {
@@ -144,10 +151,15 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         initGroupListView();
     }
 
+    private void initTopBar() {
+        mTopBar.addRightImageButton(R.drawable.ic_details, R.id.detail)
+                .setOnClickListener(v -> showEditTextDialog());
+    }
+
 
     private void initCard() {
         mEmptyView.show(true);
-        new Handler().postDelayed(() -> userDetailPresenter.getDetail(no), 1000);
+        new Handler().postDelayed(() -> userDetailPresenter.getDetail(currentUser.getNo()), 1000);
 
     }
 
@@ -183,7 +195,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
                 null,
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        if (no.startsWith("A")) {
+        if (currentUser.getNo().startsWith("A")) {
             addNewSection(pushSettingItem);
             addNewSection(appSettingItem);
             addNewSection(aboutSystemItem);
@@ -283,34 +295,55 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     private void userInfo() {
+        EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserEditFragment.newInstance(currentUser)));
     }
 
     private void pushSet() {
-        pushSetPresenter.getTags(no);
+        EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PushSetFragment.newInstance()));
     }
 
     private void appSet() {
     }
 
     @Override
-    public void setDetail(UserBeanOrderByName user) {
+    public void setDetail(UserBeanPlus user) {
         resetCard(user);
     }
 
     @UiThread
-    void resetCard(UserBeanOrderByName user) {
+    void resetCard(UserBeanPlus user) {
         if (mEmptyView != null)
             mEmptyView.hide();
-        if (userName != null)
+        if (userName != null) {
             userName.setText(user.getName());
-        if (userRole != null)
+            currentUser.setName(user.getName());
+        }
+        if (userRole != null) {
             userRole.setText(user.getRoleName());
+            currentUser.setRoleName(user.getRoleName());
+        }
         if (userNo != null)
             userNo.setText(user.getNo());
-        if (userEmail != null)
+        setUserPic();
+        if (userEmail != null) {
             userEmail.setText(user.getEmail());
-        if (userPhone != null)
+            currentUser.setEmail(user.getEmail());
+        }
+        if (userPhone != null) {
             userPhone.setText(user.getPhone());
+            currentUser.setPhone(user.getPhone());
+        }
+
+    }
+
+    @UiThread
+    void setUserPic() {
+        if (!isEmpty(currentUser.getPicPath())) {
+            Glide.with(this)
+                    .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime()))
+                    .apply(new RequestOptions().error(R.mipmap.ic_account_circle))
+                    .into(userPic);
+        }
     }
 
     @Override
@@ -318,54 +351,13 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         mEmptyView.show(false, refreshFail, errorMsg, clickRetry, v -> initCard());
     }
 
-    @Override
-    public void showTagsChoices(List<Integer> checks) {
-        final String[] items = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
-        final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(getActivity())
-                .addItems(items, (dialog, which) -> {
-                });
-        if (checks != null) {{
-            int[] checkedIndexes = new int[checks.size()];
-            for(int i =0;i<checks.size();i++){
-                checkedIndexes[i] = checks.get(i);
-            }
-            builder.setCheckedItems(checkedIndexes);
-        }
-        }
-        builder.addAction("取消", new QMUIDialogAction.ActionListener() {
-            @Override
-            public void onClick(QMUIDialog dialog, int index) {
-                dialog.dismiss();
-            }
-        });
-        builder.addAction("提交", new QMUIDialogAction.ActionListener() {
-            @Override
-            public void onClick(QMUIDialog dialog, int index) {
-                List<String> tags = new ArrayList<>();
-                for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
-                    tags.add(items[builder.getCheckedItemIndexes()[i]]);
-                }
-                pushSetPresenter.updateTags(no,tags);
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    @Override
-    public void showErrorMsg(String errorMsg) {
-        new Handler().postDelayed(() -> {
-            showFailDialog(getContext(), errorMsg);
-        }, 2000);
-    }
-
     private void logoutDialog() {
         QMUIDialog.CheckBoxMessageDialogBuilder logoutDailog = new QMUIDialog.CheckBoxMessageDialogBuilder(_mActivity);
         logoutDailog.setTitle("退出后是否删除账号信息?")
                 .setMessage("删除账号信息")
                 .setChecked(false)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("退出", (dialog, index) -> {
+                .addAction(cancel, (dialog, index) -> dialog.dismiss())
+                .addAction(logout, (dialog, index) -> {
                     if (logoutDailog.isChecked()) {
                         MMKV user = MMKV.defaultMMKV();
                         user.encode("userAccount", "");
@@ -377,5 +369,30 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
                 }).show();
     }
 
+
+    private void showEditTextDialog() {
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getActivity());
+        builder.setTitle("修改网络通信地址")
+                .setDefaultText(getURL())
+//                .setPlaceholder(URL)
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("默认", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        builder.getEditText().setText(URL);
+                        changeURL(URL);
+                    }
+                })
+                .addAction("确定", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        CharSequence text = builder.getEditText().getText();
+                        changeURL(text.toString());
+                        dialog.dismiss();
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
 
 }

@@ -1,6 +1,6 @@
 package project.ys.glasssystem_r1.mvp.contract;
 
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 
@@ -10,7 +10,7 @@ public interface UserDetailContract {
     }
 
     interface View {
-        void setDetail(UserBeanOrderByName user );
+        void setDetail(UserBeanPlus user );
 
         void showErrorView(String errorMsg);
 

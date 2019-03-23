@@ -97,4 +97,11 @@ public class DateUtils {
         return timeAgo.getTimeAgo(date);
     }
 
+    public static String getNowTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat(format1);
+        Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
+        String str = formatter.format(curDate);
+        return str;
+    }
+
 }

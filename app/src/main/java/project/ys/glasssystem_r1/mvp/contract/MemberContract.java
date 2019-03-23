@@ -26,7 +26,7 @@ public interface MemberContract {
     }
 
     interface Presenter {
-        void userList(String order);
+        void userList();
 
         void logOff(String no);
     }

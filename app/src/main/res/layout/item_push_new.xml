@@ -15,7 +15,7 @@
         android:layerType="software" />
 
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-        android:id="@+id/date_view"
+        android:id="@+id/user_pic"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="45dp"
@@ -30,8 +30,8 @@
         android:id="@+id/push_month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/date_view"
-        android:layout_alignTop="@id/date_view"
+        android:layout_alignStart="@id/user_pic"
+        android:layout_alignTop="@id/user_pic"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:text="11"
@@ -42,8 +42,8 @@
         android:id="@+id/push_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/date_view"
-        android:layout_alignBottom="@id/date_view"
+        android:layout_alignEnd="@id/user_pic"
+        android:layout_alignBottom="@id/user_pic"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="3dp"
         android:text="/03"
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_push_height"
         android:layout_margin="5dp"
-        android:layout_toEndOf="@id/date_view"
+        android:layout_toEndOf="@id/user_pic"
         card_view:cardUseCompatPadding="true">
 
         <View

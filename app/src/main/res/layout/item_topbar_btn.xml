@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qmuiteam.qmui.alpha.QMUIAlphaImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_btn"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/qmui_config_color_transparent"
+    android:paddingStart="6dp"
+    android:paddingEnd="12dp"
+    android:src="@drawable/ic_search_dark">
+
+
+</com.qmuiteam.qmui.alpha.QMUIAlphaImageButton>

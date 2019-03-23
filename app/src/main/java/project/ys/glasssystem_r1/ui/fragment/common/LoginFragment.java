@@ -30,12 +30,13 @@ import org.androidannotations.annotations.res.StringRes;
 import java.util.Date;
 
 import me.yokeyword.fragmentation.SupportFragment;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.KeyboardChangeListener;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.LoginContract;
 import project.ys.glasssystem_r1.mvp.presenter.LoginPresenter;
 import project.ys.glasssystem_r1.ui.activity.HomeActivity_;
-
 
 import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
@@ -92,6 +93,7 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     private String account;
     private String password;
     private QMUITipDialog loading;
+    private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
@@ -113,13 +115,15 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
                 }
             }
         });
-        inputPasswordLayout.setPasswordVisibilityToggleDrawable(R.drawable.icon_pwd_selector);
-        MMKV user = MMKV.defaultMMKV();
-        account = user.decodeString("userAccount");
-        password = user.decodeString("userPassword");
-        inputAccount.setText(account);
-        inputPassword.setText(password);
+        initEditTexView();
 
+    }
+
+    private void initEditTexView() {
+        inputPasswordLayout.setPasswordVisibilityToggleDrawable(R.drawable.icon_pwd_selector);
+        currentUser = CustomerApp.getInstance().getCurrentUser();
+        inputAccount.setText(currentUser.getNo());
+        inputPassword.setText(currentUser.getPassword());
     }
 
     @UiThread
@@ -267,9 +271,9 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
 
 
     public void toHomeActivity() {
-        MMKV user = MMKV.defaultMMKV();
-        user.encode("userAccount", inputAccount.getText().toString());
-        user.encode("userPassword", inputPassword.getText().toString());
+        account = inputAccount.getText().toString();
+        password = inputPassword.getText().toString();
+        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(account, password));
         Intent intent = new Intent(getContext(), HomeActivity_.class);
         startActivity(intent);
         getActivity().finish();
@@ -279,8 +283,9 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
         MMKV user = MMKV.defaultMMKV();
         user.encode("userAccount", inputAccount.getText().toString());
         user.encode("userPassword", inputPassword.getText().toString());
+        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(inputAccount.getText().toString(), inputPassword.getText().toString()));
         _mActivity.setTheme(R.style.AppTheme);
-        startWithPop(HomeFragment.newInstance(user.decodeString("userAccount")));
+        startWithPop(HomeFragment.newInstance());
     }
 
 

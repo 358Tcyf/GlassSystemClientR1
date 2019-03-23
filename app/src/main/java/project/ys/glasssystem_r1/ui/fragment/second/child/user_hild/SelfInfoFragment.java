@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.MenuItemBean;
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
@@ -29,13 +29,17 @@ import static project.ys.glasssystem_r1.common.constant.UserConstant.EMAIL;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.NAME;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.PHONE;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_NAME;
 
 @EFragment(R.layout.fragment_self_detail)
 public class SelfInfoFragment extends SupportFragment implements UserDetailContract.View {
 
-    public static SelfInfoFragment newInstance(String no, String name) {
+
+    private static final String CHECK_USER = "check_user";
+
+    public static SelfInfoFragment newInstance(UserBeanPlus user) {
         Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
+        args.putParcelable(CHECK_USER, user);
         SelfInfoFragment fragment = new SelfInfoFragment_();
         fragment.setArguments(args);
         return fragment;
@@ -52,12 +56,16 @@ public class SelfInfoFragment extends SupportFragment implements UserDetailContr
     @StringArrayRes(R.array.userSelfDetails)
     String[] selfDetails;
 
-    private String no;
+
+    private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
         userDetailPresenter = new UserDetailPresenter(this);
-        no = getArguments().getString(USER_ACCOUNT);
+        Bundle args = getArguments();
+        if (args != null) {
+            currentUser = args.getParcelable(CHECK_USER);
+        }
 
     }
 
@@ -73,11 +81,11 @@ public class SelfInfoFragment extends SupportFragment implements UserDetailContr
     private BaseQuickAdapter mAdapter;
 
     private void initList() {
-        userDetailPresenter.getDetail(no);
+        userDetailPresenter.getDetail(currentUser.getNo());
         mList = new ArrayList<>();
-        mList.add(new MenuItemBean(selfDetails[0], "xx"));
-        mList.add(new MenuItemBean(selfDetails[1], "xx", iconEmail));
-        mList.add(new MenuItemBean(selfDetails[2], "xx", iconPhone));
+        mList.add(new MenuItemBean(selfDetails[0], currentUser.getName()));
+        mList.add(new MenuItemBean(selfDetails[1], "", iconEmail));
+        mList.add(new MenuItemBean(selfDetails[2], "", iconPhone));
     }
 
     private void initAdapter() {
@@ -87,7 +95,7 @@ public class SelfInfoFragment extends SupportFragment implements UserDetailContr
     }
 
     @Override
-    public void setDetail(UserBeanOrderByName user) {
+    public void setDetail(UserBeanPlus user) {
         mList.get(NAME).setDetailText(user.getName());
         mList.get(EMAIL).setDetailText(user.getEmail());
         mList.get(PHONE).setDetailText(user.getPhone());

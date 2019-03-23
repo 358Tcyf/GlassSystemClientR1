@@ -38,10 +38,10 @@
     </style>
 
     <style name="EditTextInputLayoutSelect" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlNormal">@color/colorPrimaryText</item>
-        <item name="colorControlActivated">@color/colorPrimaryText</item>
-        <item name="colorControlHighlight">@color/colorPrimaryText</item>
-        <item name="android:colorAccent">@color/colorPrimaryText</item>
-        <item name="android:textColorHint">@color/colorPrimaryText</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
     </style>
 </resources>

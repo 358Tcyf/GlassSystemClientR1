@@ -2,7 +2,7 @@ package project.ys.glasssystem_r1.mvp.presenter;
 
 import java.util.Map;
 
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
@@ -29,7 +29,7 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
             @Override
             public void onSuccess(RetResult retResult) {
                 Map<String, Object> userMap = (Map<String, Object>) retResult.getData();
-                UserBeanOrderByName userBean = parseObject(toJSONString(userMap), UserBeanOrderByName.class);
+                UserBeanPlus userBean = parseObject(toJSONString(userMap), UserBeanPlus.class);
                 userDetailView.setDetail(userBean);
             }
 

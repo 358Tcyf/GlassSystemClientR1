@@ -12,15 +12,13 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
+import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.FirstTabFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
 import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 import project.ys.glasssystem_r1.ui.widget.bottombar.BottomBar;
 import project.ys.glasssystem_r1.ui.widget.bottombar.BottomBarTab;
-
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_home_new)
 public class HomeFragmentNew extends BaseMainFragment {
@@ -32,7 +30,6 @@ public class HomeFragmentNew extends BaseMainFragment {
     public static final int THIRD = 2;
 
     private SupportFragment[] mFragments = new SupportFragment[3];
-    private String no;
 
     @ViewById(R.id.bottomBar)
     BottomBar mBottomBar;
@@ -40,7 +37,6 @@ public class HomeFragmentNew extends BaseMainFragment {
 
     @AfterInject
     void afterInject() {
-        no = getArguments().getString(USER_ACCOUNT);
         initFragment();
         EventBusActivityScope.getDefault(_mActivity).register(this);
     }
@@ -54,14 +50,6 @@ public class HomeFragmentNew extends BaseMainFragment {
         return new HomeFragmentNew_();
     }
 
-    public static HomeFragmentNew newInstance(String no) {
-        Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
-        HomeFragmentNew fragment = new HomeFragmentNew_();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
     private void initFragment() {
 
@@ -69,7 +57,7 @@ public class HomeFragmentNew extends BaseMainFragment {
         if (firstFragment == null) {
             mFragments[FIRST] = FirstTabFragment.newInstance();
             mFragments[SECOND] = MemberFragment.newInstance();
-            mFragments[THIRD] = AboutFragment.newInstance(no);
+            mFragments[THIRD] = AboutFragment.newInstance();
 
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
                     mFragments[FIRST],
@@ -126,10 +114,4 @@ public class HomeFragmentNew extends BaseMainFragment {
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 
-    /**
-     * start other BrotherFragment
-     */
-    public void startBrotherFragment(SupportFragment targetFragment) {
-        start(targetFragment);
-    }
 }

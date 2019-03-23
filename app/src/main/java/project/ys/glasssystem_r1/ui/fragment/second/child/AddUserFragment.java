@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -27,8 +27,6 @@ import org.androidannotations.annotations.res.StringRes;
 import java.util.ArrayList;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
-import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation_swipeback.SwipeBackFragment;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
@@ -67,10 +65,10 @@ public class AddUserFragment extends BaseBackFragment implements AddUserContract
     MaterialEditText newUserNo;
 
     @ViewById(R.id.inputEmail)
-    MaterialEditText inputEmail;
+    EditText inputEmail;
 
     @ViewById(R.id.inputPhone)
-    MaterialEditText inputPhone;
+    EditText inputPhone;
 
     @StringArrayRes(R.array.roles)
     String[] roles;
@@ -89,7 +87,6 @@ public class AddUserFragment extends BaseBackFragment implements AddUserContract
     @AfterInject
     void afterInject() {
         addUserPresenter = new AddUserPresenter(this);
-        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     @AfterViews

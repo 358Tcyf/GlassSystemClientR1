@@ -1,8 +1,10 @@
 package project.ys.glasssystem_r1.ui.fragment.common;
 
 import android.os.Bundle;
+import android.text.InputType;
 
-import com.orhanobut.logger.Logger;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -26,7 +28,9 @@ import project.ys.glasssystem_r1.ui.widget.bottomnavigation.BottomNavigation;
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.Constant.THIRD;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
 @EFragment(R.layout.fragment_home_plus)
 public class HomeFragmentPlus extends BaseMainFragment {
@@ -35,7 +39,6 @@ public class HomeFragmentPlus extends BaseMainFragment {
 
 
     private SupportFragment[] mFragments = new SupportFragment[3];
-    private String no;
 
     @ViewById(R.id.bottomNavigation)
     BottomNavigation mBottomNavigation;
@@ -43,7 +46,6 @@ public class HomeFragmentPlus extends BaseMainFragment {
 
     @AfterInject
     void afterInject() {
-        no = getArguments().getString(USER_ACCOUNT);
         EventBusActivityScope.getDefault(_mActivity).register(this);
         initFragment();
     }
@@ -57,22 +59,13 @@ public class HomeFragmentPlus extends BaseMainFragment {
         return new HomeFragmentPlus_();
     }
 
-    public static HomeFragmentPlus newInstance(String no) {
-        Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
-        HomeFragmentPlus fragment = new HomeFragmentPlus_();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     private void initFragment() {
 
         SupportFragment firstFragment = findChildFragment(FirstTabFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = FirstTabFragment.newInstance();
             mFragments[SECOND] = MemberFragment.newInstance();
-            mFragments[THIRD] = AboutFragment.newInstance(no);
+            mFragments[THIRD] = AboutFragment.newInstance();
 
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
                     mFragments[FIRST],
@@ -92,7 +85,6 @@ public class HomeFragmentPlus extends BaseMainFragment {
         mBottomNavigation.show(FIRST, false);
         mBottomNavigation.setOnClickMenuListener((MemoizedFunctionToNullable<BottomNavigation.Model, Unit>) model -> {
             showHideFragment(mFragments[model.getId()]);
-            Logger.d(model.getId());
             if (mBottomNavigation.isSameSelect())
                 EventBusActivityScope.getDefault(_mActivity).post(new TabSelectedEvent(model.getId()));
             return null;
@@ -109,6 +101,8 @@ public class HomeFragmentPlus extends BaseMainFragment {
         }
     }
 
+
+
     @Subscribe
     public void onStartBrotherEvent(StartBrotherEvent event) {
         start(event.targetFragment);
@@ -120,10 +114,5 @@ public class HomeFragmentPlus extends BaseMainFragment {
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 
-    /**
-     * start other BrotherFragment
-     */
-    public void startBrotherFragment(SupportFragment targetFragment) {
-        start(targetFragment);
-    }
+
 }

@@ -17,7 +17,7 @@ import es.dmoral.toasty.Toasty;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
-import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.service.getui.MyIntentService;
@@ -46,7 +46,7 @@ public class CustomerApp extends Application {
 
     private static CustomerApp _instance;
     private DatabaseHelper helper;
-    private UserBean mUser;//当前用户
+    private UserBeanPlus mUser;//当前用户
 
     private void initFragmentation() {
         Fragmentation.builder()
@@ -105,7 +105,7 @@ public class CustomerApp extends Application {
      *
      * @param mUser 用户
      */
-    public void setCurrentUser(@NonNull UserBean mUser) {
+    public void setCurrentUser(@NonNull UserBeanPlus mUser) {
         this.mUser = mUser;
         MMKV user = MMKV.defaultMMKV();
         user.encode("userAccount", mUser.getNo());
@@ -118,13 +118,12 @@ public class CustomerApp extends Application {
      *
      * @return 用户
      */
-    public UserBean getCurrentUser() {
+    public UserBeanPlus getCurrentUser() {
         if (mUser == null) {
             MMKV user = MMKV.defaultMMKV();
             String account = user.decodeString("userAccount");
             String password = user.decodeString("userPassword");
-            mUser.setNo(account);
-            mUser.setPassword(password);
+            mUser = new UserBeanPlus(account, password);
         }
         return mUser;
     }

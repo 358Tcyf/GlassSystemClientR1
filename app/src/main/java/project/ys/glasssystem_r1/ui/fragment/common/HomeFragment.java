@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.ui.fragment.common;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -31,7 +30,6 @@ import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.Constant.THIRD;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
 
 @EFragment(R.layout.fragment_home)
 public class HomeFragment extends BaseMainFragment {
@@ -51,7 +49,6 @@ public class HomeFragment extends BaseMainFragment {
 
     @AfterInject
     void afterInject() {
-        no = getArguments().getString(USER_ACCOUNT);
         EventBusActivityScope.getDefault(_mActivity).register(this);
     }
 
@@ -65,14 +62,6 @@ public class HomeFragment extends BaseMainFragment {
 
     public static HomeFragment newInstance() {
         return new HomeFragment_();
-    }
-
-    public static HomeFragment newInstance(String no) {
-        Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
-        HomeFragment fragment = new HomeFragment_();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     private String no;
@@ -121,7 +110,7 @@ public class HomeFragment extends BaseMainFragment {
         mPages.put(FIRST, pushFragment);
         SupportFragment memberFragment = new MemberFragment().newInstance();
         mPages.put(SECOND, memberFragment);
-        SupportFragment settingFragment = new AboutFragment().newInstance(no);
+        SupportFragment settingFragment = new AboutFragment().newInstance();
         mPages.put(THIRD, settingFragment);
 
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
@@ -153,10 +142,4 @@ public class HomeFragment extends BaseMainFragment {
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 
-    /**
-     * start other BrotherFragment
-     */
-    public void startBrotherFragment(SupportFragment targetFragment) {
-        start(targetFragment);
-    }
 }

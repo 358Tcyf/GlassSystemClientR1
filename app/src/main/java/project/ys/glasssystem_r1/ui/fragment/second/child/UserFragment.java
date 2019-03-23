@@ -1,5 +1,6 @@
 package project.ys.glasssystem_r1.ui.fragment.second.child;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,15 +9,20 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringArrayRes;
 
@@ -24,30 +30,37 @@ import java.util.HashMap;
 
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SectionInfoFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SelfInfoFragment;
 
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_NAME;
+import static android.text.TextUtils.isEmpty;
+import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
+import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
 
 @EFragment
 public class UserFragment extends BaseBackFragment {
+    private static final String CHECK_USER = "check_user";
 
-    public static UserFragment newInstance(String no, String name) {
+    public static UserFragment newInstance(UserBeanPlus user) {
         Bundle args = new Bundle();
-        args.putString(USER_ACCOUNT, no);
-        args.putString(USER_NAME, name);
+        args.putParcelable(CHECK_USER, user);
         UserFragment fragment = new UserFragment_();
         fragment.setArguments(args);
         return fragment;
     }
 
-
     @ViewById(R.id.collapsing_topbar_layout)
     QMUICollapsingTopBarLayout mCollapsingTopBarLayout;
     @ViewById(R.id.topbar)
     QMUITopBar mTopBar;
+    @ViewById(R.id.imageView)
+    ImageView userPic;
     @ViewById(R.id.tabs)
     QMUITabSegment mTabs;
     @ViewById(R.id.pager)
@@ -55,13 +68,15 @@ public class UserFragment extends BaseBackFragment {
 
     @StringArrayRes(R.array.userTabs)
     String[] detailsTab;
-    private String no;
-    private String name;
+
+    private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
-        no = getArguments().getString(USER_ACCOUNT);
-        name = getArguments().getString(USER_NAME);
+        Bundle args = getArguments();
+        if (args != null) {
+            currentUser = args.getParcelable(CHECK_USER);
+        }
     }
 
     @AfterViews
@@ -81,10 +96,25 @@ public class UserFragment extends BaseBackFragment {
     }
 
     private void initTopBar() {
-        mCollapsingTopBarLayout.setTitle(name);
+        mCollapsingTopBarLayout.setTitle(currentUser.getName());
         mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
             pop();
         });
+        setUserPic();
+    }
+
+    @UiThread
+    void setUserPic() {
+        Bundle args = getArguments();
+        if (args != null) {
+            if (!isEmpty(currentUser.getPicPath())) {
+                Glide.with(this)
+                        .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime()))
+                        .apply(new RequestOptions().error(R.mipmap.ic_account_circle))
+                        .into(userPic);
+            }
+        }
+
     }
 
     private void initTabs() {
@@ -96,20 +126,21 @@ public class UserFragment extends BaseBackFragment {
                 .addTab(new QMUITabSegment.Tab(detailsTab[1]));
     }
 
-    private HashMap<Pager, SupportFragment> mPages;
-    private SupportFragment selfInfoFragment;
-    private SupportFragment sectionInfoFragment;
+
+    private HashMap<Integer, SupportFragment> mPages;
+    private SelfInfoFragment selfInfoFragment;
+    private SectionInfoFragment sectionInfoFragment;
 
     private void initPagers() {
         mPages = new HashMap<>();
-        selfInfoFragment = new SelfInfoFragment().newInstance(no, name);
-        mPages.put(Pager.SELF, selfInfoFragment);
-        sectionInfoFragment = new SectionInfoFragment().newInstance(no, name);
-        mPages.put(Pager.SECTION, sectionInfoFragment);
+        selfInfoFragment = new SelfInfoFragment().newInstance(currentUser);
+        mPages.put(FIRST, selfInfoFragment);
+        sectionInfoFragment = new SectionInfoFragment().newInstance(currentUser);
+        mPages.put(SECOND, sectionInfoFragment);
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return mPages.get(Pager.getPagerFromPosition(position));
+                return mPages.get(position);
             }
 
             @Override
@@ -120,21 +151,6 @@ public class UserFragment extends BaseBackFragment {
 
         mPager.setAdapter(mPageAdapter);
         mTabs.setupWithViewPager(mPager, false);
-    }
-
-    enum Pager {
-        SELF, SECTION;
-
-        public static Pager getPagerFromPosition(int position) {
-            switch (position) {
-                case 0:
-                    return SELF;
-                case 1:
-                    return SECTION;
-                default:
-                    return SELF;
-            }
-        }
     }
 
 

@@ -1,12 +1,17 @@
 package project.ys.glasssystem_r1.ui.fragment.second;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
@@ -28,22 +33,23 @@ import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.indexablerv.IndexableLayout;
 import me.yokeyword.indexablerv.SimpleHeaderAdapter;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.MemberContract;
 import project.ys.glasssystem_r1.mvp.presenter.MemberPresenter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
 import project.ys.glasssystem_r1.ui.fragment.common.SearchFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.AddUserFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.child.UserEditFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_USER;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_member)
 public class MemberFragment extends SupportFragment implements MemberContract.View {
@@ -60,6 +66,9 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
     TextView orderBy;
     @ViewById(R.id.indexableLayout)
     IndexableLayout indexableLayout;
+
+    QMUIAlphaImageButton addUser;
+    QMUIAlphaImageButton searchUser;
 
     @DrawableRes(R.drawable.ic_user_add)
     Drawable icAdd;
@@ -107,6 +116,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     @AfterInject
     void afterInject() {
+        currentUser = CustomerApp.getInstance().getCurrentUser();
         memberPresenter = new MemberPresenter(this, _mActivity);
         EventBusActivityScope.getDefault(_mActivity).register(this);
     }
@@ -119,8 +129,9 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         refreshView();
     }
 
+    private UserBeanPlus currentUser;
     private MemberPresenter memberPresenter;
-    private ArrayList<UserBeanOrderByName> mList = new ArrayList<>();
+    private ArrayList<UserBeanPlus> mList = new ArrayList<>();
     private UserPinyinAdapter userAdapter;
     private boolean mInAtTop = true;
     private boolean mInAtBottom = false;
@@ -129,16 +140,38 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
     private SimpleHeaderAdapter adapter3;
 
     private void initTopBar() {
-        mTopBar.addRightImageButton(R.drawable.ic_search, R.id.search)
-                .setOnClickListener(view -> {
-                    action(null, strSearch);
-                });
 
-        mTopBar.addLeftImageButton(R.drawable.ic_icon_workmore, R.id.more)
-                .setOnClickListener(view ->
-                        showBottomSheetList());
-
+        LayoutInflater inflater = LayoutInflater.from(_mActivity);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        addUser = addBtnItem(_mActivity, R.drawable.ic_user_add);
+        searchUser = addBtnItem(_mActivity, R.drawable.ic_search);
+        addUser.setOnClickListener(v -> action(null, strAdd));
+        searchUser.setOnClickListener(v -> action(null, strSearch));
+        if (currentUser.getNo().startsWith("A"))
+            mTopBar.addRightView(addBtns(_mActivity, addUser, searchUser), R.id.btn, layoutParams);
+        else
+            mTopBar.addRightView(addBtns(_mActivity, searchUser), R.id.btn, layoutParams);
     }
+
+    public static QMUIAlphaImageButton addBtnItem(Context context, int resId) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        QMUIAlphaImageButton btn = (QMUIAlphaImageButton) inflater.inflate(R.layout.item_topbar_btn, null);
+        btn.setImageResource(resId);
+        return btn;
+    }
+
+    public static LinearLayout addBtns(Context context, QMUIAlphaImageButton... btn) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        LinearLayout btns = (LinearLayout) inflater.inflate(R.layout.layout_topbar_btns, null);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        for (int i = 0; i < btn.length; i++) {
+            btns.addView(btn[i], layoutParams);
+        }
+        return btns;
+    }
+
 
     private void initOrder() {
         order = orderByName;
@@ -167,16 +200,17 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
             action(entity, strDetail);
         });
         userAdapter.setOnItemContentLongClickListener((v, originalPosition, currentPosition, entity) -> {
-            //            userInfo(entity);
-            userManage(entity);
+            if (!currentUser.getNo().startsWith("A"))
+                action(entity, strDetail);
+            else
+                userManage(entity);
             return false;
         });
 
     }
 
 
-    private void userManage(UserBeanOrderByName user) {
-        String no = user.getNo();
+    private void userManage(UserBeanPlus user) {
         new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                 .addItem(R.drawable.ic_user_details, strAccount + strDetail + ": " + user.getName(), strDetail)
                 .addItem(R.drawable.ic_user_edit, strEdit + strAccount + ": " + user.getName(), strEdit)
@@ -189,27 +223,8 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
                 .show();
     }
 
-    private void userInfo(UserBeanOrderByName entity) {
-        String no = entity.getNo();
-    }
 
-    private void showBottomSheetList() {
-        QMUIBottomSheet.BottomListSheetBuilder builder =
-                new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                        .addItem(icAdd, strAdd)
-                        .addItem(icSearch, strSearch)
-                        .addItem(icRefresh, strRefresh)
-                        .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-                            dialog.dismiss();
-                            action(null, tag);
-                        });
-        QMUIBottomSheet sheet = builder.build();
-        sheet.show();
-
-
-    }
-
-    private void action(UserBeanOrderByName user, String tag) {
+    private void action(UserBeanPlus user, String tag) {
         if (tag.equals(strAdd)) {
             //TODO 新建账号
             EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(AddUserFragment.newInstance()));
@@ -227,7 +242,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
                             .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
                                 order = tag1;
                                 orderBy.setText(strOrderBy + " " + order + "v");
-                                memberPresenter.userList(tag1);
+                                memberPresenter.userList();
                                 dialog.dismiss();
                             });
             QMUIBottomSheet sheet = builder.build();
@@ -239,14 +254,14 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         }
         if (tag.equals(strDetail)) {
             //TODO 查看详情
-            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user.getNo(), user.getName())));
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user)));
         }
         if (tag.equals(strEdit)) {
             //TODO 修改账号
-            showTipDialog(getContext(), tag);
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserEditFragment.newInstance(user)));
         }
         if (tag.equals(strLogOff)) {
-            // 注销账号
+            //TODO 注销账号
             showMessageNegativeDialog(getContext(), strLogOff + strAccount
                     , "确定要" + strLogOff + strAccount + ": " + user.getName() + "吗？"
                     , cancel, strLogOff,
@@ -265,7 +280,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     @Subscribe
     public void onRefreshList(RefreshListEvent event) {
-        memberPresenter.userList(orderByName);
+        memberPresenter.userList();
     }
 
     @Override
@@ -276,7 +291,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     @UiThread
     void refreshComplete() {
-        memberPresenter.userList(orderByName);
+        memberPresenter.userList();
     }
 
     @Override
@@ -291,6 +306,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     @Override
     public void setList(ArrayList list) {
+        list = removeMySelf(list);
         mEmptyView.hide();
         indexableLayout.removeHeaderAdapter(adapter1);
         indexableLayout.removeHeaderAdapter(adapter2);
@@ -298,26 +314,35 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         if (order.equals(orderByName)) {
             userAdapter.setDatas(list);
         } else if (order.equals(orderByRole)) {
-            List<List<UserBeanOrderByName>> lists = divideByRole(list);
+            List<List<UserBeanPlus>> lists = divideByRole(list);
             adapter1 = new SimpleHeaderAdapter<>(userAdapter, "G", "管理员", lists.get(0));
             adapter2 = new SimpleHeaderAdapter<>(userAdapter, "S", "生产人员", lists.get(1));
             adapter3 = new SimpleHeaderAdapter<>(userAdapter, "X", "销售人员", lists.get(2));
             userAdapter.getItems().clear();
-            indexableLayout.addHeaderAdapter(adapter1);
-            indexableLayout.addHeaderAdapter(adapter2);
             indexableLayout.addHeaderAdapter(adapter3);
+            indexableLayout.addHeaderAdapter(adapter2);
+            indexableLayout.addHeaderAdapter(adapter1);
         }
         userAdapter.notifyDataSetChanged();
-
     }
 
-    public static List<List<UserBeanOrderByName>> divideByRole(ArrayList list) {
-        List<List<UserBeanOrderByName>> lists = new ArrayList<>();
-        List<UserBeanOrderByName> list0 = list;
-        List<UserBeanOrderByName> list1 = new ArrayList<>();
-        List<UserBeanOrderByName> list2 = new ArrayList<>();
-        List<UserBeanOrderByName> list3 = new ArrayList<>();
-        for (UserBeanOrderByName user : list0) {
+    public static ArrayList removeMySelf(ArrayList list) {
+        UserBeanPlus currentUser = CustomerApp.getInstance().getCurrentUser();
+        List<UserBeanPlus> list0 = list;
+        for (int i = 0; i < list0.size(); i++) {
+            if (currentUser.getNo().equals(list0.get(i).getNo())) {
+                list.remove(i);
+            }
+        }
+        return list;
+    }
+
+    public static List<List<UserBeanPlus>> divideByRole(ArrayList list) {
+        List<List<UserBeanPlus>> lists = new ArrayList<>();
+        List<UserBeanPlus> list1 = new ArrayList<>();
+        List<UserBeanPlus> list2 = new ArrayList<>();
+        List<UserBeanPlus> list3 = new ArrayList<>();
+        for (UserBeanPlus user : (ArrayList<UserBeanPlus>) list) {
             if (user.getRoleName().startsWith("管"))
                 list1.add(user);
             if (user.getRoleName().startsWith("生"))

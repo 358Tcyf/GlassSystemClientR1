@@ -14,5 +14,7 @@ public class UserConstant {
     public static final int EMAIL = 1;
     public static final int PHONE = 2;
 
+    public static final String[] push_tags = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
+
 
 }

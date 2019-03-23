@@ -25,6 +25,8 @@
     <string name="search">搜索</string>
     <string name="sort">排序</string>
     <string name="cancel">取消</string>
+    <string name="submit">提交</string>
+    <string name="ok">确定</string>
     <string name="refresh">重新加载</string>
     <string name="noData">暂无数据</string>
     <string name="refreshFail">加载失败</string>
@@ -84,9 +86,12 @@
     <string name="productionSection">生产部门</string>
     <string name="saleSection">销售部门</string>
     <string name="userNo">工号</string>
+    <string name="userSection">部门</string>
 
 
     <string name="otherInfo">其他信息</string>
+    <string name="inputEmail">请输入邮箱</string>
+    <string name="inputPhone">请输入手机</string>
     <string name="nextStep">下一步</string>
     <string name="prevStep">上一步</string>
     <string name="skip">跳过</string>
@@ -98,6 +103,19 @@
     <string name="email">邮箱</string>
     <string name="phone">电话</string>
 
+    <!--主页-设置页-个人信息-->
+    <string name="save">保存</string>
+    <string name="saving">保存中</string>
+    <string name="saveSuccess">保存成功</string>
+    <string name="editPassword">修改密码</string>
+    <string name="openCamera">打开相机</string>
+    <string name="openGallery">打开相册</string>
+    <string name="uploadPic">打开相册</string>
 
-
+    <!--主页-设置页-推送设置-->
+    <string name="push_set">推送设置</string>
+    <string name="push_switch">接受数据推送</string>
+    <string name="push_time">推送时间</string>
+    <string name="push_tags">推送标签</string>
+    <string name="alarm_switch">接受数据预警</string>
 </resources>

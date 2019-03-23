@@ -15,8 +15,12 @@ public class HttpConstant {
     public static final String LATEST_NO = "/latestNo";
     public static final String ADD_USER = "/addUser";
     public static final String RESET_PASSWORD = "/resetPassword";
+    public static final String UPDATE_USER = "/updateUser";
     public static final String UPDATE_TAGS = "/updateTags";
     public static final String GET_TAGS = "/getTags";
+
+    public static final String FILE = "/file";
+    public static final String UPLOAD = "/upload";
 
 
     public static void changeURL(String url) {

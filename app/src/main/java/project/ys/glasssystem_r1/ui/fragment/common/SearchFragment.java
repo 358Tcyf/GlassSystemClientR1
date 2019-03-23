@@ -31,7 +31,7 @@ import me.yokeyword.indexablerv.SimpleHeaderAdapter;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
-import project.ys.glasssystem_r1.data.bean.UserBeanOrderByName;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.SearchContract;
 import project.ys.glasssystem_r1.mvp.presenter.SearchPresenter;
@@ -45,6 +45,7 @@ import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_CL
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_PUSH;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_USER;
 import static project.ys.glasssystem_r1.ui.fragment.second.MemberFragment.divideByRole;
+import static project.ys.glasssystem_r1.ui.fragment.second.MemberFragment.removeMySelf;
 
 @EFragment(R.layout.fragment_search)
 public class SearchFragment extends BaseBackFragment implements SearchContract.View {
@@ -147,7 +148,6 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
     }
 
 
-
     private void initAdapter() {
         mRecyclerView = indexableLayout.getRecyclerView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
@@ -178,7 +178,7 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 searchPresenter.searchPush(order, searchText);
                 break;
             case SEARCH_USER:
-                searchPresenter.searchUser(order, searchText);
+                searchPresenter.searchUser(searchText);
                 break;
         }
 
@@ -207,7 +207,7 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                     builder.setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
                         order = tag1;
                         orderBy.setText(strOrderBy + " " + order + "v");
-                        searchPresenter.searchUser( order, searchText);
+                        searchPresenter.searchUser(searchText);
                         dialog.dismiss();
                     });
                     break;
@@ -229,10 +229,10 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         }
     }
 
-    private void action(UserBeanOrderByName user, String tag) {
+    private void action(UserBeanPlus user, String tag) {
         if (tag.equals(strDetail)) {
             //TODO 查看详情
-            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user.getNo(), user.getName())));
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(UserFragment.newInstance(user)));
         }
     }
 
@@ -261,20 +261,21 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 mAdapter.setNewData(pushList);
                 break;
             case SEARCH_USER:
-                indexableLayout.removeHeaderAdapter(adapter1);
-                indexableLayout.removeHeaderAdapter(adapter2);
-                indexableLayout.removeHeaderAdapter(adapter3);
+                list = removeMySelf(list);
+                indexableLayout.addHeaderAdapter(adapter1);
+                indexableLayout.addHeaderAdapter(adapter2);
+                indexableLayout.addHeaderAdapter(adapter3);
                 if (order.equals(orderByName)) {
                     userAdapter.setDatas(list);
                 } else if (order.equals(orderByRole)) {
-                    List<List<UserBeanOrderByName>> lists = divideByRole(list);
+                    List<List<UserBeanPlus>> lists = divideByRole(list);
                     adapter1 = new SimpleHeaderAdapter<>(userAdapter, "G", "管理员", lists.get(0));
                     adapter2 = new SimpleHeaderAdapter<>(userAdapter, "S", "生产人员", lists.get(1));
                     adapter3 = new SimpleHeaderAdapter<>(userAdapter, "X", "销售人员", lists.get(2));
                     userAdapter.getItems().clear();
-                    indexableLayout.addHeaderAdapter(adapter1);
-                    indexableLayout.addHeaderAdapter(adapter2);
                     indexableLayout.addHeaderAdapter(adapter3);
+                    indexableLayout.addHeaderAdapter(adapter2);
+                    indexableLayout.addHeaderAdapter(adapter1);
                 }
                 userAdapter.notifyDataSetChanged();
                 break;

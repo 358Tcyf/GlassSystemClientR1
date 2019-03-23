@@ -22,7 +22,9 @@
             android:id="@+id/stepper_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:step_activated_color="@color/colorPrimaryDark"
             app:step_index="1"
+            app:step_normal_color="@color/colorPrimary"
             app:step_state="selected"
             app:step_title="@string/inputName">
 
@@ -70,7 +72,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/other_step_vertical_margin"
+            app:step_activated_color="@color/colorPrimaryDark"
             app:step_index="2"
+            app:step_normal_color="@color/colorPrimary"
             app:step_title="@string/createRole">
 
             <RelativeLayout
@@ -126,42 +130,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/other_step_vertical_margin"
+            app:step_activated_color="@color/colorPrimaryDark"
             app:step_index="3"
             app:step_is_last="true"
+            app:step_normal_color="@color/colorPrimary"
             app:step_title="@string/otherInfo">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/inputEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/inputEmailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/setp_3_edit_horizontal_margin"
-                    android:imeOptions="actionNext"
-                    app:met_iconLeft="@mipmap/icon_email_fill"
-                    app:met_iconPadding="0dp"
-                    app:met_singleLineEllipsis="true"
-                    app:met_underlineColor="?attr/colorPrimaryDark" />
+                    android:theme="@style/EditTextInputLayoutSelect"
+                    app:hintEnabled="false">
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/inputPhone"
+                    <EditText
+                        android:id="@+id/inputEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_email"
+                        android:drawablePadding="@dimen/input_drawable_padding"
+                        android:fontFamily="@font/calibri"
+                        android:hint="@string/inputEmail"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textSize="@dimen/input_text_size" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/inputPhoneLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/inputEmail"
-                    android:layout_alignEnd="@id/inputEmail"
-                    android:imeOptions="actionDone"
-                    app:met_iconLeft="@mipmap/icon_phone_fill"
-                    app:met_iconPadding="0dp"
-                    app:met_singleLineEllipsis="true"
-                    app:met_underlineColor="?attr/colorPrimaryDark" />
+                    android:layout_below="@id/inputEmailLayout"
+                    android:theme="@style/EditTextInputLayoutSelect"
+                    app:hintEnabled="false"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/inputPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_phone"
+                        android:drawablePadding="@dimen/input_drawable_padding"
+                        android:fontFamily="@font/calibri"
+                        android:hint="@string/inputPhone"
+                        android:inputType="phone"
+                        android:maxLines="1"
+                        android:textColor="@color/colorPrimary"
+                        android:textColorHint="@color/colorPrimary"
+                        android:textSize="@dimen/input_text_size" />
+                </android.support.design.widget.TextInputLayout>
+
 
                 <Button
                     android:id="@+id/button_next_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/inputPhone"
+                    android:layout_below="@id/inputPhoneLayout"
                     android:layout_marginTop="@dimen/setp_buttons_vertical_margin"
                     android:backgroundTint="?attr/colorPrimary"
                     android:text="@string/complete"

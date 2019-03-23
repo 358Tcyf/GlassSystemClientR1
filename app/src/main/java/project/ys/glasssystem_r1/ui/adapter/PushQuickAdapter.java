@@ -37,11 +37,11 @@ public class PushQuickAdapter extends BaseQuickAdapter<Push, BaseViewHolder> {
         helper.setText(R.id.push_month, stampToDate(String.valueOf(item.getCreateTime()), MM));
         helper.setText(R.id.push_date, "/" + stampToDate(String.valueOf(item.getCreateTime()), dd));
         helper.setText(R.id.pushDate, stampToStr(mContext, item.getCreateTime()));
-        QMUIRadiusImageView dateView = helper.getView(R.id.date_view);
+        QMUIRadiusImageView dateView = helper.getView(R.id.user_pic);
         if (item.isHaveRead()) {
             helper.setText(R.id.pushRead, "Have Read");
             helper.setTextColor(R.id.pushRead, mContext.getColor(R.color.pushRead));
-            helper.setImageResource(R.id.date_view, R.drawable.bg_date_view_read);
+            helper.setImageResource(R.id.user_pic, R.drawable.bg_date_view_read);
             helper.setTextColor(R.id.pushTitle, mContext.getColor(R.color.titleTextRead));
             helper.setTextColor(R.id.pushDate, mContext.getColor(R.color.timeTextRead));
             helper.setTextColor(R.id.push_month, mContext.getColor(R.color.dateTextRead));
@@ -49,7 +49,7 @@ public class PushQuickAdapter extends BaseQuickAdapter<Push, BaseViewHolder> {
         } else {
             helper.setText(R.id.pushRead, "Unread");
             helper.setTextColor(R.id.pushRead, mContext.getColor(R.color.pushUnread));
-            helper.setImageResource(R.id.date_view, R.drawable.bg_date_view_unread);
+            helper.setImageResource(R.id.user_pic, R.drawable.bg_date_view_unread);
             helper.setTextColor(R.id.pushTitle, mContext.getColor(R.color.titleTextUnread));
             helper.setTextColor(R.id.pushDate, mContext.getColor(R.color.timeTextUnread));
             helper.setTextColor(R.id.push_month, mContext.getColor(R.color.dateTextUnread));
