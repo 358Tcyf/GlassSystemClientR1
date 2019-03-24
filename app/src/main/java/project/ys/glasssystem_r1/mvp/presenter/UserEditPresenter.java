@@ -51,4 +51,19 @@ public class UserEditPresenter implements UserEditContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void updatePassword(String account, String oldPassword, String newPassword) {
+        userEditModel.updatePassword(account, oldPassword, newPassword, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+                userEditView.saveSuccess();
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                userEditView.showErrorMsg(errorMsg);
+            }
+        });
+    }
 }

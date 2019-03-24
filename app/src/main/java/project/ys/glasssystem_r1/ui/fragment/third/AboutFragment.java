@@ -30,13 +30,17 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
 import org.androidannotations.annotations.res.StringRes;
 
+import java.util.List;
+
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
+import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
+import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
 import project.ys.glasssystem_r1.mvp.presenter.UserDetailPresenter;
 import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
 import project.ys.glasssystem_r1.ui.fragment.third.child.PushSetFragment;
@@ -52,7 +56,7 @@ import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SupportFragment implements UserDetailContract.View {
+public class AboutFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
     @ViewById(R.id.user_card)
@@ -131,11 +135,13 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
     private UserDetailPresenter userDetailPresenter;
+    private PushSetPresenter pushSetPresenter;
     private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
         userDetailPresenter = new UserDetailPresenter(this);
+        pushSetPresenter = new PushSetPresenter(this, _mActivity);
         currentUser = CustomerApp.getInstance().getCurrentUser();
     }
 
@@ -148,6 +154,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         } else {
             initCard();
         }
+        initPushSet();
         initGroupListView();
     }
 
@@ -161,6 +168,10 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         mEmptyView.show(true);
         new Handler().postDelayed(() -> userDetailPresenter.getDetail(currentUser.getNo()), 1000);
 
+    }
+
+    private void initPushSet() {
+        pushSetPresenter.getSets(currentUser.getNo());
     }
 
 
@@ -395,4 +406,18 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         builder.show();
     }
 
+    @Override
+    public void showTagsChoices(List<Integer> checks) {
+
+    }
+
+    @Override
+    public void showErrorMsg(String errorMsg) {
+
+    }
+
+    @Override
+    public void showSuccess() {
+
+    }
 }

@@ -9,6 +9,9 @@
     <string name="noEmpty">工号为空</string>
     <string name="passwordEmpty">密码为空</string>
     <string name="forgetPassword">忘记密码</string>
+    <string name="old_password">输入原密码</string>
+    <string name="new_password">输入新密码</string>
+    <string name="check_password">确认密码</string>
     <string name="sub_tip">We pursue precise glass information</string>
 
     <!--主页面-->
@@ -110,7 +113,7 @@
     <string name="editPassword">修改密码</string>
     <string name="openCamera">打开相机</string>
     <string name="openGallery">打开相册</string>
-    <string name="uploadPic">打开相册</string>
+    <string name="uploadPic">上传相片</string>
 
     <!--主页-设置页-推送设置-->
     <string name="push_set">推送设置</string>

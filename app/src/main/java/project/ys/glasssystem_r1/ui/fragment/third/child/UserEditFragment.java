@@ -1,5 +1,6 @@
 package project.ys.glasssystem_r1.ui.fragment.third.child;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -45,6 +47,7 @@ import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.UserEditContract;
 import project.ys.glasssystem_r1.mvp.presenter.UserEditPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
+import project.ys.glasssystem_r1.ui.widget.customerdialog.EditPwdDialogBuilder;
 
 import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
@@ -121,7 +124,6 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
     private Bitmap bitmap;
     private QMUITipDialog loading;
 
-
     @AfterInject
     void afterInject() {
         Bundle args = getArguments();
@@ -156,8 +158,10 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
         saveBtn.setTextColor(topbarText);
         saveBtn.setOnClickListener(v -> {
             action(strSave);
+
         });
     }
+
 
     @UiThread
     void setUserPic() {
@@ -265,6 +269,12 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
             //TODO 修改手机
             showEditTextDialog(strPhone);
         }
+        if (tag.equals(editPassword)) {
+            //TODO 修改密码
+            InputMethodManager imm = (InputMethodManager) _mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            showEditPwdDialog();
+        }
         if (tag.equals(strSave)) {
             //TODO 保存
             loading = showLoadingDialog(getContext(), saving);
@@ -272,7 +282,7 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
             userEditPresenter.updateUser(currentUser.getNo(), currentUser.getEmail(), currentUser.getPhone());
         }
         if (tag.equals(uploadPic)) {
-            //TODO 打开相册
+            //TODO 上传相片
             loading = showLoadingDialog(getContext(), saving);
             loading.show();
             if (bitmap != null)
@@ -370,6 +380,22 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
                     }
                 })
                 .create().show();
+    }
+
+    public void showEditPwdDialog() {
+        EditPwdDialogBuilder editPwdBuilder = new EditPwdDialogBuilder(_mActivity);
+        editPwdBuilder.setTitle(editPassword)
+                .addAction(cancel, ((dialog, index) -> dialog.dismiss()))
+                .addAction(ok, ((dialog, index) -> {
+                    if (editPwdBuilder.validPassword()) {
+                        String oldPwd = editPwdBuilder.getOldPassword();
+                        String password = editPwdBuilder.getPassword();
+                        loading = showLoadingDialog(getContext(), saving);
+                        loading.show();
+                        userEditPresenter.updatePassword(currentUser.getNo(), oldPwd, password);
+                        dialog.dismiss();
+                    }
+                })).show();
     }
 
     @Override

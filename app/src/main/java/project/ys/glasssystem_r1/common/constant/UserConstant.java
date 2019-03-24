@@ -15,6 +15,7 @@ public class UserConstant {
     public static final int PHONE = 2;
 
     public static final String[] push_tags = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
+    public static final String[] push_time = new String[]{"每4小时一次", "每8小时一次", "每12小时一次", "每天一次"};
 
 
 }

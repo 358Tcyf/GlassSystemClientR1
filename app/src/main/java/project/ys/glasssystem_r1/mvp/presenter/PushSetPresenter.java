@@ -1,48 +1,48 @@
 package project.ys.glasssystem_r1.mvp.presenter;
 
-import com.alibaba.fastjson.JSON;
-import com.orhanobut.logger.Logger;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import project.ys.glasssystem_r1.CustomerApp;
+import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.model.PushSetModel;
 
-import static android.text.TextUtils.isEmpty;
-import static com.alibaba.fastjson.JSON.parseArray;
-
 public class PushSetPresenter implements PushSetContract.Presenter {
     private PushSetContract.View pushSetView;
     private PushSetModel pushSetModel;
+    private Context mContext;
 
     public PushSetPresenter(PushSetContract.View pushSetView) {
         this.pushSetView = pushSetView;
         pushSetModel = new PushSetModel();
     }
 
+    public PushSetPresenter(PushSetContract.View pushSetView, Context context) {
+        this.pushSetView = pushSetView;
+        this.mContext = context;
+        pushSetModel = new PushSetModel();
+    }
+
     final String[] items = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
 
+    @Override
     public void getTags(String no) {
-        Logger.d(no);
         pushSetModel.getTags(no, new OnHttpCallBack<RetResult>() {
             @Override
             public void onSuccess(RetResult retResult) {
-                if (isEmpty(retResult.getMsg())) {
-                    pushSetView.showTagsChoices(null);
-
-                } else {
-                    List<String> tags = parseArray(retResult.getMsg(), String.class);
-                    List<Integer> checks = new ArrayList<>();
-                    for (int i = 0; i < items.length; i++) {
-                        if (tags.contains(items[i])) {
-                            checks.add(i);
-                        }
+                List<String> tags = (List<String>) retResult.getData();
+                List<Integer> checks = new ArrayList<>();
+                for (int i = 0; i < items.length; i++) {
+                    if (tags.contains(items[i])) {
+                        checks.add(i);
                     }
-                    pushSetView.showTagsChoices(checks);
                 }
+                pushSetView.showTagsChoices(checks);
             }
 
             @Override
@@ -52,11 +52,42 @@ public class PushSetPresenter implements PushSetContract.Presenter {
         });
     }
 
+    @Override
     public void updateTags(String no, List<String> tags) {
         pushSetModel.updateTags(no, tags, new OnHttpCallBack<RetResult>() {
             @Override
             public void onSuccess(RetResult retResult) {
 
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                pushSetView.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void getSets(String no) {
+        pushSetModel.getSets(no, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+                CustomerApp.getInstance().setPushSet((PushSet) retResult.getData());
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                pushSetView.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void updateSets(String no, PushSet set) {
+        pushSetModel.updateSets(no, set, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+                pushSetView.showSuccess();
             }
 
             @Override

@@ -88,4 +88,36 @@ public class UserEditModel implements UserEditContract.Model {
                     }
                 });
     }
+
+    @Override
+    public void updatePassword(String account, String oldPassword, String newPassword, OnHttpCallBack<RetResult> callBack) {
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
+                .create(HttpContract.class)
+                .updatePassword(account, oldPassword, newPassword)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RetResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(RetResult retResult) {
+                        HttpFeedBackUtil.handleRetResult(retResult, callBack);
+                        if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HttpFeedBackUtil.handleException(e, callBack);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
 }

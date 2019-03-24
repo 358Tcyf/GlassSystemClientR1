@@ -12,6 +12,8 @@ public interface UserEditContract {
         void uploadPic(File file, String account, OnHttpCallBack<RetResult> callBack);
 
         void updateUser(String account, String email, String phone, OnHttpCallBack<RetResult> callBack);
+
+        void updatePassword(String account, String oldPassword, String newPassword, OnHttpCallBack<RetResult> callBack);
     }
 
     interface View {
@@ -24,5 +26,7 @@ public interface UserEditContract {
         void uploadPic(Bitmap bitmap, String account);
 
         void updateUser(String account, String email, String phone);
+
+        void updatePassword(String account, String oldPassword, String newPassword);
     }
 }

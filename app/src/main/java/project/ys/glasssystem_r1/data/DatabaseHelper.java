@@ -17,7 +17,6 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 
-import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
 
 public class DatabaseHelper {
@@ -55,7 +54,7 @@ public class DatabaseHelper {
 
     public void insertPush(Push push) {
         pushDao.insert(push);
-        Logger.d("新增成功");
+        Logger.d("新增了一条推送数据");
     }
 
     public ArrayList<Push> getAllPush() {

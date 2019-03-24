@@ -17,6 +17,7 @@ import es.dmoral.toasty.Toasty;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
+import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.entity.Push;
@@ -47,6 +48,7 @@ public class CustomerApp extends Application {
     private static CustomerApp _instance;
     private DatabaseHelper helper;
     private UserBeanPlus mUser;//当前用户
+    private PushSet mPushSet;//当前用户
 
     private void initFragmentation() {
         Fragmentation.builder()
@@ -128,6 +130,34 @@ public class CustomerApp extends Application {
         return mUser;
     }
 
+
+    /**
+     * 用户设置
+     */
+    public void setPushSet(@NonNull PushSet mPushSet) {
+        this.mPushSet = mPushSet;
+        MMKV set = MMKV.defaultMMKV();
+        set.encode("pushSwitch", mPushSet.isPushSwitch());
+        set.encode("time", mPushSet.getTime());
+        set.encode("alarmSwitch", mPushSet.isAlarmSwitch());
+    }
+
+
+    /**
+     * 获取当前设置
+     */
+    public PushSet getPushSet() {
+        if (mPushSet == null) {
+            MMKV set = MMKV.defaultMMKV();
+            Boolean pushSwitch = set.decodeBool("pushSwitch", true);
+            int time = set.decodeInt("time", 1);
+            Boolean alarmSwitch = set.decodeBool("alarmSwitch", false);
+            mPushSet = new PushSet(pushSwitch, time, alarmSwitch);
+        }
+        return mPushSet;
+    }
+
+
     /**
      * 退出当前用户
      */
@@ -137,6 +167,7 @@ public class CustomerApp extends Application {
         user.remove("userPassword");
         mUser = null;
     }
+
 
     public void sendMessage(String data) {
         Push push = JSON.parseObject(data, Push.class);
