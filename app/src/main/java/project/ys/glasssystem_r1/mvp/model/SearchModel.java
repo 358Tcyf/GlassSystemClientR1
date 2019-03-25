@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.data.entity.SearchRecord;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
@@ -80,5 +81,15 @@ public class SearchModel implements SearchContract.Model {
                     public void onComplete() {
                     }
                 });
+    }
+
+    @Override
+    public List<SearchRecord> getRecords() {
+        return helper.findRecentFive();
+    }
+
+    @Override
+    public void insertRecord(String searchText) {
+        helper.insertSearch(searchText);
     }
 }

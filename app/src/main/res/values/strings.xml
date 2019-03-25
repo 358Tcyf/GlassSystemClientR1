@@ -23,6 +23,8 @@
     <string name="detail">详情</string>
     <string name="edit">修改</string>
     <string name="delete">删除</string>
+    <string name="allSelect">全选</string>
+    <string name="manager">管理</string>
     <string name="log_off">注销</string>
     <string name="account">账号</string>
     <string name="search">搜索</string>
@@ -111,12 +113,16 @@
     <string name="saving">保存中</string>
     <string name="saveSuccess">保存成功</string>
     <string name="editPassword">修改密码</string>
+    <string name="isThisPhone">我是本机</string>
+    <string name="isntThisPhone">我不是本机</string>
     <string name="openCamera">打开相机</string>
     <string name="openGallery">打开相册</string>
+    <string name="sketchImage">查看大图</string>
     <string name="uploadPic">上传相片</string>
 
     <!--主页-设置页-推送设置-->
     <string name="push_set">推送设置</string>
+    <string name="date_set">日期设置</string>
     <string name="push_switch">接受数据推送</string>
     <string name="push_time">推送时间</string>
     <string name="push_tags">推送标签</string>

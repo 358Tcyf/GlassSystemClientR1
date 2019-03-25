@@ -67,7 +67,19 @@ public class SplashFragment extends SupportFragment {
         });
     }
 
+
     @Click(R.id.loginBtn)
+    public void loginBtn() {
+        MMKV user = MMKV.defaultMMKV();
+        String account = user.decodeString("userAccount");
+        String password = user.decodeString("userPassword");
+        if (isEmpty(account) | isEmpty(password))
+            toLogin();
+        else
+            toHome();
+    }
+
+
     public void toLogin() {
         Intent intent = new Intent(getContext(), LoginActivity_.class);
         startActivity(intent);

@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/topBar"
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/shadow_view"
         android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height"
-        android:fitsSystemWindows="true"
-        app:qmui_topbar_bg_color="?attr/colorPrimaryDark" />
+        android:layout_height="wrap_content"
+        app:shadowMarginBottom="5dp"
+        app:shadowRadius="5dp">
+
+        <com.qmuiteam.qmui.widget.QMUITopBarLayout
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/qmui_topbar_height"
+            android:fitsSystemWindows="true"
+            app:qmui_topbar_bg_color="?attr/colorPrimaryDark" />
+
+    </com.loopeer.shadow.ShadowView>
+
 
     <com.qmuiteam.qmui.widget.QMUIEmptyView
         android:id="@+id/emptyView"

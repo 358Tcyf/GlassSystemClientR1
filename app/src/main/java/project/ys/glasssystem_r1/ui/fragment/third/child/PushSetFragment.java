@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog;
+import com.applikeysolutions.cosmocalendar.dialog.OnDaysSelectionListener;
+import com.applikeysolutions.cosmocalendar.model.Day;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -22,7 +25,10 @@ import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
@@ -33,6 +39,7 @@ import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
 import static android.text.TextUtils.isEmpty;
+import static com.applikeysolutions.cosmocalendar.utils.SelectionType.RANGE;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.push_tags;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.push_time;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
@@ -64,6 +71,8 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     String saving;
     @StringRes(R.string.saveSuccess)
     String saveSuccess;
+    @StringRes(R.string.date_set)
+    String dateSet;
     @StringRes(R.string.push_switch)
     String pushSwitch;
     @StringRes(R.string.push_time)
@@ -120,6 +129,13 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
 
 
     private void initGroupList() {
+        QMUICommonListItemView dateSelectedItem = mGroupListView.createItemView(
+                null,
+                dateSet,
+                "",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        addNewSection("通用", "", dateSelectedItem);
 
         pushSwitchItem = mGroupListView.createItemView(
                 null,
@@ -177,6 +193,10 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
 
 
     private void action(String tag) {
+        if (tag.equals(dateSet)) {
+            //TODO 日期设置
+            showDateChoice();
+        }
         if (tag.equals(pushSwitch)) {
             //TODO 接受数据推送
             currentSet.setPushSwitch(!currentSet.isPushSwitch());
@@ -208,10 +228,45 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
 
     }
 
+    private void showDateChoice() {
+        CalendarDialog calendarDialog = new CalendarDialog(_mActivity, new OnDaysSelectionListener() {
+            @Override
+            public void onDaysSelected(List<Day> selectedDays) {
+                if (selectedDays != null) {
+                    if (selectedDays.size() > 0) {
+                        Date start = selectedDays.get(0).getCalendar().getTime();
+                        Date end = selectedDays.get(selectedDays.size() - 1).getCalendar().getTime();
+                        start.setHours(0);
+                        start.setMinutes(0);
+                        start.setSeconds(0);
+                        end.setHours(23);
+                        end.setMinutes(59);
+                        end.setSeconds(59);
+                        currentSet.setStart(start.getTime());
+                        currentSet.setEnd(end.getTime());
+                        CustomerApp.getInstance().setPushSet(currentSet);
+                        loading = showLoadingDialog(getContext(), saving);
+                        loading.show();
+                        pushSetPresenter.updateSets(currentUser.getNo(), currentSet);
+                    }
+                }
+
+            }
+        });
+        calendarDialog.show();
+        calendarDialog.setSelectionType(RANGE);
+        calendarDialog.setShowDaysOfWeek(true);
+        calendarDialog.setShowDaysOfWeekTitle(true);
+        Set<Long> longs = new HashSet<>();
+        for (long i = currentSet.getStart(); i < currentSet.getEnd(); i++)
+            longs.add(i);
+        calendarDialog.setConnectedCalendarDays(longs);
+    }
+
     private void showTimeChoice() {
         final int checkedIndex = 1;
         new QMUIDialog.CheckableDialogBuilder(_mActivity)
-                .setCheckedIndex(checkedIndex)
+                .setCheckedIndex(currentSet.getTime())
                 .addItems(push_time, (dialog, which) -> {
                     currentSet.setTime(which);
                     pushTimeItem.setDetailText(push_time[which]);

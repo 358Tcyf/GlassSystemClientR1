@@ -15,7 +15,9 @@ import java.util.List;
 import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
+import project.ys.glasssystem_r1.data.dao.SearchRecordDao;
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.data.entity.SearchRecord;
 
 import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
 
@@ -23,6 +25,7 @@ public class DatabaseHelper {
     private Context context;
     private MyDatabase giisDatabase;
     private PushDao pushDao;
+    private SearchRecordDao searchDao;
 
     public DatabaseHelper(Context context) {
         this.context = context;
@@ -46,11 +49,17 @@ public class DatabaseHelper {
                 .fallbackToDestructiveMigration()//迁移数据库如果发生错误，将会重新创建数据库，而不是发生崩溃
                 .build();
         pushDao = giisDatabase.pushDao();
+        searchDao = giisDatabase.searchDao();
     }
 
     public PushDao getPushDao() {
         return pushDao;
     }
+
+    public SearchRecordDao getSearchDao() {
+        return searchDao;
+    }
+
 
     public void insertPush(Push push) {
         pushDao.insert(push);
@@ -119,4 +128,24 @@ public class DatabaseHelper {
     public void deletePush(int id) {
         pushDao.delete(pushDao.findById(id));
     }
+
+    public void insertSearch(String record) {
+        long timeStamp = System.currentTimeMillis();
+        SearchRecord searchRecord = searchDao.getOne(record);
+        if (searchRecord == null) {
+            searchRecord = new SearchRecord();
+            searchRecord.setRecord(record);
+            searchRecord.setTime(timeStamp);
+            searchDao.insert(searchRecord);
+        } else {
+            searchRecord.setTime(timeStamp);
+            searchDao.update(searchRecord);
+        }
+    }
+
+    public List<SearchRecord> findRecentFive() {
+        List<SearchRecord> fiveRecord = searchDao.getFive();
+        return fiveRecord;
+    }
+
 }

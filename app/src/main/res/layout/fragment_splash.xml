@@ -14,6 +14,10 @@
         app:lottie_fileName="data-dashboard.json"
         app:lottie_loop="false" />
 
+
+
+
+
     <TextView
         android:id="@+id/loginBtn"
         android:layout_width="@dimen/splash_login_width"

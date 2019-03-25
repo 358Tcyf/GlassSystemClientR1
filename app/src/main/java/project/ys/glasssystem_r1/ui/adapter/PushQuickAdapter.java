@@ -11,34 +11,35 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import project.ys.glasssystem_r1.R;
-import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.data.bean.PushSelectedBean;
 
 import static project.ys.glasssystem_r1.util.utils.DateUtils.MM;
-import static project.ys.glasssystem_r1.util.utils.DateUtils.dataToStr;
 import static project.ys.glasssystem_r1.util.utils.DateUtils.dd;
 import static project.ys.glasssystem_r1.util.utils.DateUtils.stampToDate;
 import static project.ys.glasssystem_r1.util.utils.DateUtils.stampToStr;
 
 
-public class PushQuickAdapter extends BaseQuickAdapter<Push, BaseViewHolder> {
+public class PushQuickAdapter extends BaseQuickAdapter<PushSelectedBean, BaseViewHolder> {
 
     private Context mContext;
+    private boolean showSelected;
 
-    public PushQuickAdapter(Activity mActivity, ArrayList<Push> data) {
+    public PushQuickAdapter(Activity mActivity, ArrayList<PushSelectedBean> data) {
         super(R.layout.item_push_new, data);
+        this.showSelected = false;
         this.mContext = mActivity;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Push item) {
-        helper.setText(R.id.pushTitle, item.getTitle());
-        long longtime = item.getCreateTime();
+    protected void convert(BaseViewHolder helper, PushSelectedBean item) {
+        helper.setText(R.id.pushTitle, item.getPush().getTitle());
+        long longtime = item.getPush().getCreateTime();
         Date date = new Date(longtime);
-        helper.setText(R.id.push_month, stampToDate(String.valueOf(item.getCreateTime()), MM));
-        helper.setText(R.id.push_date, "/" + stampToDate(String.valueOf(item.getCreateTime()), dd));
-        helper.setText(R.id.pushDate, stampToStr(mContext, item.getCreateTime()));
+        helper.setText(R.id.push_month, stampToDate(String.valueOf(item.getPush().getCreateTime()), MM));
+        helper.setText(R.id.push_date, "/" + stampToDate(String.valueOf(item.getPush().getCreateTime()), dd));
+        helper.setText(R.id.pushDate, stampToStr(mContext, item.getPush().getCreateTime()));
         QMUIRadiusImageView dateView = helper.getView(R.id.user_pic);
-        if (item.isHaveRead()) {
+        if (item.getPush().isHaveRead()) {
             helper.setText(R.id.pushRead, "Have Read");
             helper.setTextColor(R.id.pushRead, mContext.getColor(R.color.pushRead));
             helper.setImageResource(R.id.user_pic, R.drawable.bg_date_view_read);
@@ -55,5 +56,17 @@ public class PushQuickAdapter extends BaseQuickAdapter<Push, BaseViewHolder> {
             helper.setTextColor(R.id.push_month, mContext.getColor(R.color.dateTextUnread));
             helper.setTextColor(R.id.push_date, mContext.getColor(R.color.dateTextUnread));
         }
+        helper.setEnabled(R.id.push_selected, false);
+        helper.setChecked(R.id.push_selected, item.isSelected());
+        if (showSelected) {
+            helper.setGone(R.id.push_selected, true);
+        } else {
+            helper.setGone(R.id.push_selected, false);
+        }
     }
+
+    public void toggleSelected() {
+        showSelected = !showSelected;
+    }
+
 }

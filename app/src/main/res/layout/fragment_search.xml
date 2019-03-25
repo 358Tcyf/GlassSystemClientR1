@@ -7,29 +7,66 @@
     <include layout="@layout/layout_topbar" />
 
 
-    <com.qmuiteam.qmui.widget.QMUIEmptyView
-        android:id="@+id/emptyView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/qmui_config_color_white"
-        android:fitsSystemWindows="true" />
+        android:layout_height="match_parent">
 
-    <include layout="@layout/head_push" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/recyclerView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:background="@color/qmui_config_color_white"-->
-    <!--android:fitsSystemWindows="true" />-->
-    <me.yokeyword.indexablerv.IndexableLayout
-        android:id="@+id/indexableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:indexBar_selectedTextColor="@color/colorPrimaryDark"
-        app:indexBar_textColor="@color/colorPrimaryText"
-        app:indexBar_textSize="14sp"
-        app:indexBar_textSpace="4dp" />
+            <com.qmuiteam.qmui.widget.QMUIEmptyView
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/qmui_config_color_white"
+                android:fitsSystemWindows="true" />
+
+            <include layout="@layout/head_order" />
+
+
+            <me.yokeyword.indexablerv.IndexableLayout
+                android:id="@+id/indexableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:indexBar_selectedTextColor="@color/colorPrimaryDark"
+                app:indexBar_textColor="@color/colorPrimaryText"
+                app:indexBar_textSize="14sp"
+                app:indexBar_textSpace="4dp" />
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recordList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+
+            android:layout_marginEnd="12dp"
+            android:background="@color/qmui_config_color_transparent"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/recordList"
+            android:layout_alignTop="@id/recordList"
+            android:layout_alignBottom="@id/recordList"
+            android:background="@color/qmui_config_color_black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/recordList"
+            android:layout_alignEnd="@id/recordList"
+            android:layout_alignBottom="@id/recordList"
+            android:background="@color/qmui_config_color_black" />
+
+         </RelativeLayout>
+
+
 </LinearLayout>
 
 

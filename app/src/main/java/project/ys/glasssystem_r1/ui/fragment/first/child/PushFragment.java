@@ -8,12 +8,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -33,6 +36,7 @@ import project.ys.glasssystem_r1.common.event.FirstTabMenuEvent;
 import project.ys.glasssystem_r1.common.event.FirstTabSelectedEvent;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
+import project.ys.glasssystem_r1.data.bean.PushSelectedBean;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
 import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
@@ -53,6 +57,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
     TextView orderBy;
+    RelativeLayout selectBar;
+    RadioButton allSelectRadio;
+    QMUIRoundButton allSelectBtn;
+    QMUIRoundButton deleteSelectBtn;
+    QMUIRoundButton cancelSelectBtn;
+
     @ViewById(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @ViewById(R.id.swipeRefresh)
@@ -78,6 +88,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     String sortByDate;
     @StringRes(R.string.sort_by_read)
     String sortByRead;
+    @StringRes(R.string.manager)
+    String strManager;
     @StringRes(R.string.delete)
     String strDelete;
     @StringRes(R.string.push)
@@ -108,7 +120,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     private PushPresenter pushPresenter;
     private ArrayList<Push> mList = new ArrayList<>();
-    private BaseQuickAdapter mAdapter;
+    private ArrayList<PushSelectedBean> selects = new ArrayList<>();
+    private PushQuickAdapter mAdapter;
     private boolean mInAtTop = true;
     private boolean mInAtBottom = false;
 
@@ -129,7 +142,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @SuppressLint("SetTextI18n")
     private void initAdapter() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mAdapter = new PushQuickAdapter(_mActivity, mList);
+        mAdapter = new PushQuickAdapter(_mActivity, selects);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -143,7 +156,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             }
         });
         LayoutInflater inflater = LayoutInflater.from(_mActivity);
-        orderBy = (TextView) inflater.inflate(R.layout.head_push, null);
+        orderBy = (TextView) inflater.inflate(R.layout.head_order, null);
         orderBy.setText(strOrderBy + " " + sortByDate + "v");
         orderBy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,14 +165,25 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             }
         });
         mAdapter.setHeaderView(orderBy);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            action(position, strDetail);
-        });
+
+
+        selectBar = (RelativeLayout) inflater.inflate(R.layout.head_push, null);
+        allSelectRadio = selectBar.findViewById(R.id.all_select_radio);
+        allSelectRadio.setEnabled(false);
+        allSelectBtn = selectBar.findViewById(R.id.all_select_btn);
+        deleteSelectBtn = selectBar.findViewById(R.id.delete_btn);
+        cancelSelectBtn = selectBar.findViewById(R.id.cancel_btn);
+
+        allSelectBtn.setOnClickListener(clickListener);
+        deleteSelectBtn.setOnClickListener(clickListener);
+        cancelSelectBtn.setOnClickListener(clickListener);
+
         mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             int i = position;
             new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                     .addItem(R.drawable.ic_push_details, strDetail, strDetail)
                     .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
+                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
                     .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
                         dialog.dismiss();
                         action(i, tag);
@@ -168,7 +192,96 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                     .show();
             return false;
         });
+        mAdapter.setOnItemClickListener(normalItemChildClickListener);
+        mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
     }
+
+
+    View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.all_select_btn:
+                    //TODO 全选
+                    allSelectRadio.setChecked(!allSelectRadio.isChecked());
+                    if (allSelectRadio.isChecked()) {
+                        for (PushSelectedBean select : selects) {
+                            select.setSelected(true);
+                        }
+                    } else {
+                        for (PushSelectedBean select : selects) {
+                            select.setSelected(false);
+                        }
+                    }
+                    mAdapter.setNewData(selects);
+                    break;
+                case R.id.delete_btn:
+                    //TODO 删除
+                    for (PushSelectedBean select : selects) {
+                        if (select.isSelected()) {
+                            pushPresenter.deleteOne(select.getPush().getId());
+                        }
+                    }
+                    mAdapter.toggleSelected();
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.removeAllHeaderView();
+                    mAdapter.setOnItemClickListener(normalItemChildClickListener);
+                    mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
+                    mAdapter.setHeaderView(orderBy);
+                    break;
+                case R.id.cancel_btn:
+                    //TODO 取消
+                    mAdapter.toggleSelected();
+                    mAdapter.notifyDataSetChanged();
+                    mAdapter.removeAllHeaderView();
+                    mAdapter.setOnItemClickListener(normalItemChildClickListener);
+                    mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
+                    mAdapter.setHeaderView(orderBy);
+                    break;
+            }
+        }
+    };
+
+    BaseQuickAdapter.OnItemClickListener normalItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            action(position, strDetail);
+
+        }
+    };
+    BaseQuickAdapter.OnItemLongClickListener normalItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+            int i = position;
+            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
+                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
+                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
+                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
+                        dialog.dismiss();
+                        action(i, tag);
+                    })
+                    .build()
+                    .show();
+            return false;
+        }
+    };
+    BaseQuickAdapter.OnItemClickListener selectedItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            //TODO 单选
+            selects.get(position).setSelected(!selects.get(position).isSelected());
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+    BaseQuickAdapter.OnItemLongClickListener selectedItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+
+            return false;
+        }
+    };
+
 
     private void initRefreshLayout() {
         mSwipeRefreshLayout.setColorSchemeColors(QMUIResHelper
@@ -219,7 +332,19 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             QMUIBottomSheet sheet = builder.build();
             sheet.show();
         }
-
+        if (tag.equals(strManager)) {
+            //TODO 管理列表
+            selects.clear();
+            for (Push push : mList) {
+                selects.add(new PushSelectedBean(false, push));
+            }
+            mAdapter.toggleSelected();
+            mAdapter.removeAllHeaderView();
+            mAdapter.setHeaderView(selectBar);
+            mAdapter.setOnItemClickListener(selectedItemChildClickListener);
+            mAdapter.setOnItemLongClickListener(selectedItemLongClickListener);
+            mAdapter.notifyDataSetChanged();
+        }
         if (tag.equals(strRefresh)) {
             //TODO 重新加载
             refreshView();
@@ -239,7 +364,11 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @UiThread
     void setList() {
-        mAdapter.setNewData(mList);
+        selects.clear();
+        for (Push push : mList) {
+            selects.add(new PushSelectedBean(false, push));
+        }
+        mAdapter.setNewData(selects);
     }
 
     @Override

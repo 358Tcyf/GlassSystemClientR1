@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,11 +32,14 @@ import me.yokeyword.indexablerv.SimpleHeaderAdapter;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
+import project.ys.glasssystem_r1.data.bean.PushSelectedBean;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.data.entity.SearchRecord;
 import project.ys.glasssystem_r1.mvp.contract.SearchContract;
 import project.ys.glasssystem_r1.mvp.presenter.SearchPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
+import project.ys.glasssystem_r1.ui.adapter.SearchRecordQuickAdapter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
@@ -69,7 +73,8 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
 
     @ViewById(R.id.order_by)
     TextView orderBy;
-
+    @ViewById(R.id.recordList)
+    RecyclerView recordList;
     RecyclerView mRecyclerView;
     @ViewById(R.id.indexableLayout)
     IndexableLayout indexableLayout;
@@ -97,12 +102,15 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
     private int searchClass;
     private SearchPresenter searchPresenter;
     private BaseQuickAdapter mAdapter;
+    private BaseQuickAdapter mAdapter2;
     private UserPinyinAdapter userAdapter;
     private SimpleHeaderAdapter adapter1;
     private SimpleHeaderAdapter adapter2;
     private SimpleHeaderAdapter adapter3;
 
     private ArrayList<Push> pushList = new ArrayList<>();
+    private ArrayList<PushSelectedBean> pushSelectedList = new ArrayList<>();
+    private ArrayList<SearchRecord> records = new ArrayList<>();
     private String searchText;
     private String order;
 
@@ -117,8 +125,17 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         initTopBar();
         initAdapter();
         mEmptyView.show(noData, "");
+        searchBar.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    searchPresenter.getRecord();
+                } else {
+                    recordList.setVisibility(View.GONE);
+                }
+            }
+        });
     }
-
 
     private void initTopBar() {
         mEmptyView.hide();
@@ -147,13 +164,12 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         orderBy.setOnClickListener(v -> action(strSort));
     }
 
-
     private void initAdapter() {
         mRecyclerView = indexableLayout.getRecyclerView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         switch (searchClass) {
             case SEARCH_PUSH:
-                mAdapter = new PushQuickAdapter(_mActivity, pushList);
+                mAdapter = new PushQuickAdapter(_mActivity, pushSelectedList);
                 mAdapter.setOnItemClickListener((adapter, view, position) -> action(position, strDetail));
                 mRecyclerView.setAdapter(mAdapter);
                 break;
@@ -168,11 +184,16 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 });
                 break;
         }
-
+        recordList.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mAdapter2 = new SearchRecordQuickAdapter(_mActivity, records);
+        recordList.setAdapter(mAdapter2);
+        mAdapter2.setOnItemClickListener((adapter, view, position) ->
+                searchBar.setQuery(records.get(position).getRecord(), false));
     }
 
     private void searchText() {
         initOrderBar();
+        searchBar.clearFocus();
         switch (searchClass) {
             case SEARCH_PUSH:
                 searchPresenter.searchPush(order, searchText);
@@ -181,7 +202,7 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 searchPresenter.searchUser(searchText);
                 break;
         }
-
+        searchPresenter.insertRecord(searchText);
     }
 
     private void action(String tag) {
@@ -240,7 +261,6 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         searchPresenter.setRead(push);
     }
 
-
     @Override
     public void showNoData() {
         mEmptyView.show(noData, "查不到结果");
@@ -251,14 +271,16 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         mEmptyView.show(refreshFail, errorMsg);
     }
 
-
     @Override
     public void setList(ArrayList list) {
         mEmptyView.hide();
         switch (searchClass) {
             case SEARCH_PUSH:
                 this.pushList = list;
-                mAdapter.setNewData(pushList);
+                for (Push push : pushList) {
+                    pushSelectedList.add(new PushSelectedBean(false, push));
+                }
+                mAdapter.setNewData(pushSelectedList);
                 break;
             case SEARCH_USER:
                 list = removeMySelf(list);
@@ -283,6 +305,12 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
 
     }
 
+    @Override
+    public void showSearchRecord(ArrayList list) {
+        recordList.setVisibility(View.VISIBLE);
+        records = list;
+        mAdapter2.setNewData(records);
+    }
 
     private void initOrderBar() {
         switch (searchClass) {

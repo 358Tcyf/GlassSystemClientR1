@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
 import com.igexin.sdk.PushManager;
+import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.mmkv.MMKV;
@@ -39,6 +40,7 @@ public class CustomerApp extends Application {
         initLogger();
         initDatabases();
         initGetuiPush();
+        initMob();
     }
 
 
@@ -84,6 +86,9 @@ public class CustomerApp extends Application {
 //        Logger.d(cid);
     }
 
+    private void initMob() {
+        MobSDK.init(this);
+    }
 
     private void initDatabases() {
         helper = new DatabaseHelper(this);
@@ -140,6 +145,8 @@ public class CustomerApp extends Application {
         set.encode("pushSwitch", mPushSet.isPushSwitch());
         set.encode("time", mPushSet.getTime());
         set.encode("alarmSwitch", mPushSet.isAlarmSwitch());
+        set.encode("start", mPushSet.getStart());
+        set.encode("end", mPushSet.getEnd());
     }
 
 
@@ -152,7 +159,9 @@ public class CustomerApp extends Application {
             Boolean pushSwitch = set.decodeBool("pushSwitch", true);
             int time = set.decodeInt("time", 1);
             Boolean alarmSwitch = set.decodeBool("alarmSwitch", false);
-            mPushSet = new PushSet(pushSwitch, time, alarmSwitch);
+            long start = set.decodeLong("start", 0);
+            long end = set.decodeLong("end", 0);
+            mPushSet = new PushSet(pushSwitch, time, alarmSwitch, start, end);
         }
         return mPushSet;
     }

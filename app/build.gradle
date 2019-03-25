@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.mob.sdk'
+//apply plugin: 'fastdex.app'
 
 android {
     compileSdkVersion 28
@@ -24,6 +26,12 @@ android {
                 GETUI_APP_KEY   : "NM18kjwn8T7jpBEMMwpMN1",
                 GETUI_APP_SECRET: "HCXGihYtZP71nENYoa5RO1"
         ]
+        MobSDK {
+            appKey "23b1f3be6f130"
+            appSecret "c34ccb155fedfe2471f0142f7b02150b"
+            MobVerify {}
+            SMSSDK {}
+        }
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86_64"
         }
@@ -154,4 +162,19 @@ dependencies {
     /*使用Glide加载图片*/
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    /*起止时间选择器*/
+    implementation 'com.github.applikeysolutions:cosmocalendar:1.0.0'
+
+    /*为控件添加阴影PLUS*/
+    implementation 'com.loopeer.lib:shadow:0.0.4-beta3'
+
+    /*自动寻找Stack Overflow的回答*/
+    debugImplementation 'com.github.BolexLiu.AutoEx:AutoEx-Lib:v1.0.8'
+    releaseImplementation 'com.github.BolexLiu.AutoEx:AutoEx-Lib-No-Op:v1.0.8' //release为空实现
+
+    /*一个强大且全面的图片加载器*/
+    implementation "me.panpf:sketch:$sketch_version"
+
+
 }

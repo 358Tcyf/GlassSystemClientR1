@@ -8,6 +8,7 @@ import java.util.Map;
 
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.data.entity.SearchRecord;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.mvp.contract.SearchContract;
@@ -72,6 +73,19 @@ public class SearchPresenter implements SearchContract.Presenter {
                 searchView.showErrorMsg(errorMsg);
             }
         });
+    }
+
+    @Override
+    public void getRecord() {
+        List<SearchRecord> list = searchModel.getRecords();
+        if (list.size() > 0) {
+            searchView.showSearchRecord((ArrayList) list);
+        }
+    }
+
+    @Override
+    public void insertRecord(String searchText) {
+        searchModel.insertRecord(searchText);
     }
 
 }

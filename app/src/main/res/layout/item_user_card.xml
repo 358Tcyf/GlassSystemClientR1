@@ -4,6 +4,7 @@
     android:id="@+id/user_card"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:foreground="?attr/selectableItemBackground"
     android:layout_margin="10dp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/qmui_config_color_white"

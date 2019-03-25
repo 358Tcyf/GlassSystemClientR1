@@ -34,9 +34,10 @@ public class PushPresenter implements PushContract.Presenter {
             pushView.setList((ArrayList) pushList);
         }
     }
+
     @Override
-    public void sortList(String account,String tag) {
-        List<Push> pushList = pushModel.sortPushList("",tag);
+    public void sortList(String account, String tag) {
+        List<Push> pushList = pushModel.sortPushList("", tag);
         if (pushList.size() == 0) {
             pushView.refreshFail();
         } else {
@@ -48,6 +49,7 @@ public class PushPresenter implements PushContract.Presenter {
     public void setRead(Push push) {
         pushModel.setRead(push);
     }
+
 
     @Override
     public void deleteOne(int id) {

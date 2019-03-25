@@ -13,6 +13,7 @@ buildscript {
     ext.rxjava_version = "2.2.7"
     ext.notify_version = "1.0.0"
     ext.android_support_version = "28.0.0"
+    ext.sketch_version = "2.7.0"
 
     repositories {
         mavenCentral()
@@ -23,7 +24,10 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.0'
         classpath "com.jakewharton:butterknife-gradle-plugin:$butterknife_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        // 注册MobSDK
+        classpath "com.mob.sdk:MobSDK:2018.0319.1724"
+        //快速编译
+        //classpath 'com.github.typ0520:fastdex-gradle:0.8.6'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
