@@ -1,5 +1,6 @@
 package project.ys.glasssystem_r1.data;
 
+import android.app.Application;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
@@ -13,13 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.BuildConfig;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.dao.SearchRecordDao;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.data.entity.SearchRecord;
 
-import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
+import static project.ys.glasssystem_r1.util.utils.NotificationUtils.showNotification;
 
 public class DatabaseHelper {
     private Context context;
@@ -96,14 +98,17 @@ public class DatabaseHelper {
     }
 
 
-    public static void showDebugDBAddressLogToast(Context context) {
+    public static void showDebugDBAddressLogToast(CustomerApp app) {
         if (BuildConfig.DEBUG) {
             try {
                 Class<?> debugDB = Class.forName("com.amitshekhar.DebugDB");
                 Method getAddressLog = debugDB.getMethod("getAddressLog");
                 Object value = getAddressLog.invoke(null);
-                if (!value.equals("not available"))
-                    notifyDefault(context, "DebugDB", (String) value);
+                if (!value.equals("not available")) {
+                    showNotification(app, "调试提醒","查看本地数据库", (String) value);
+//                    notifyDefault(app, "DebugDB", (String) value);
+
+                }
             } catch (Exception ignore) {
 
             }

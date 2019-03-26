@@ -29,6 +29,7 @@ import java.util.List;
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.MenuSelectedEvent;
+import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.Push;
@@ -175,6 +176,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
         builder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
             EventBusActivityScope.getDefault(_mActivity).post(new SubMenuSelectedEvent(charts.get(position)));
             chartPresenter.setDefault(content, subMenus.get(position));
+            EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent());
             dialog.dismiss();
         });
         QMUIBottomSheet sheet = builder.build();

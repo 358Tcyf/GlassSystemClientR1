@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/tagSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:ms_background_color="@color/colorText_Icon"
+        app:ms_hint_color="@color/tabBackground"
+        app:ms_text_color="@color/colorPrimaryText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/min_value_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/min_value_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/qmui_edittext_bg_border_bottom"
+                android:focusableInTouchMode="true"
+                android:gravity="start|center_vertical"
+                android:hint="@string/min_value"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:paddingStart="1dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="1dp"
+                android:paddingBottom="5dp"
+                android:textColor="?attr/qmui_config_color_black"
+                android:textColorHint="?attr/qmui_config_color_gray_3"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="——" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/max_value_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:hintEnabled="false">
+
+            <EditText
+                android:id="@+id/max_value_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/qmui_edittext_bg_border_bottom"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="start|center_vertical"
+                android:hint="@string/max_value"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:paddingStart="1dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="1dp"
+                android:paddingBottom="5dp"
+                android:textColor="?attr/qmui_config_color_black"
+                android:textColorHint="?attr/qmui_config_color_gray_3"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

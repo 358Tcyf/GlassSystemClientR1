@@ -6,6 +6,14 @@
         <item>@string/saleSection</item>
     </string-array>
 
+
+    <string-array name="alarmTags">
+        <item>@string/fail_rate</item>
+        <item>@string/elec_consu</item>
+        <item>@string/wtr_consu</item>
+        <item>@string/coal_consu</item>
+    </string-array>
+
     <string-array name="pushTabs">
         <item>@string/push_tab1</item>
         <item>@string/push_tab2</item>

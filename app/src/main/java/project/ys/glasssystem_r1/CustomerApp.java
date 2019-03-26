@@ -13,10 +13,12 @@ import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
+import org.greenrobot.eventbus.EventBus;
 
 import es.dmoral.toasty.Toasty;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
+import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
@@ -142,6 +144,10 @@ public class CustomerApp extends Application {
     public void setPushSet(@NonNull PushSet mPushSet) {
         this.mPushSet = mPushSet;
         MMKV set = MMKV.defaultMMKV();
+        set.encode("commonSwitch", mPushSet.isPushSwitch());
+        set.encode("sound", mPushSet.isSound());
+        set.encode("vibrate", mPushSet.isVibrate());
+        set.encode("flags", mPushSet.isFlags());
         set.encode("pushSwitch", mPushSet.isPushSwitch());
         set.encode("time", mPushSet.getTime());
         set.encode("alarmSwitch", mPushSet.isAlarmSwitch());
@@ -161,7 +167,11 @@ public class CustomerApp extends Application {
             Boolean alarmSwitch = set.decodeBool("alarmSwitch", false);
             long start = set.decodeLong("start", 0);
             long end = set.decodeLong("end", 0);
-            mPushSet = new PushSet(pushSwitch, time, alarmSwitch, start, end);
+            Boolean commonSwitch = set.decodeBool("commonSwitch", true);
+            Boolean sound = set.decodeBool("sound", true);
+            Boolean vibrate = set.decodeBool("vibrate", true);
+            Boolean flags = set.decodeBool("flags", true);
+            mPushSet = new PushSet(commonSwitch, sound, vibrate, flags, pushSwitch, time, alarmSwitch, start, end);
         }
         return mPushSet;
     }
@@ -180,8 +190,9 @@ public class CustomerApp extends Application {
 
     public void sendMessage(String data) {
         Push push = JSON.parseObject(data, Push.class);
-        Logger.d(push.toString());
+        push.setCreateTime(push.getCreateTime() + 60 * 1000);
         helper.insertPush(push);
+        EventBus.getDefault().post(new RefreshListEvent());
         notifyDefault(this, "数据推送", push.getTitle());
     }
 

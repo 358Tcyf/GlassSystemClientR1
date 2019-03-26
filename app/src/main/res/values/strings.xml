@@ -121,10 +121,24 @@
     <string name="uploadPic">上传相片</string>
 
     <!--主页-设置页-推送设置-->
+    <string name="switch_set">接受通知</string>
+    <string name="sound">声音</string>
+    <string name="vibrate">震动</string>
+    <string name="flags">指示灯</string>
     <string name="push_set">推送设置</string>
     <string name="date_set">日期设置</string>
     <string name="push_switch">接受数据推送</string>
     <string name="push_time">推送时间</string>
     <string name="push_tags">推送标签</string>
     <string name="alarm_switch">接受数据预警</string>
+    <string name="add_alarm_tag">添加标签</string>
+    <string name="min_value">最小值</string>
+    <string name="max_value">最大值</string>
+
+    <string name="fail_rate">残片率/%</string>
+    <string name="elec_consu">电消耗/kw·h</string>
+    <string name="wtr_consu">水消耗/吨</string>
+    <string name="coal_consu">煤消耗/吨</string>
+
+
 </resources>

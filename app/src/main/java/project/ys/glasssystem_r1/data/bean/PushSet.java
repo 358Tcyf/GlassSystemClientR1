@@ -10,6 +10,14 @@ public class PushSet {
     }
 
     public PushSet(boolean pushSwitch, int time, boolean alarmSwitch, long start, long end) {
+        this(true,true,true,true,pushSwitch,time, alarmSwitch,start,end);
+    }
+
+    public PushSet(boolean commonSwitch, boolean sound, boolean vibrate, boolean flags, boolean pushSwitch, int time, boolean alarmSwitch, long start, long end) {
+        this.commonSwitch = commonSwitch;
+        this.sound = sound;
+        this.vibrate = vibrate;
+        this.flags = flags;
         this.pushSwitch = pushSwitch;
         this.time = time;
         this.alarmSwitch = alarmSwitch;
@@ -17,18 +25,55 @@ public class PushSet {
         this.end = end;
     }
 
-    private boolean pushSwitch;
+    private boolean commonSwitch;
 
+    private boolean sound;
+
+    private boolean vibrate;
+
+    private boolean flags;
+
+    private boolean pushSwitch;
 
     private int time;
 
     private boolean alarmSwitch;
 
-
     private long start;
 
     private long end;
 
+    public boolean isCommonSwitch() {
+        return commonSwitch;
+    }
+
+    public void setCommonSwitch(boolean commonSwitch) {
+        this.commonSwitch = commonSwitch;
+    }
+
+    public boolean isSound() {
+        return sound;
+    }
+
+    public void setSound(boolean sound) {
+        this.sound = sound;
+    }
+
+    public boolean isVibrate() {
+        return vibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        this.vibrate = vibrate;
+    }
+
+    public boolean isFlags() {
+        return flags;
+    }
+
+    public void setFlags(boolean flags) {
+        this.flags = flags;
+    }
 
     public boolean isPushSwitch() {
         return pushSwitch;
@@ -62,16 +107,6 @@ public class PushSet {
         this.start = start;
     }
 
-    @Override
-    public String toString() {
-        return "PushSet{" +
-                "pushSwitch=" + pushSwitch +
-                ", time=" + time +
-                ", alarmSwitch=" + alarmSwitch +
-                ", start=" + start +
-                ", end=" + end +
-                '}';
-    }
 
     public long getEnd() {
         return end;

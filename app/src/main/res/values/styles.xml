@@ -26,7 +26,7 @@
 
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:background">@drawable/bg_empty</item>
+        <item name="android:background">@mipmap/bg_empty</item>
     </style>
 
     <style name="EditTextInputLayoutUnselect" parent="Theme.AppCompat.Light.NoActionBar">

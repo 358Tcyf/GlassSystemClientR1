@@ -41,8 +41,8 @@
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelText="@string/name"
                     app:met_floatingLabelTextColor="?attr/colorPrimaryDark"
+                    app:met_singleLineEllipsis="true"
                     app:met_underlineColor="?attr/colorPrimaryDark" />
-
 
                 <Button
                     android:id="@+id/button_next_0"
