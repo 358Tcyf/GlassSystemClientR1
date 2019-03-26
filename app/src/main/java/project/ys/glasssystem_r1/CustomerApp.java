@@ -27,6 +27,7 @@ import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.service.getui.MyIntentService;
 import project.ys.glasssystem_r1.service.getui.MyPushService;
 
+import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.data.DatabaseHelper.showDebugDBAddressLogToast;
 import static project.ys.glasssystem_r1.util.utils.NotifyUtilsKt.notifyDefault;
 
@@ -88,6 +89,12 @@ public class CustomerApp extends Application {
 //        Logger.d(cid);
     }
 
+    public void setGetuiAlias() {
+        if (mUser.getNo() != null && !isEmpty(mUser.getNo())) {
+            PushManager.getInstance().bindAlias(this, mUser.getNo());
+        }
+    }
+
     private void initMob() {
         MobSDK.init(this);
     }
@@ -119,6 +126,7 @@ public class CustomerApp extends Application {
         MMKV user = MMKV.defaultMMKV();
         user.encode("userAccount", mUser.getNo());
         user.encode("userPassword", mUser.getPassword());
+        setGetuiAlias();
     }
 
 
@@ -133,6 +141,7 @@ public class CustomerApp extends Application {
             String account = user.decodeString("userAccount");
             String password = user.decodeString("userPassword");
             mUser = new UserBeanPlus(account, password);
+            setGetuiAlias();
         }
         return mUser;
     }

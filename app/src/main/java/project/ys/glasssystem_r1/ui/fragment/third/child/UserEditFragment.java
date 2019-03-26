@@ -191,7 +191,7 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
     void setUserPic() {
         if (!isEmpty(currentUser.getPicPath())) {
             Glide.with(this)
-                    .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime()))
+                    .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getNo() + "/" + getNowTime()))
                     .apply(new RequestOptions().error(R.mipmap.ic_account_circle))
                     .into(userPic);
         }
@@ -331,7 +331,7 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
         }
         if (tag.equals(sketchImage)) {
             //TODO 查看大图
-            start(SketchImageFragment.newInstance());
+            start(SketchImageFragment.newInstance("/file/"+currentUser.getNo()));
         }
     }
 

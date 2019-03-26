@@ -273,6 +273,9 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     public void toHomeActivity() {
         account = inputAccount.getText().toString();
         password = inputPassword.getText().toString();
+//        MMKV user = MMKV.defaultMMKV();
+//        user.encode("userAccount", account);
+//        user.encode("userPassword", password);
         CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(account, password));
         Intent intent = new Intent(getContext(), HomeActivity_.class);
         startActivity(intent);
@@ -280,9 +283,6 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     }
 
     public void toHomeFragment() {
-        MMKV user = MMKV.defaultMMKV();
-        user.encode("userAccount", inputAccount.getText().toString());
-        user.encode("userPassword", inputPassword.getText().toString());
         CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(inputAccount.getText().toString(), inputPassword.getText().toString()));
         _mActivity.setTheme(R.style.AppTheme);
         startWithPop(HomeFragment.newInstance());

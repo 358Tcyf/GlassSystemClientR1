@@ -82,4 +82,16 @@ public class UserBeanPlus extends UserBean implements IndexableEntity, Parcelabl
         dest.writeString(roleName);
         dest.writeString(picPath);
     }
+
+    @Override
+    public String toString() {
+        return "UserBeanPlus{" +
+                "roleName='" + roleName + '\'' +
+                ", picPath='" + picPath + '\'' +
+                ", no='" + no + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

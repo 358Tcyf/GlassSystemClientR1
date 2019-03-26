@@ -59,4 +59,15 @@ public class UserBean {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "no='" + no + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

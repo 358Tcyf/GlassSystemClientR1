@@ -5,6 +5,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.data.bean.UserBean;
 import retrofit2.http.Body;
@@ -15,12 +16,14 @@ import retrofit2.http.Query;
 
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.ADD_USER;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.FILE;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_ALARM_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_SETS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LATEST_NO;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LOGIN;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.RESET_PASSWORD;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.SET;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_ALARM_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_PASSWORD;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_USER;
@@ -88,4 +91,14 @@ public interface HttpContract {
     @Multipart
     Observable<RetResult> upload(@Part MultipartBody.Part file,
                                  @Query("account") String account);
+
+
+    @POST(SET + GET_ALARM_TAGS)
+    Observable<RetResult> getAlarmTags(@Query("account") String account);
+
+
+    @POST(SET + UPDATE_ALARM_TAGS)
+    Observable<RetResult> uploadAlarmTags(@Query("account") String account,
+                                          @Body List<AlarmTag> alarmTags);
+
 }

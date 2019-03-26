@@ -15,7 +15,11 @@ import me.panpf.sketch.SketchImageView;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_PIC_PATH;
+import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
 
 @EFragment
 public class SketchImageFragment extends BaseBackFragment {
@@ -56,7 +60,7 @@ public class SketchImageFragment extends BaseBackFragment {
         sketchImageView.getOptions()
                 .setErrorImage(R.mipmap.ic_account_circle)
                 .setLoadingImage(R.mipmap.ic_account_circle);
-        sketchImageView.displayImage("http://t.cn/RShdS1f");
+        sketchImageView.displayImage("http://47.102.41.26:9898/file/P0001");
 //        sketchImageView.displayImage(HTTP + getURL() + PORT + picPath + "/" + getNowTime());
     }
 }

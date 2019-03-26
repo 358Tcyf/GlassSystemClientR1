@@ -22,6 +22,8 @@ public class HttpConstant {
     public static final String UPLOAD_SETS = "/uploadSet";
     public static final String GET_TAGS = "/getTags";
     public static final String UPDATE_TAGS = "/updateTags";
+    public static final String GET_ALARM_TAGS = "/getAlarmTags";
+    public static final String UPDATE_ALARM_TAGS = "/updateAlarmTags";
 
     public static final String FILE = "/file";
     public static final String UPLOAD = "/upload";

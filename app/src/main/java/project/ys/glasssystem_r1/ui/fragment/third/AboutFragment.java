@@ -37,6 +37,7 @@ import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
+import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
@@ -408,6 +409,11 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
 
     @Override
     public void showTagsChoices(List<Integer> checks) {
+
+    }
+
+    @Override
+    public void setAlarmTags(List<AlarmTag> alarmTags) {
 
     }
 

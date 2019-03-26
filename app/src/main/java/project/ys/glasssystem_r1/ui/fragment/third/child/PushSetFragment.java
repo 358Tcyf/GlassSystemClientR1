@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog;
 import com.applikeysolutions.cosmocalendar.dialog.OnDaysSelectionListener;
 import com.applikeysolutions.cosmocalendar.model.Day;
-import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -137,6 +136,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
 
     private List<AlarmTag> alarmTags = new ArrayList<>();
     private List<QMUICommonListItemView> alarmTagItems = new ArrayList<>();
+    private int timeSelect;
 
     @AfterInject
     void afterInject() {
@@ -149,6 +149,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     void afterViews() {
         initTopBar();
         initGroupList();
+        pushSetPresenter.getAlarmTags(currentUser.getNo());
     }
 
     @Nullable
@@ -305,8 +306,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     private void action(String tag) {
         if (tag.equals(switchSet)) {
             //TODO 接受通知
-            currentSet.setCommonSwitch(!currentSet.isCommonSwitch());
-            if (currentSet.isCommonSwitch()) {
+            if (commonSwitchItem.getSwitch().isChecked()) {
                 createSection2();
             } else {
                 if (section2 != null)
@@ -317,15 +317,12 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         }
         if (tag.equals(soundSet)) {
             //TODO 声音
-            currentSet.setSound(!currentSet.isSound());
         }
         if (tag.equals(vibrateSet)) {
             //TODO 震动
-            currentSet.setVibrate(!currentSet.isVibrate());
         }
         if (tag.equals(flagsSet)) {
             //TODO 指示灯
-            currentSet.setFlags(!currentSet.isFlags());
         }
         if (tag.equals(dateSet)) {
             //TODO 日期设置
@@ -333,7 +330,6 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         }
         if (tag.equals(pushSwitch)) {
             //TODO 接受数据推送
-            currentSet.setPushSwitch(!currentSet.isPushSwitch());
             createSection2();
         }
 
@@ -349,7 +345,6 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
 
         if (tag.equals(alarmSwitch)) {
             //TODO 接受数据预警
-            currentSet.setAlarmSwitch(!currentSet.isAlarmSwitch());
             createSection3();
         }
         if (tag.equals(addTag)) {
@@ -358,35 +353,46 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         }
         if (tag.equals(failRate)) {
             //TODO 删除残片率
-            deleteOneTag(failRate);
-            createSection3();
+            deleteTag(failRate);
         }
         if (tag.equals(elecConsu)) {
             //TODO 删除电消耗
-            deleteOneTag(elecConsu);
-            createSection3();
+            deleteTag(elecConsu);
         }
         if (tag.equals(wtrConsu)) {
             //TODO 删除水消耗
-            deleteOneTag(wtrConsu);
-            createSection3();
+            deleteTag(wtrConsu);
         }
         if (tag.equals(coalConsu)) {
             //TODO 删除煤消耗
-            deleteOneTag(coalConsu);
-            createSection3();
+            deleteTag(coalConsu);
         }
         if (tag.equals(strSave)) {
             //TODO 保存
+            currentSet.setCommonSwitch(commonSwitchItem.getSwitch().isChecked());
+            currentSet.setSound(soundItem.getSwitch().isChecked());
+            currentSet.setVibrate(vibrateItem.getSwitch().isChecked());
+            currentSet.setFlags(flgasItem.getSwitch().isChecked());
+            currentSet.setPushSwitch(pushSwitchItem.getSwitch().isChecked());
+            currentSet.setAlarmSwitch(alarmSwitchItem.getSwitch().isChecked());
+            currentSet.setTime(timeSelect);
             CustomerApp.getInstance().setPushSet(currentSet);
-//            loading = showLoadingDialog(getContext(), saving);
-//            loading.show();
-//            pushSetPresenter.updateSets(currentUser.getNo(), currentSet);
+            loading = showLoadingDialog(getContext(), saving);
+            loading.show();
+            pushSetPresenter.updateSets(currentUser.getNo(), currentSet);
+        }
+    }
+
+    private void deleteTag(String content) {
+        deleteOneTag(content);
+        createSection3();
+        if (alarmTags.size() > 0) {
+            pushSetPresenter.uploadAlarmTags(currentUser.getNo(), alarmTags);
         }
     }
 
     private void deleteOneTag(String content) {
-        for (int i = 0; i < alarmTags.size();i++) {
+        for (int i = 0; i < alarmTags.size(); i++) {
             if (alarmTags.get(i).getContent().equals(content)) {
                 alarmTags.remove(i);
                 alarmTagItems.remove(i);
@@ -395,16 +401,18 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         }
     }
 
-    private void createSection1() {
+    @UiThread
+    void createSection1() {
         section1 = addNewSection("通用", "", commonSwitchItem, soundItem, vibrateItem, dateSelectedItem);
         if (currentSet.isCommonSwitch())
             createSection2();
     }
 
-    private void createSection2() {
+    @UiThread
+    void createSection2() {
         if (section2 != null)
             section2.removeFrom(mGroupListView);
-        if (currentSet.isPushSwitch()) {
+        if (pushSwitchItem.getSwitch().isChecked()) {
             section2 = addNewSection("数据推送设置", "", pushSwitchItem, pushTimeItem, pushTagsItem);
         } else {
             section2 = addNewSection("数据推送设置", "", pushSwitchItem);
@@ -412,11 +420,11 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         createSection3();
     }
 
-    private void createSection3() {
+    @UiThread
+    void createSection3() {
         if (section3 != null)
             section3.removeFrom(mGroupListView);
-        if (currentSet.isAlarmSwitch()) {
-            Logger.d(alarmTagItems);
+        if (alarmSwitchItem.getSwitch().isChecked()) {
             if (alarmTags.size() == 0)
                 section3 = addNewSection("数据预警设置", "", alarmSwitchItem, addAlarmTagItem);
             else {
@@ -426,7 +434,6 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
             section3 = addNewSection("数据预警设置", "", alarmSwitchItem);
         }
     }
-
 
     private void showDateChoice() {
         CalendarDialog calendarDialog = new CalendarDialog(_mActivity, new OnDaysSelectionListener() {
@@ -467,13 +474,12 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         new QMUIDialog.CheckableDialogBuilder(_mActivity)
                 .setCheckedIndex(currentSet.getTime())
                 .addItems(push_time, (dialog, which) -> {
-                    currentSet.setTime(which);
+                    timeSelect = which;
                     pushTimeItem.setDetailText(push_time[which]);
                     dialog.dismiss();
                 })
                 .create().show();
     }
-
 
     @Override
     public void showTagsChoices(List<Integer> checks) {
@@ -521,10 +527,34 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
                             oneTag.addAccessoryCustomView(tagView);
                             alarmTagItems.add(oneTag);
                             createSection3();
+                            uploadAlarmTags();
                         }
                         dialog.dismiss();
                     })).show();
         }
+    }
+
+    @Override
+    public void setAlarmTags(List<AlarmTag> alarmTags) {
+        this.alarmTags = alarmTags;
+        for (AlarmTag alarmTag : alarmTags) {
+            QMUICommonListItemView oneTag = mGroupListView.createItemView(
+                    null,
+                    alarmTag.getContent(),
+                    "",
+                    QMUICommonListItemView.HORIZONTAL,
+                    QMUICommonListItemView.ACCESSORY_TYPE_CUSTOM);
+
+            View tagView = createItem(_mActivity, alarmTag.getMin() + "-" + alarmTag.getMax());
+            oneTag.addAccessoryCustomView(tagView);
+            alarmTagItems.add(oneTag);
+        }
+        if (currentSet.isCommonSwitch())
+            createSection3();
+    }
+
+    private void uploadAlarmTags() {
+        pushSetPresenter.uploadAlarmTags(currentUser.getNo(), alarmTags);
     }
 
     @Override

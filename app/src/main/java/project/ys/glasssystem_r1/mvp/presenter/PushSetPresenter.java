@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.CustomerApp;
+import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.model.PushSetModel;
+
+import static com.alibaba.fastjson.JSON.parseArray;
+import static com.alibaba.fastjson.JSON.toJSONString;
 
 public class PushSetPresenter implements PushSetContract.Presenter {
     private PushSetContract.View pushSetView;
@@ -88,6 +92,36 @@ public class PushSetPresenter implements PushSetContract.Presenter {
             @Override
             public void onSuccess(RetResult retResult) {
                 pushSetView.showSuccess();
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                pushSetView.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void getAlarmTags(String no) {
+        pushSetModel.getAlarmTags(no, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+                pushSetView.setAlarmTags(parseArray(toJSONString(retResult.getData()), AlarmTag.class));
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                pushSetView.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void uploadAlarmTags(String no, List<AlarmTag> alarmTags) {
+        pushSetModel.uploadAlarmTags(no, alarmTags, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+
             }
 
             @Override

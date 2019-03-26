@@ -6,6 +6,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
@@ -131,6 +132,70 @@ public class PushSetModel implements PushSetContract.Model {
                     public void onNext(RetResult retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HttpFeedBackUtil.handleException(e, callBack);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    @Override
+    public void getAlarmTags(String no, OnHttpCallBack<RetResult> callBack) {
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
+                .create(HttpContract.class)
+                .getAlarmTags(no)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RetResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(RetResult retResult) {
+                        HttpFeedBackUtil.handleRetResult(retResult, callBack);
+                        if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HttpFeedBackUtil.handleException(e, callBack);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    @Override
+    public void uploadAlarmTags(String no, List<AlarmTag> alarmTags, OnHttpCallBack<RetResult> callBack) {
+        RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
+                .create(HttpContract.class)
+                .uploadAlarmTags(no, alarmTags)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RetResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RetResult retResult) {
+                        HttpFeedBackUtil.handleRetResult(retResult, callBack);
+                        if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
+
                         }
                     }
 
