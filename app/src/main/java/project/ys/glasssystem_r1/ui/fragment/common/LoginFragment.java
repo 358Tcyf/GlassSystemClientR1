@@ -2,6 +2,8 @@ package project.ys.glasssystem_r1.ui.fragment.common;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.view.View;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -29,6 +30,7 @@ import org.androidannotations.annotations.res.StringRes;
 
 import java.util.Date;
 
+import cn.smssdk.SMSSDK;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
@@ -46,6 +48,7 @@ import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
 import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.util.utils.ToastUtils.showNormalToast;
 
 @EFragment(R.layout.fragment_login_new)
 public class LoginFragment extends SupportFragment implements LoginContract.View {
@@ -81,7 +84,10 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     String noEmpty;
     @StringRes(R.string.passwordEmpty)
     String passwordEmpty;
-
+    @StringRes(R.string.cancel)
+    String cancel;
+    @StringRes(R.string.ok)
+    String ok;
     @ColorRes(R.color.colorPrimaryText)
     int colorPrimaryText;
     @ColorRes(R.color.colorSecondaryText)
@@ -98,6 +104,7 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     @AfterInject
     void afterInject() {
         loginPresenter = new LoginPresenter(this);
+        SMSSDK.registerEventHandler(smsEventHandler);
     }
 
     @AfterViews
@@ -122,8 +129,10 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     private void initEditTexView() {
         inputPasswordLayout.setPasswordVisibilityToggleDrawable(R.drawable.icon_pwd_selector);
         currentUser = CustomerApp.getInstance().getCurrentUser();
-        inputAccount.setText(currentUser.getNo());
-        inputPassword.setText(currentUser.getPassword());
+        if (currentUser!=null) {
+            inputAccount.setText(currentUser.getNo());
+            inputPassword.setText(currentUser.getPassword());
+        }
     }
 
     @UiThread
@@ -190,7 +199,7 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     @Click(R.id.forgot_password)
     void resetPassword() {
         account = inputAccount.getText().toString();
-        if (!isEmpty(account)) {
+        if (account.length() == 11) {
             new QMUIDialog.MessageDialogBuilder(getActivity())
                     .setTitle("这将会重置密码")
                     .setMessage("确定要重置吗？")
@@ -203,17 +212,89 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
                     .addAction(0, "重置", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
                         @Override
                         public void onClick(QMUIDialog dialog, int index) {
-                            loading = showLoadingDialog(getContext(), updating);
-                            loading.show();
-                            loginPresenter.resetPassword(account);
+                            smsVerify(account);
+
                             dialog.dismiss();
                         }
+
                     })
                     .create().show();
+        } else {
+            showNormalToast(_mActivity, "请在账号一栏填写手机号");
         }
 
     }
 
+    cn.smssdk.EventHandler smsEventHandler = new cn.smssdk.EventHandler() {
+        public void afterEvent(int event, int result, Object data) {
+            Message msg = new Message();
+            msg.arg1 = event;
+            msg.arg2 = result;
+            msg.obj = data;
+            new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    int event = msg.arg1;
+                    int result = msg.arg2;
+                    Object data = msg.obj;
+                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            // TODO 处理成功得到验证码的结果
+                            // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
+                            new Handler().postDelayed(() -> {
+                                showVerifyCodeDialog();
+                            }, 1000);
+                        } else {
+                            // TODO 处理错误的结果
+                            ((Throwable) data).printStackTrace();
+                        }
+                    } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        if (result == SMSSDK.RESULT_COMPLETE) {
+                            // TODO 处理验证码验证通过的结果
+                            loading = showLoadingDialog(_mActivity, updating);
+                            loading.show();
+                            loginPresenter.resetPassword(account);
+                        } else {
+                            // TODO 处理错误的结果
+                            showFailDialog(_mActivity, "验证码不对");
+                            new Handler().postDelayed(() -> {
+                                showVerifyCodeDialog();
+                            }, 1000);
+                            ((Throwable) data).printStackTrace();
+                        }
+                    }
+                    // TODO 其他接口的返回结果也类似，根据event判断当前数据属于哪个接口
+                    return false;
+                }
+            }).sendMessage(msg);
+        }
+    };
+
+    private void showVerifyCodeDialog() {
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getActivity());
+        builder.setTitle("验证码")
+                .setPlaceholder("请输入验证码:")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction(cancel, (dialog, index) -> dialog.dismiss())
+                .addAction(ok, (dialog, index) -> {
+                    CharSequence text = builder.getEditText().getText();
+                    if (text != null && text.length() > 0) {
+                        smsSubmit(currentUser.getPhone(), text.toString());
+                        dialog.dismiss();
+                    } else {
+                        showNormalToast(_mActivity, "请填入验证码");
+                    }
+                })
+                .create().show();
+    }
+
+    private void smsVerify(String phone) {
+        SMSSDK.getVerificationCode("86", phone);
+    }
+
+    private void smsSubmit(String phone, String code) {
+        SMSSDK.submitVerificationCode("86", phone, code);
+    }
 
     @Click(R.id.changeUrl)
     void changeUrl() {
@@ -273,9 +354,6 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     public void toHomeActivity() {
         account = inputAccount.getText().toString();
         password = inputPassword.getText().toString();
-//        MMKV user = MMKV.defaultMMKV();
-//        user.encode("userAccount", account);
-//        user.encode("userPassword", password);
         CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(account, password));
         Intent intent = new Intent(getContext(), HomeActivity_.class);
         startActivity(intent);

@@ -31,12 +31,14 @@ import java.util.ArrayList;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.FirstTabMenuEvent;
 import project.ys.glasssystem_r1.common.event.FirstTabSelectedEvent;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.data.bean.PushSelectedBean;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.PushContract;
 import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
@@ -105,10 +107,13 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     @StringRes(R.string.clickRetry)
     String clickRetry;
 
+
+
     @AfterInject
     void afterInject() {
         pushPresenter = new PushPresenter(this, _mActivity);
         EventBusActivityScope.getDefault(_mActivity).register(this);
+        currentUser = CustomerApp.getInstance().getCurrentUser();
     }
 
     @AfterViews
@@ -124,7 +129,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private PushQuickAdapter mAdapter;
     private boolean mInAtTop = true;
     private boolean mInAtBottom = false;
-
+    boolean selectShow = false;
+    private UserBeanPlus currentUser;
 
     @Override
     public void refreshView() {
@@ -135,7 +141,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @UiThread
     void refreshComplete() {
-        pushPresenter.getList("");
+        pushPresenter.getList(currentUser.getNo());
     }
 
 
@@ -228,19 +234,26 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                     mAdapter.setOnItemClickListener(normalItemChildClickListener);
                     mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
                     mAdapter.setHeaderView(orderBy);
+                    selectShow = false;
                     break;
                 case R.id.cancel_btn:
                     //TODO 取消
-                    mAdapter.toggleSelected();
-                    mAdapter.notifyDataSetChanged();
-                    mAdapter.removeAllHeaderView();
-                    mAdapter.setOnItemClickListener(normalItemChildClickListener);
-                    mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
-                    mAdapter.setHeaderView(orderBy);
+                    cancelSelectBar();
                     break;
             }
         }
     };
+
+    private void cancelSelectBar() {
+        mAdapter.toggleSelected();
+        mAdapter.notifyDataSetChanged();
+        mAdapter.removeAllHeaderView();
+        mAdapter.setOnItemClickListener(normalItemChildClickListener);
+        mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
+        mAdapter.setHeaderView(orderBy);
+        selects.clear();
+        selectShow = false;
+    }
 
     BaseQuickAdapter.OnItemClickListener normalItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
@@ -335,6 +348,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         if (tag.equals(strManager)) {
             //TODO 管理列表
             selects.clear();
+            selectShow = true;
             for (Push push : mList) {
                 selects.add(new PushSelectedBean(false, push));
             }
@@ -392,7 +406,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     }
 
     @Subscribe
-    public void onTabSelectedEvent(FirstTabMenuEvent event) {
+    public void onFirstTabMenuEvent(FirstTabMenuEvent event) {
         if (event.position != FIRST) return;
         if (event.tag == null) return;
         action(0, event.tag);
@@ -400,7 +414,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @Subscribe
     public void onRefreshList(RefreshListEvent event) {
-        pushPresenter.getList("");
+        pushPresenter.getList(currentUser.getNo());
     }
 
     @UiThread
@@ -423,4 +437,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         EventBusActivityScope.getDefault(_mActivity).unregister(this);
     }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        if (selectShow) {
+            cancelSelectBar();
+            return false;
+        } else
+            return super.onBackPressedSupport();
+    }
 }

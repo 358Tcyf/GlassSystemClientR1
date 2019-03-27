@@ -2,6 +2,7 @@ package project.ys.glasssystem_r1.mvp.presenter;
 
 import android.content.Context;
 
+import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.ChartContract;
 import project.ys.glasssystem_r1.mvp.model.ChartModel;
 
@@ -23,7 +24,7 @@ public class ChartPresenter implements ChartContract.Presenter {
 
     }
 
-    public void setDefault(String content, String submenu) {
-        chartModel.setDefault(content, submenu);
+    public void setDefault(Push push, String submenu) {
+        chartModel.setDefault(push, submenu);
     }
 }

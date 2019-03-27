@@ -28,6 +28,7 @@ import org.androidannotations.annotations.res.StringArrayRes;
 
 import java.util.HashMap;
 
+import me.panpf.sketch.SketchImageView;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
@@ -60,7 +61,7 @@ public class UserFragment extends BaseBackFragment {
     @ViewById(R.id.topbar)
     QMUITopBar mTopBar;
     @ViewById(R.id.imageView)
-    ImageView userPic;
+    SketchImageView userPic;
     @ViewById(R.id.tabs)
     QMUITabSegment mTabs;
     @ViewById(R.id.pager)
@@ -108,10 +109,10 @@ public class UserFragment extends BaseBackFragment {
         Bundle args = getArguments();
         if (args != null) {
             if (!isEmpty(currentUser.getPicPath())) {
-                Glide.with(this)
-                        .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime()))
-                        .apply(new RequestOptions().error(R.mipmap.ic_account_circle))
-                        .into(userPic);
+                userPic.getOptions()
+                        .setErrorImage(R.drawable.ic_error)
+                        .setLoadingImage(R.drawable.ic_loading);
+                userPic.displayImage(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime());
             }
         }
 

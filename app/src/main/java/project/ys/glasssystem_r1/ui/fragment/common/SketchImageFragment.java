@@ -58,9 +58,8 @@ public class SketchImageFragment extends BaseBackFragment {
     void afterViews() {
         sketchImageView.setZoomEnabled(true);
         sketchImageView.getOptions()
-                .setErrorImage(R.mipmap.ic_account_circle)
-                .setLoadingImage(R.mipmap.ic_account_circle);
-        sketchImageView.displayImage("http://47.102.41.26:9898/file/P0001");
-//        sketchImageView.displayImage(HTTP + getURL() + PORT + picPath + "/" + getNowTime());
+                .setErrorImage(R.drawable.ic_error)
+                .setLoadingImage(R.drawable.ic_loading);
+        sketchImageView.displayImage(HTTP + getURL() + PORT + picPath + "/" + getNowTime());
     }
 }

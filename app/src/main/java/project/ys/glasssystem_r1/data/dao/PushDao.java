@@ -14,26 +14,21 @@ import project.ys.glasssystem_r1.data.entity.Push;
 @Dao
 public interface PushDao {
 
-    @Query("select * from push_table order by push_createTime desc")
-    List<Push> getAll();
+    @Query("select * from push_table where receiver_uuid = :account order by push_createTime desc")
+    List<Push> getAll(String account);
 
-    @Query("select * from push_table order by receiver_haveRead asc , push_createTime desc")
-    List<Push> getAllByRead();
+    @Query("select * from push_table where receiver_uuid = :account order by receiver_haveRead asc , push_createTime desc")
+    List<Push> getAllByRead(String account);
 
-    @Query("select * from push_table where id = :id")
-    Push getOne(int id);
-
-    @Query("select * from push_table where push_content = :content")
-    Push findByContent(String content);
 
     @Query("select * from push_table where id = :id")
     Push findById(int id);
 
-    @Query("select * from push_table where push_title like :search or push_content like  :search order by push_createTime desc")
-    List<Push> findWithReceiverAndSearchText(String search);
+    @Query("select * from push_table where receiver_uuid = :account and push_title like :search or push_content like  :search order by push_createTime desc")
+    List<Push> findWithReceiverAndSearchText(String account,String search);
 
-    @Query("select * from push_table where push_title like :search or push_content like  :search order by receiver_haveRead asc , push_createTime desc")
-    List<Push> findWithReceiverAndSearchTextOrderByRead(String search);
+    @Query("select * from push_table where receiver_uuid = :account and push_title like :search or push_content like  :search order by receiver_haveRead asc , push_createTime desc")
+    List<Push> findWithReceiverAndSearchTextOrderByRead(String account,String search);
 
     @Insert
     void insert(Push... entities);

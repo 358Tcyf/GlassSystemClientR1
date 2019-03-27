@@ -22,6 +22,7 @@ import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LATEST_NO;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LOGIN;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.RESET_PASSWORD;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.SEARCH_USER;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.SET;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_ALARM_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_PASSWORD;
@@ -46,6 +47,9 @@ public interface HttpContract {
 
     @POST(USER + USER_LIST)
     Observable<RetResult> userList();
+
+    @POST(USER + SEARCH_USER)
+    Observable<RetResult> searchUserList(@Query("searchText") String searchText);
 
     @POST(USER + USER_DELETE)
     Observable<RetResult> deleteUser(@Query("account") String account);

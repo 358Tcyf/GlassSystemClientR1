@@ -27,7 +27,7 @@ public class PushPresenter implements PushContract.Presenter {
 
     @Override
     public void getList(String account) {
-        List<Push> pushList = pushModel.getPushList("");
+        List<Push> pushList = pushModel.getPushList(account);
         if (pushList.size() == 0) {
             pushView.refreshFail();
         } else {
@@ -37,7 +37,7 @@ public class PushPresenter implements PushContract.Presenter {
 
     @Override
     public void sortList(String account, String tag) {
-        List<Push> pushList = pushModel.sortPushList("", tag);
+        List<Push> pushList = pushModel.sortPushList(account, tag);
         if (pushList.size() == 0) {
             pushView.refreshFail();
         } else {

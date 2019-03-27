@@ -175,7 +175,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
         }
         builder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
             EventBusActivityScope.getDefault(_mActivity).post(new SubMenuSelectedEvent(charts.get(position)));
-            chartPresenter.setDefault(content, subMenus.get(position));
+            chartPresenter.setDefault(push, subMenus.get(position));
             EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent());
             dialog.dismiss();
         });

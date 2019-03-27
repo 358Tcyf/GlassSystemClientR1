@@ -31,7 +31,7 @@ public class PushModel implements PushContract.Model {
 
     @Override
     public List<Push> getPushList(String receiver) {
-        return helper.getAllPush();
+        return helper.getAllPush(receiver);
     }
 
     @Override

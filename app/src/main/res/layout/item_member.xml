@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_member_height">
 
@@ -14,6 +13,7 @@
         android:layout_marginEnd="@dimen/avatar_horizontal_margin"
         android:src="@mipmap/ic_account_circle"
         app:qmui_is_oval="true" />
+
 
     <TextView
         android:id="@+id/userName"

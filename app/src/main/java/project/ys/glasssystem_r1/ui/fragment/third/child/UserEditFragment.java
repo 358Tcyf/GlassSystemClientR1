@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.lancewu.imagepicker.ImagePicker;
 import com.lancewu.imagepicker.ImagePickerResult;
 import com.lancewu.imagepicker.OnImagePickerCallback;
@@ -57,6 +53,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import cn.smssdk.SMSSDK;
+import me.panpf.sketch.SketchImageView;
+import me.panpf.sketch.state.DrawableStateImage;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.mvp.contract.UserEditContract;
@@ -99,7 +97,7 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
     @ViewById(R.id.topbar)
     QMUITopBar mTopBar;
     @ViewById(R.id.imageView)
-    ImageView userPic;
+    SketchImageView userPic;
     @ViewById(R.id.groupListView)
     QMUIGroupListView mGroupListView;
 
@@ -190,10 +188,10 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
     @UiThread
     void setUserPic() {
         if (!isEmpty(currentUser.getPicPath())) {
-            Glide.with(this)
-                    .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getNo() + "/" + getNowTime()))
-                    .apply(new RequestOptions().error(R.mipmap.ic_account_circle))
-                    .into(userPic);
+            userPic.getOptions()
+                    .setErrorImage(new DrawableStateImage(R.drawable.ic_error))
+                    .setLoadingImage(new DrawableStateImage(R.drawable.ic_loading));
+            userPic.displayImage(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime());
         }
     }
 
@@ -296,16 +294,17 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
         }
         if (tag.equals(editPassword)) {
             //TODO 修改密码
-            QMUIBottomSheet.BottomListSheetBuilder builder =
-                    new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                            .addItem(isThisPhone)
-                            .addItem(isntThisPhone)
-                            .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
-                                action(tag1);
-                                dialog.dismiss();
-                            });
-            QMUIBottomSheet sheet = builder.build();
-            sheet.show();
+            action(isntThisPhone);
+//            QMUIBottomSheet.BottomListSheetBuilder builder =
+//                    new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+//                            .addItem(isThisPhone)
+//                            .addItem(isntThisPhone)
+//                            .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+//                                action(tag1);
+//                                dialog.dismiss();
+//                            });
+//            QMUIBottomSheet sheet = builder.build();
+//            sheet.show();
         }
         if (tag.equals(isThisPhone)) {
             //TODO 我是本机
@@ -331,7 +330,7 @@ public class UserEditFragment extends BaseBackFragment implements UserEditContra
         }
         if (tag.equals(sketchImage)) {
             //TODO 查看大图
-            start(SketchImageFragment.newInstance("/file/"+currentUser.getNo()));
+            start(SketchImageFragment.newInstance(currentUser.getPicPath()));
         }
     }
 

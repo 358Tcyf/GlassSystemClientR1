@@ -20,12 +20,13 @@
         app:qmui_statusBarScrim="?attr/colorPrimaryDark"
         app:qmui_title="">
 
-        <ImageView
+        <me.panpf.sketch.SketchImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
+
 
         <com.qmuiteam.qmui.widget.QMUITopBar
             android:id="@+id/topbar"

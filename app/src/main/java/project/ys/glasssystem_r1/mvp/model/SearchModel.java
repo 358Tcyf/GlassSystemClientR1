@@ -56,7 +56,7 @@ public class SearchModel implements SearchContract.Model {
     public void getUserList(String searchText, OnHttpCallBack<RetResult> callBack) {
         RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
                 .create(HttpContract.class)
-                .userList()
+                .searchUserList(searchText)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

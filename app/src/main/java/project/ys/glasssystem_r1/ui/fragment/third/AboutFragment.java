@@ -24,6 +24,7 @@ import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -39,6 +40,8 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
+import project.ys.glasssystem_r1.http.MyRestClient;
+import project.ys.glasssystem_r1.http.MyRestClient_;
 import project.ys.glasssystem_r1.mvp.contract.PushSetContract;
 import project.ys.glasssystem_r1.mvp.contract.UserDetailContract;
 import project.ys.glasssystem_r1.mvp.presenter.PushSetPresenter;
@@ -94,7 +97,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     TextView userRole;
     @ViewById(R.id.user_no)
     TextView userNo;
-    @ViewById(R.id.user_pic)
+    @ViewById(R.id.date_dot)
     QMUIRadiusImageView userPic;
     @ViewById(R.id.user_email)
     QMUILinkTextView userEmail;
@@ -120,6 +123,13 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     @StringRes(R.string.exitApp)
     String strExitApp;
 
+    @StringRes(R.string.editUrl)
+    String editUrl;
+    @StringRes(R.string.instantPush)
+    String instantPush;
+    @StringRes(R.string.instantTish)
+    String instantTish;
+
     @StringRes(R.string.refreshFail)
     String refreshFail;
     @StringRes(R.string.clickRetry)
@@ -130,6 +140,9 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     String cancel;
     @StringRes(R.string.logout)
     String logout;
+
+
+    MyRestClient restClient;
 
     public static AboutFragment newInstance() {
         return new AboutFragment_();
@@ -144,6 +157,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         userDetailPresenter = new UserDetailPresenter(this);
         pushSetPresenter = new PushSetPresenter(this, _mActivity);
         currentUser = CustomerApp.getInstance().getCurrentUser();
+        restClient= new MyRestClient_(_mActivity);
     }
 
     @AfterViews
@@ -161,7 +175,21 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
 
     private void initTopBar() {
         mTopBar.addRightImageButton(R.drawable.ic_details, R.id.detail)
-                .setOnClickListener(v -> showEditTextDialog());
+                .setOnClickListener(v -> debugBottomSheet());
+    }
+
+    private void debugBottomSheet() {
+        QMUIBottomSheet.BottomListSheetBuilder builder =
+                new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                        .addItem(editUrl)
+                        .addItem(instantPush)
+                        .addItem(instantTish)
+                        .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+                            action(tag);
+                            dialog.dismiss();
+                        });
+        QMUIBottomSheet sheet = builder.build();
+        sheet.show();
     }
 
 
@@ -304,6 +332,28 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
             //TODO 关闭应用
             _mActivity.moveTaskToBack(false);
         }
+        if (tag.equals(editUrl)) {
+            //TODO 修改网路通信地址
+            showEditUrlDialog();
+        }
+        if (tag.equals(instantPush)) {
+            //TODO 即时推送
+            getInstantPush();
+        }
+        if (tag.equals(instantTish)) {
+            //TODO 即时推送：本机
+            getInstantPush(currentUser.getNo());
+        }
+    }
+
+    @Background
+    void getInstantPush() {
+        restClient.getInstantPush();
+    }
+
+    @Background
+    void getInstantPush(String alias) {
+        restClient.getInstantPushWithAlias(alias);
     }
 
     private void userInfo() {
@@ -336,6 +386,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         }
         if (userNo != null)
             userNo.setText(user.getNo());
+        currentUser.setPicPath(user.getPicPath());
         setUserPic();
         if (userEmail != null) {
             userEmail.setText(user.getEmail());
@@ -382,7 +433,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     }
 
 
-    private void showEditTextDialog() {
+    private void showEditUrlDialog() {
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getActivity());
         builder.setTitle("修改网络通信地址")
                 .setDefaultText(getURL())

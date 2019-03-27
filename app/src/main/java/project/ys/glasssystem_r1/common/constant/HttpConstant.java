@@ -2,6 +2,8 @@ package project.ys.glasssystem_r1.common.constant;
 
 import com.tencent.mmkv.MMKV;
 
+import static android.text.TextUtils.isEmpty;
+
 public class HttpConstant {
     public static final String HTTP = "http://";
     private static final String BUGDOGGY = "47.102.41.26";
@@ -10,6 +12,7 @@ public class HttpConstant {
     public static final String USER = "/user";
     public static final String LOGIN = "/login";
     public static final String USER_LIST = "/userList";
+    public static final String SEARCH_USER = "/searchUserList";
     public static final String USER_INFO = "/userInfo";
     public static final String USER_DELETE = "/deleteUser";
     public static final String LATEST_NO = "/latestNo";
@@ -25,6 +28,11 @@ public class HttpConstant {
     public static final String GET_ALARM_TAGS = "/getAlarmTags";
     public static final String UPDATE_ALARM_TAGS = "/updateAlarmTags";
 
+
+    public static final String PUSH = "/file";
+    public static final String INSTANT = "/instantPush";
+
+
     public static final String FILE = "/file";
     public static final String UPLOAD = "/upload";
 
@@ -37,7 +45,7 @@ public class HttpConstant {
     public static String getURL() {
         MMKV http = MMKV.defaultMMKV();
         String url = http.decodeString("url");
-        if (url.equals(""))
+        if (isEmpty(url))
             return URL;
         else
             return url;

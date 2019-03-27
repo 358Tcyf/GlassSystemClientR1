@@ -48,6 +48,9 @@
     <string name="logout">退出</string>
     <string name="logoutAccount">退出账号</string>
     <string name="exitApp">关闭应用</string>
+    <string name="editUrl">修改地址</string>
+    <string name="instantPush">即时推送</string>
+    <string name="instantTish">即时推送:本机</string>
 
 
     <!--主页-推送页-->
@@ -140,5 +143,7 @@
     <string name="wtr_consu">水消耗/吨</string>
     <string name="coal_consu">煤消耗/吨</string>
 
+    <string name="expand_string">more</string>
+    <string name="collapsed_string">less</string>
 
 </resources>

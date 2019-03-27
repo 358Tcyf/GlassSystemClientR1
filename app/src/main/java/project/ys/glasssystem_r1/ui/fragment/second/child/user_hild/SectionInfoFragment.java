@@ -48,7 +48,7 @@ public class SectionInfoFragment extends SupportFragment implements UserDetailCo
     TextView userRole;
     @ViewById(R.id.user_no)
     TextView userNo;
-    @ViewById(R.id.user_pic)
+    @ViewById(R.id.date_dot)
     QMUIRadiusImageView userPic;
     @ViewById(R.id.user_email)
     QMUILinkTextView userEmail;
@@ -82,8 +82,7 @@ public class SectionInfoFragment extends SupportFragment implements UserDetailCo
 
     @Override
     public void setDetail(UserBeanPlus user) {
-        this.currentUser = user;
-        resetCard();
+        resetCard(user);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class SectionInfoFragment extends SupportFragment implements UserDetailCo
     }
 
     @UiThread
-    void resetCard() {
+    void resetCard(UserBeanPlus user) {
         if (userName != null) {
             userName.setText(currentUser.getName());
         }
@@ -101,7 +100,7 @@ public class SectionInfoFragment extends SupportFragment implements UserDetailCo
         }
         if (userNo != null)
             userNo.setText(currentUser.getNo());
-        setUserPic();
+        setUserPic(user);
         if (userEmail != null) {
             userEmail.setText(currentUser.getEmail());
         }
@@ -111,8 +110,8 @@ public class SectionInfoFragment extends SupportFragment implements UserDetailCo
     }
 
     @UiThread
-    void setUserPic() {
-        if (!isEmpty(currentUser.getPicPath())) {
+    void setUserPic(UserBeanPlus user) {
+        if (!isEmpty(user.getPicPath())) {
             Glide.with(this)
                     .load(Uri.parse(HTTP + getURL() + PORT + currentUser.getPicPath() + "/" + getNowTime()))
                     .apply(new RequestOptions().error(R.mipmap.ic_account_circle))

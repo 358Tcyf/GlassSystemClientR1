@@ -284,9 +284,12 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
                 break;
             case SEARCH_USER:
                 list = removeMySelf(list);
-                indexableLayout.addHeaderAdapter(adapter1);
-                indexableLayout.addHeaderAdapter(adapter2);
-                indexableLayout.addHeaderAdapter(adapter3);
+                if (adapter1 != null)
+                    indexableLayout.removeHeaderAdapter(adapter1);
+                if (adapter2 != null)
+                    indexableLayout.removeHeaderAdapter(adapter2);
+                if (adapter3 != null)
+                    indexableLayout.removeHeaderAdapter(adapter3);
                 if (order.equals(orderByName)) {
                     userAdapter.setDatas(list);
                 } else if (order.equals(orderByRole)) {

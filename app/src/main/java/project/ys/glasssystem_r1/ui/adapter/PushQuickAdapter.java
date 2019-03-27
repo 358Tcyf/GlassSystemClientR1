@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.PushSelectedBean;
@@ -25,7 +24,7 @@ public class PushQuickAdapter extends BaseQuickAdapter<PushSelectedBean, BaseVie
     private boolean showSelected;
 
     public PushQuickAdapter(Activity mActivity, ArrayList<PushSelectedBean> data) {
-        super(R.layout.item_push_new, data);
+        super(R.layout.item_push, data);
         this.showSelected = false;
         this.mContext = mActivity;
     }
@@ -33,16 +32,13 @@ public class PushQuickAdapter extends BaseQuickAdapter<PushSelectedBean, BaseVie
     @Override
     protected void convert(BaseViewHolder helper, PushSelectedBean item) {
         helper.setText(R.id.pushTitle, item.getPush().getTitle());
-        long longtime = item.getPush().getCreateTime();
-        Date date = new Date(longtime);
         helper.setText(R.id.push_month, stampToDate(String.valueOf(item.getPush().getCreateTime()), MM));
         helper.setText(R.id.push_date, "/" + stampToDate(String.valueOf(item.getPush().getCreateTime()), dd));
         helper.setText(R.id.pushDate, stampToStr(mContext, item.getPush().getCreateTime()));
-        QMUIRadiusImageView dateView = helper.getView(R.id.user_pic);
         if (item.getPush().isHaveRead()) {
             helper.setText(R.id.pushRead, "Have Read");
             helper.setTextColor(R.id.pushRead, mContext.getColor(R.color.pushRead));
-            helper.setImageResource(R.id.user_pic, R.drawable.bg_date_view_read);
+            helper.setImageResource(R.id.date_dot, R.drawable.bg_date_view_read);
             helper.setTextColor(R.id.pushTitle, mContext.getColor(R.color.titleTextRead));
             helper.setTextColor(R.id.pushDate, mContext.getColor(R.color.timeTextRead));
             helper.setTextColor(R.id.push_month, mContext.getColor(R.color.dateTextRead));
@@ -50,7 +46,7 @@ public class PushQuickAdapter extends BaseQuickAdapter<PushSelectedBean, BaseVie
         } else {
             helper.setText(R.id.pushRead, "Unread");
             helper.setTextColor(R.id.pushRead, mContext.getColor(R.color.pushUnread));
-            helper.setImageResource(R.id.user_pic, R.drawable.bg_date_view_unread);
+            helper.setImageResource(R.id.date_dot, R.drawable.bg_date_view_unread);
             helper.setTextColor(R.id.pushTitle, mContext.getColor(R.color.titleTextUnread));
             helper.setTextColor(R.id.pushDate, mContext.getColor(R.color.timeTextUnread));
             helper.setTextColor(R.id.push_month, mContext.getColor(R.color.dateTextUnread));

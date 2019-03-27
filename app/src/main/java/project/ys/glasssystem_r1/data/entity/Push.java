@@ -10,6 +10,7 @@ import android.os.Parcelable;
 @Entity(tableName = "push_table")
 public class Push extends BaseEntity implements Parcelable {
 
+
     @Ignore
     public Push() {
 
@@ -132,7 +133,6 @@ public class Push extends BaseEntity implements Parcelable {
         dest.writeLong(createTime);
         dest.writeByte((byte) (haveRead ? 1 : 0));
     }
-
 
 
     @Override

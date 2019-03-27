@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.data;
 
-import android.app.Application;
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
@@ -16,8 +15,10 @@ import java.util.List;
 import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
+import project.ys.glasssystem_r1.data.dao.AlarmDao;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.dao.SearchRecordDao;
+import project.ys.glasssystem_r1.data.entity.Alarm;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.data.entity.SearchRecord;
 
@@ -27,6 +28,7 @@ public class DatabaseHelper {
     private Context context;
     private MyDatabase giisDatabase;
     private PushDao pushDao;
+    private AlarmDao alarmDao;
     private SearchRecordDao searchDao;
 
     public DatabaseHelper(Context context) {
@@ -51,11 +53,16 @@ public class DatabaseHelper {
                 .fallbackToDestructiveMigration()//迁移数据库如果发生错误，将会重新创建数据库，而不是发生崩溃
                 .build();
         pushDao = giisDatabase.pushDao();
+        alarmDao = giisDatabase.alarmDao();
         searchDao = giisDatabase.searchDao();
     }
 
     public PushDao getPushDao() {
         return pushDao;
+    }
+
+    public AlarmDao getAlarmDao() {
+        return alarmDao;
     }
 
     public SearchRecordDao getSearchDao() {
@@ -65,12 +72,22 @@ public class DatabaseHelper {
 
     public void insertPush(Push push) {
         pushDao.insert(push);
-        Logger.d("新增了一条推送数据");
+        Logger.d("新增了一条数据推送");
     }
 
-    public ArrayList<Push> getAllPush() {
-        List<Push> list = pushDao.getAll();
+    public void insertAlarm(Alarm alarm) {
+        alarmDao.insert(alarm);
+        Logger.d("新增了一条预警推送");
+    }
+
+    public ArrayList<Push> getAllPush(String receiver) {
+        List<Push> list = pushDao.getAll(receiver);
         return (ArrayList<Push>) list;
+    }
+
+    public ArrayList<Alarm> getAllAlarm(String receiver) {
+        List<Alarm> list = alarmDao.getAll(receiver);
+        return (ArrayList<Alarm>) list;
     }
 
     public ArrayList<Push> searchPush(String receiver, String order, String searchText) {
@@ -79,11 +96,11 @@ public class DatabaseHelper {
         Logger.d(searchText);
         if (order.equals(context.getString(R.string.sort_by_date))) {
             Logger.d(order);
-            list = pushDao.findWithReceiverAndSearchText("%" + searchText + "%");
+            list = pushDao.findWithReceiverAndSearchText(receiver,"%" + searchText + "%");
         }
         if (order.equals(context.getString(R.string.sort_by_read))) {
             Logger.d(order);
-            list = pushDao.findWithReceiverAndSearchTextOrderByRead("%" + searchText + "%");
+            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver,"%" + searchText + "%");
         }
         return (ArrayList<Push>) list;
     }
@@ -91,9 +108,9 @@ public class DatabaseHelper {
     public ArrayList<Push> sortAllPush(String receiver, String order) {
         List<Push> list = new ArrayList<>();
         if (order.equals(context.getString(R.string.sort_by_date)))
-            list = pushDao.getAll();
+            list = pushDao.getAll(receiver);
         if (order.equals(context.getString(R.string.sort_by_read)))
-            list = pushDao.getAllByRead();
+            list = pushDao.getAllByRead(receiver);
         return (ArrayList<Push>) list;
     }
 
@@ -105,7 +122,7 @@ public class DatabaseHelper {
                 Method getAddressLog = debugDB.getMethod("getAddressLog");
                 Object value = getAddressLog.invoke(null);
                 if (!value.equals("not available")) {
-                    showNotification(app, "调试提醒","查看本地数据库", (String) value);
+                    showNotification(app, "调试提醒", "查看本地数据库", (String) value);
 //                    notifyDefault(app, "DebugDB", (String) value);
 
                 }
@@ -120,10 +137,14 @@ public class DatabaseHelper {
         pushDao.update(push);
     }
 
+    public void setAlarmRead(Alarm alarm) {
+        alarm.setHaveRead(true);
+        alarmDao.update(alarm);
+    }
 
-    public void setDefault(String content, String submenu) {
-        Logger.d(content + "///" + submenu);
-        Push push = pushDao.findByContent(content);
+
+
+    public void setDefault(Push push, String submenu) {
         push.setDefaultSubMenu(submenu);
         Logger.d("///" + push);
 

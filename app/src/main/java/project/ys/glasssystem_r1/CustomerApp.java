@@ -1,10 +1,14 @@
 package project.ys.glasssystem_r1;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.igexin.sdk.PushManager;
 import com.mob.MobSDK;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -13,9 +17,9 @@ import com.tencent.mmkv.MMKV;
 
 import org.androidannotations.annotations.EApplication;
 import org.androidannotations.annotations.SystemService;
-import org.greenrobot.eventbus.EventBus;
 
 import es.dmoral.toasty.Toasty;
+import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.Fragmentation;
 import me.yokeyword.fragmentation.helper.ExceptionHandler;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
@@ -23,6 +27,7 @@ import project.ys.glasssystem_r1.data.DatabaseHelper;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.dao.PushDao;
+import project.ys.glasssystem_r1.data.entity.Alarm;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.service.getui.MyIntentService;
 import project.ys.glasssystem_r1.service.getui.MyPushService;
@@ -38,7 +43,8 @@ public class CustomerApp extends Application {
     public void onCreate() {
         super.onCreate();
         _instance = this;
-        initFragmentation();
+//        initFragmentation();
+        initGlobeActivity();
         initMMKV();
         initLogger();
         initDatabases();
@@ -51,9 +57,55 @@ public class CustomerApp extends Application {
     NotificationManager notificationManager;
 
     private static CustomerApp _instance;
+    private Activity app_activity = null;
     private DatabaseHelper helper;
     private UserBeanPlus mUser;//当前用户
     private PushSet mPushSet;//当前用户
+
+    private void initGlobeActivity() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                app_activity = activity;
+                Log.e("onActivityCreated===", app_activity + "");
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                app_activity = activity;
+                Log.e("onActivityDestroyed===", app_activity + "");
+            }
+
+            /** Unused implementation **/
+            @Override
+            public void onActivityStarted(Activity activity) {
+                app_activity = activity;
+                Log.e("onActivityStarted===", app_activity + "");
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                app_activity = activity;
+                Log.e("onActivityResumed===", app_activity + "");
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                app_activity = activity;
+                Log.e("onActivityPaused===", app_activity + "");
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                app_activity = activity;
+                Log.e("onActivityStopped===", app_activity + "");
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+        });
+    }
 
     private void initFragmentation() {
         Fragmentation.builder()
@@ -117,6 +169,13 @@ public class CustomerApp extends Application {
     }
 
     /**
+     * 公开方法，外部可通过 MyApplication.getInstance().getCurrentActivity() 获取到当前最上层的activity
+     */
+    public Activity getCurrentActivity() {
+        return app_activity;
+    }
+
+    /**
      * 设置当前用户
      *
      * @param mUser 用户
@@ -143,6 +202,8 @@ public class CustomerApp extends Application {
             mUser = new UserBeanPlus(account, password);
             setGetuiAlias();
         }
+        if (isEmpty(mUser.getNo()))
+            return null;
         return mUser;
     }
 
@@ -198,11 +259,22 @@ public class CustomerApp extends Application {
 
 
     public void sendMessage(String data) {
-        Push push = JSON.parseObject(data, Push.class);
-        push.setCreateTime(push.getCreateTime() + 60 * 1000);
-        helper.insertPush(push);
-        EventBus.getDefault().post(new RefreshListEvent());
-        notifyDefault(this, "数据推送", push.getTitle());
+        JSONObject jsonObject = JSON.parseObject(data);
+        if (jsonObject.containsKey("pushUuid")) {
+            Push push = JSON.parseObject(data, Push.class);
+            push.setCreateTime(push.getCreateTime() + 60 * 1000);
+            helper.insertPush(push);
+            EventBusActivityScope.getDefault(getCurrentActivity()).post(new RefreshListEvent());
+            notifyDefault(this, "数据推送", push.getTitle());
+        } else if (jsonObject.containsKey("alarmUuid")) {
+            Alarm alarm = JSON.parseObject(data, Alarm.class);
+            alarm.setCreateTime(alarm.getCreateTime() + 60 * 1000);
+            helper.insertAlarm(alarm);
+            EventBusActivityScope.getDefault(getCurrentActivity()).post(new RefreshListEvent());
+            notifyDefault(this, "数据推送", alarm.getTitle());
+        } else {
+            Logger.d("不存在Uuid");
+        }
     }
 
 

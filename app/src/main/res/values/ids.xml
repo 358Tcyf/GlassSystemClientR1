@@ -18,4 +18,8 @@
     <item name="next" type="id" />
     <item name="cancel" type="id" />
     <item name="image" type="id" />
+
+
+    <item type="id" name="expandable_text"/>
+    <item type="id" name="expand_collapse"/>
 </resources>
