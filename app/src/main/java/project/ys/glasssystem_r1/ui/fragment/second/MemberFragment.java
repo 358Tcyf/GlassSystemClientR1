@@ -69,6 +69,7 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     QMUIAlphaImageButton addUser;
     QMUIAlphaImageButton searchUser;
+    QMUIAlphaImageButton sortBtn;
 
     @DrawableRes(R.drawable.ic_user_add)
     Drawable icAdd;
@@ -141,17 +142,18 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
 
     private void initTopBar() {
 
-        LayoutInflater inflater = LayoutInflater.from(_mActivity);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         addUser = addBtnItem(_mActivity, R.drawable.ic_user_add);
         searchUser = addBtnItem(_mActivity, R.drawable.ic_search);
+        sortBtn = addBtnItem(_mActivity, R.drawable.ic_sort);
         addUser.setOnClickListener(v -> action(null, strAdd));
         searchUser.setOnClickListener(v -> action(null, strSearch));
+        sortBtn.setOnClickListener(v -> action(null, strSort));
         if (currentUser.getNo().startsWith("A"))
-            mTopBar.addRightView(addBtns(_mActivity, addUser, searchUser), R.id.btn, layoutParams);
+            mTopBar.addRightView(addBtns(_mActivity, addUser, searchUser, sortBtn), R.id.btn, layoutParams);
         else
-            mTopBar.addRightView(addBtns(_mActivity, searchUser), R.id.btn, layoutParams);
+            mTopBar.addRightView(addBtns(_mActivity, searchUser, sortBtn), R.id.btn, layoutParams);
     }
 
     public static QMUIAlphaImageButton addBtnItem(Context context, int resId) {

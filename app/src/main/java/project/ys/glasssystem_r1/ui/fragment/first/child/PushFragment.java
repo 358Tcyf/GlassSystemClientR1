@@ -339,7 +339,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                             .addItem(sortByRead)
                             .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
                                 orderBy.setText(strOrderBy + " " + tag1 + "v");
-                                pushPresenter.sortList("", tag1);
+                                pushPresenter.sortList(currentUser.getNo(), tag1);
                                 dialog.dismiss();
                             });
             QMUIBottomSheet sheet = builder.build();

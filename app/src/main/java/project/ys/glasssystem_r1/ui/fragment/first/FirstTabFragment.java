@@ -1,13 +1,16 @@
 package project.ys.glasssystem_r1.ui.fragment.first;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
@@ -51,6 +54,9 @@ public class FirstTabFragment extends BaseBackFragment {
     @ViewById(R.id.pager)
     ViewPager mPager;
 
+    QMUIAlphaImageButton searchBtn;
+    QMUIAlphaImageButton sortBtn;
+
     @StringArrayRes(R.array.pushTabs)
     String[] pushTabs;
 
@@ -67,15 +73,11 @@ public class FirstTabFragment extends BaseBackFragment {
     }
 
     private void initTopBar() {
-        mTopBar.addRightImageButton(R.drawable.ic_search, R.id.search)
-                .setOnClickListener(view -> {
-                    EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSearch));
-                });
 
         LayoutInflater inflater = LayoutInflater.from(_mActivity);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.setMarginStart(QMUIDisplayHelper.dp2px(_mActivity, 48));
-        layoutParams.setMarginEnd(QMUIDisplayHelper.dp2px(_mActivity, 48));
+        layoutParams.setMarginStart(QMUIDisplayHelper.dp2px(_mActivity, 90));
+        layoutParams.setMarginEnd(QMUIDisplayHelper.dp2px(_mActivity, 90));
         mTabs = (QMUITabSegment) inflater.inflate(R.layout.layout_tab, null);
         mTopBar.addLeftView(mTabs, R.id.tab, layoutParams);
 
@@ -85,8 +87,43 @@ public class FirstTabFragment extends BaseBackFragment {
         mTabs.setDefaultSelectedColor(selectColor);
         mTabs.addTab(new QMUITabSegment.Tab(pushTabs[FIRST]))
                 .addTab(new QMUITabSegment.Tab(pushTabs[SECOND]));
+
+
+//        mTopBar.addRightImageButton(R.drawable.ic_search, R.id.search)
+//                .setOnClickListener(view -> {
+//                    EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSearch));
+//                });
+        RelativeLayout.LayoutParams btnLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        btnLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        searchBtn = addBtnItem(_mActivity, R.drawable.ic_search);
+        sortBtn = addBtnItem(_mActivity, R.drawable.ic_sort);
+        searchBtn.setOnClickListener(v ->
+                EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSearch))
+        );
+        sortBtn.setOnClickListener(v ->
+                EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSort))
+        );
+        mTopBar.addRightView(addBtns(_mActivity, searchBtn, sortBtn), R.id.btn, btnLayoutParams);
+
     }
 
+    public static QMUIAlphaImageButton addBtnItem(Context context, int resId) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        QMUIAlphaImageButton btn = (QMUIAlphaImageButton) inflater.inflate(R.layout.item_topbar_btn, null);
+        btn.setImageResource(resId);
+        return btn;
+    }
+
+    public static LinearLayout addBtns(Context context, QMUIAlphaImageButton... btn) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        LinearLayout btns = (LinearLayout) inflater.inflate(R.layout.layout_topbar_btns, null);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        for (int i = 0; i < btn.length; i++) {
+            btns.addView(btn[i], layoutParams);
+        }
+        return btns;
+    }
 
     private HashMap<Integer, SupportFragment> mPages;
     private SupportFragment pushFragment;
