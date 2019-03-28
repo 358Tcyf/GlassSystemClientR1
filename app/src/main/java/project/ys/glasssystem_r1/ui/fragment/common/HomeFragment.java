@@ -24,8 +24,8 @@ import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.FirstTabFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
-import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.SecondTabFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.ThirdTabFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
@@ -108,9 +108,9 @@ public class HomeFragment extends BaseMainFragment {
         mPages = new HashMap<>();
         SupportFragment pushFragment = new FirstTabFragment().newInstance();
         mPages.put(FIRST, pushFragment);
-        SupportFragment memberFragment = new MemberFragment().newInstance();
+        SupportFragment memberFragment = new SecondTabFragment().newInstance();
         mPages.put(SECOND, memberFragment);
-        SupportFragment settingFragment = new AboutFragment().newInstance();
+        SupportFragment settingFragment = new ThirdTabFragment().newInstance();
         mPages.put(THIRD, settingFragment);
 
         FragmentPagerAdapter mPageAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {

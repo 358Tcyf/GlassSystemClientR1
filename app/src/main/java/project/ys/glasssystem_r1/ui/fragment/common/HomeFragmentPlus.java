@@ -1,10 +1,6 @@
 package project.ys.glasssystem_r1.ui.fragment.common;
 
 import android.os.Bundle;
-import android.text.InputType;
-
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -21,16 +17,13 @@ import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.FirstTabFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
-import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.SecondTabFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.ThirdTabFragment;
 import project.ys.glasssystem_r1.ui.widget.bottomnavigation.BottomNavigation;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.Constant.THIRD;
-import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
-import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
-import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
 @EFragment(R.layout.fragment_home_plus)
 public class HomeFragmentPlus extends BaseMainFragment {
@@ -64,8 +57,8 @@ public class HomeFragmentPlus extends BaseMainFragment {
         SupportFragment firstFragment = findChildFragment(FirstTabFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = FirstTabFragment.newInstance();
-            mFragments[SECOND] = MemberFragment.newInstance();
-            mFragments[THIRD] = AboutFragment.newInstance();
+            mFragments[SECOND] = SecondTabFragment.newInstance();
+            mFragments[THIRD] = ThirdTabFragment.newInstance();
 
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
                     mFragments[FIRST],
@@ -73,8 +66,8 @@ public class HomeFragmentPlus extends BaseMainFragment {
                     mFragments[THIRD]);
         } else {
             mFragments[FIRST] = firstFragment;
-            mFragments[SECOND] = findChildFragment(MemberFragment.class);
-            mFragments[THIRD] = findChildFragment(AboutFragment.class);
+            mFragments[SECOND] = findChildFragment(SecondTabFragment.class);
+            mFragments[THIRD] = findChildFragment(ThirdTabFragment.class);
         }
     }
 

@@ -23,8 +23,6 @@
                 android:background="@color/qmui_config_color_white"
                 android:fitsSystemWindows="true" />
 
-            <include layout="@layout/head_order" />
-
 
             <me.yokeyword.indexablerv.IndexableLayout
                 android:id="@+id/indexableLayout"

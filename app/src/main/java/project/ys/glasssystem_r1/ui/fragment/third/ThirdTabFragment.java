@@ -17,6 +17,7 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.textview.QMUILinkTextView;
@@ -56,24 +57,31 @@ import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showTipDialog;
 import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.util.utils.ToastUtils.showNormalToast;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {
+public class ThirdTabFragment extends SupportFragment implements UserDetailContract.View, PushSetContract.View {
+
+    public static ThirdTabFragment newInstance() {
+        return new ThirdTabFragment_();
+    }
+
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
+
     @ViewById(R.id.user_card)
     CardView userCard;
-
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
+
     @ViewById(R.id.groupListView)
     QMUIGroupListView mGroupListView;
 
     @DrawableRes(R.drawable.ic_item_user_info)
     Drawable icUserInfo;
-
     @DrawableRes(R.drawable.ic_item_index_line)
     Drawable icIndexLine;
     @DrawableRes(R.drawable.ic_item_setting)
@@ -84,9 +92,9 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     Drawable icUpdate;
     @DrawableRes(R.drawable.ic_bottom_callback)
     Drawable icCallback;
+
     @DrawableRes(R.drawable.ic_item_logout)
     Drawable icLogout;
-
     @DrawableRes(R.drawable.ic_bottom_logout)
     Drawable icLogoutAccount;
     @DrawableRes(R.drawable.ic_bottom_exit)
@@ -101,9 +109,9 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     QMUIRadiusImageView userPic;
     @ViewById(R.id.user_email)
     QMUILinkTextView userEmail;
+
     @ViewById(R.id.user_phone)
     QMUILinkTextView userPhone;
-
     @StringRes(R.string.userInfo)
     String strUserInfo;
     @StringRes(R.string.pushSetting)
@@ -120,33 +128,30 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
     String strLogout;
     @StringRes(R.string.logoutAccount)
     String strLogoutAccount;
+
     @StringRes(R.string.exitApp)
     String strExitApp;
-
     @StringRes(R.string.editUrl)
     String editUrl;
     @StringRes(R.string.instantPush)
     String instantPush;
+
     @StringRes(R.string.instantTish)
     String instantTish;
-
     @StringRes(R.string.refreshFail)
     String refreshFail;
+
     @StringRes(R.string.clickRetry)
     String clickRetry;
 
-
     @StringRes(R.string.cancel)
     String cancel;
+
     @StringRes(R.string.logout)
     String logout;
 
 
     MyRestClient restClient;
-
-    public static AboutFragment newInstance() {
-        return new AboutFragment_();
-    }
 
     private UserDetailPresenter userDetailPresenter;
     private PushSetPresenter pushSetPresenter;
@@ -157,7 +162,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
         userDetailPresenter = new UserDetailPresenter(this);
         pushSetPresenter = new PushSetPresenter(this, _mActivity);
         currentUser = CustomerApp.getInstance().getCurrentUser();
-        restClient= new MyRestClient_(_mActivity);
+        restClient = new MyRestClient_(_mActivity);
     }
 
     @AfterViews
@@ -242,7 +247,7 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
             addNewSection(logoutItem);
 
         } else {
-            addNewSection(userInfoItem, pushSettingItem, appSettingItem, aboutSystemItem, logoutItem);
+            addNewSection(userInfoItem, pushSettingItem, aboutSystemItem, logoutItem);
         }
 
     }
@@ -314,11 +319,19 @@ public class AboutFragment extends SupportFragment implements UserDetailContract
 
         if (tag.equals(strUpdate)) {
             //TODO 检查更新
-            showTipDialog(getContext(), tag);
+            QMUITipDialog loading = showLoadingDialog(_mActivity, "检查更新");
+            loading.show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loading.dismiss();
+                    showTipDialog(_mActivity, "当前已是最新版本");
+                }
+            }, 1000);
         }
         if (tag.equals(strCallback)) {
             //TODO 反馈
-            showTipDialog(getContext(), tag);
+            showNormalToast(_mActivity, "欢迎联系本应用开发者simple_yu");
         }
         if (tag.equals(strLogout)) {
             //TODO 退出

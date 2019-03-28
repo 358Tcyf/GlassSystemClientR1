@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/qmui_config_color_white"
     android:foreground="?attr/selectableItemBackground"
-    android:maxHeight="@dimen/item_push_max_height"
     android:minHeight="@dimen/item_push_height">
+
+    <View
+        android:id="@+id/read"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/item_push_height"
+        android:background="@color/pushUnread" />
+
+
+    <RadioButton
+        android:id="@+id/selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:visibility="gone" />
 
 
     <TextView
@@ -30,17 +46,20 @@
         android:textSize="@dimen/alarm_time_text_size" />
 
 
-    <TextView
+    <project.ys.glasssystem_r1.ui.widget.expandabletextview.ExpandableTextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom"
         android:layout_below="@id/title"
         android:layout_alignStart="@id/title"
         android:layout_alignEnd="@id/createTime"
-        android:layout_marginTop="@dimen/dp_12"
-        android:layout_marginBottom="@dimen/dp_6"
-        android:textSize="@dimen/alarm_content_text_size" />
+        android:fontFamily="@font/candaraz"
+        android:paddingTop="@dimen/dp_12"
+        app:DrawableAndTextGravity="right"
+        app:contentTextColor="@color/qmui_config_color_gray_3"
+        app:contentTextSize="@dimen/sp_14"
+        app:expandCollapseTextColor="@color/pushUnread"
+        app:maxCollapsedLines="1" />
 
     <View
         android:id="@+id/bottom"

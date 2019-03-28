@@ -48,9 +48,9 @@ import static com.applikeysolutions.cosmocalendar.utils.SelectionType.RANGE;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.push_tags;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.push_time;
 import static project.ys.glasssystem_r1.ui.widget.customeritem.AlarmTagView.createItem;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showSuccessDialog;
 import static project.ys.glasssystem_r1.util.utils.ToastUtils.showNormalToast;
 
 @EFragment
@@ -386,7 +386,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     private void deleteTag(String content) {
         deleteOneTag(content);
         createSection3();
-        if (alarmTags.size() > 0) {
+        if (alarmTags.size() >=0) {
             pushSetPresenter.uploadAlarmTags(currentUser.getNo(), alarmTags);
         }
     }

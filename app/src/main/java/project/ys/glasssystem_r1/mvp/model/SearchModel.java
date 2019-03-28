@@ -12,6 +12,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
+import project.ys.glasssystem_r1.data.entity.Alarm;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.data.entity.SearchRecord;
 import project.ys.glasssystem_r1.http.HttpContract;
@@ -42,9 +43,39 @@ public class SearchModel implements SearchContract.Model {
         return helper.searchPush(receiver, mContext.getString(R.string.sort_by_date), search);
     }
 
+
+    @Override
+    public List<Push> getPushList(String receiver, String search,int limit) {
+        return helper.searchPush(receiver, mContext.getString(R.string.sort_by_date), search,limit);
+    }
+
     @Override
     public List<Push> getPushList(String receiver, String order, String search) {
         return helper.searchPush(receiver, order, search);
+    }
+
+    @Override
+    public List<Push> getPushList(String receiver, String order, String search,int limit) {
+        return helper.searchPush(receiver, order, search,limit);
+    }
+    @Override
+    public List<Alarm> getAlarmList(String receiver, String search) {
+        return helper.searchAlarm(receiver, mContext.getString(R.string.sort_by_date), search);
+    }
+
+    @Override
+    public List<Alarm> getAlarmList(String receiver, String search,int limit) {
+        return helper.searchAlarm(receiver, mContext.getString(R.string.sort_by_date), search,limit);
+    }
+
+
+    @Override
+    public List<Alarm> getAlarmList(String receiver, String order, String search) {
+        return helper.searchAlarm(receiver, order, search);
+    }
+    @Override
+    public List<Alarm> getAlarmList(String receiver, String order, String search,int limit) {
+        return helper.searchAlarm(receiver, order, search,limit);
     }
 
     @Override
@@ -91,5 +122,10 @@ public class SearchModel implements SearchContract.Model {
     @Override
     public void insertRecord(String searchText) {
         helper.insertSearch(searchText);
+    }
+
+    @Override
+    public void deleteRecord(SearchRecord searchRecord) {
+        helper.deleteRecord(searchRecord);
     }
 }

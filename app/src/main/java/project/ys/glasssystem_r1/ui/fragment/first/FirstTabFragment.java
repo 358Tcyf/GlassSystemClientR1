@@ -1,13 +1,11 @@
 package project.ys.glasssystem_r1.ui.fragment.first;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
@@ -40,6 +38,9 @@ import project.ys.glasssystem_r1.ui.fragment.first.child.PushFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtnItem;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtns;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addViews;
 
 @EFragment(R.layout.fragment_push_root)
 public class FirstTabFragment extends BaseBackFragment {
@@ -49,7 +50,6 @@ public class FirstTabFragment extends BaseBackFragment {
 
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
-    //    @ViewById(R.id.tabs)
     QMUITabSegment mTabs;
     @ViewById(R.id.pager)
     ViewPager mPager;
@@ -103,27 +103,10 @@ public class FirstTabFragment extends BaseBackFragment {
         sortBtn.setOnClickListener(v ->
                 EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSort))
         );
-        mTopBar.addRightView(addBtns(_mActivity, searchBtn, sortBtn), R.id.btn, btnLayoutParams);
+        mTopBar.addRightView(addViews(_mActivity, searchBtn, sortBtn), R.id.btn, btnLayoutParams);
 
     }
 
-    public static QMUIAlphaImageButton addBtnItem(Context context, int resId) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        QMUIAlphaImageButton btn = (QMUIAlphaImageButton) inflater.inflate(R.layout.item_topbar_btn, null);
-        btn.setImageResource(resId);
-        return btn;
-    }
-
-    public static LinearLayout addBtns(Context context, QMUIAlphaImageButton... btn) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout btns = (LinearLayout) inflater.inflate(R.layout.layout_topbar_btns, null);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        for (int i = 0; i < btn.length; i++) {
-            btns.addView(btn[i], layoutParams);
-        }
-        return btns;
-    }
 
     private HashMap<Integer, SupportFragment> mPages;
     private SupportFragment pushFragment;

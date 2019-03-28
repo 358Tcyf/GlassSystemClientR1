@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment.second.child.user_hild;
+package project.ys.glasssystem_r1.ui.fragment.second.child.child;
 
 import android.net.Uri;
 import android.os.Bundle;

@@ -15,13 +15,6 @@ public class AlarmTagView {
     public static TextView alarmValues;
 
 
-    public static View createItem(Context context) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        parent = (LinearLayout) inflater.inflate(R.layout.item_alarm_tag, null);
-        alarmValues = parent.findViewById(R.id.alarm_values);
-        return parent;
-    }
-
     public static View createItem(Context context, String values) {
         LayoutInflater inflater = LayoutInflater.from(context);
         parent = (LinearLayout) inflater.inflate(R.layout.item_alarm_tag, null);

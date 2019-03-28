@@ -35,9 +35,9 @@ import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.mvp.presenter.AddUserPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showSuccessDialog;
 
 @EFragment
 public class AddUserFragment extends BaseBackFragment implements AddUserContract.View {

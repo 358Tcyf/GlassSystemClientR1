@@ -35,8 +35,13 @@ public class PushModel implements PushContract.Model {
     }
 
     @Override
-    public List<Push> sortPushList(String receiver, String tag) {
-        return helper.sortAllPush(receiver, tag);
+    public List<Push> getPushList(String receiver,int limit) {
+        return helper.getAllPush(receiver,limit);
+    }
+
+    @Override
+    public List<Push> sortPushList(String receiver,int limit, String tag) {
+        return helper.sortAllPush(receiver,limit, tag);
     }
 
     @Override

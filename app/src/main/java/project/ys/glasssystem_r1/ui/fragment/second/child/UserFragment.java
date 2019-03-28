@@ -1,6 +1,5 @@
 package project.ys.glasssystem_r1.ui.fragment.second.child;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,13 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout;
-import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
@@ -33,8 +28,8 @@ import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SectionInfoFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.child.user_hild.SelfInfoFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.child.SectionInfoFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.child.child.SelfInfoFragment;
 
 import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;

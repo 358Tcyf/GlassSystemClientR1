@@ -15,8 +15,8 @@ import project.ys.glasssystem_r1.common.event.StartBrotherEvent;
 import project.ys.glasssystem_r1.common.event.TabSelectedEvent;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseMainFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.FirstTabFragment;
-import project.ys.glasssystem_r1.ui.fragment.second.MemberFragment;
-import project.ys.glasssystem_r1.ui.fragment.third.AboutFragment;
+import project.ys.glasssystem_r1.ui.fragment.second.SecondTabFragment;
+import project.ys.glasssystem_r1.ui.fragment.third.ThirdTabFragment;
 import project.ys.glasssystem_r1.ui.widget.bottombar.BottomBar;
 import project.ys.glasssystem_r1.ui.widget.bottombar.BottomBarTab;
 
@@ -56,8 +56,8 @@ public class HomeFragmentNew extends BaseMainFragment {
         SupportFragment firstFragment = findChildFragment(FirstTabFragment.class);
         if (firstFragment == null) {
             mFragments[FIRST] = FirstTabFragment.newInstance();
-            mFragments[SECOND] = MemberFragment.newInstance();
-            mFragments[THIRD] = AboutFragment.newInstance();
+            mFragments[SECOND] = SecondTabFragment.newInstance();
+            mFragments[THIRD] = ThirdTabFragment.newInstance();
 
             loadMultipleRootFragment(R.id.fl_tab_container, FIRST,
                     mFragments[FIRST],
@@ -65,8 +65,8 @@ public class HomeFragmentNew extends BaseMainFragment {
                     mFragments[THIRD]);
         } else {
             mFragments[FIRST] = firstFragment;
-            mFragments[SECOND] = findChildFragment(MemberFragment.class);
-            mFragments[THIRD] = findChildFragment(AboutFragment.class);
+            mFragments[SECOND] = findChildFragment(SecondTabFragment.class);
+            mFragments[THIRD] = findChildFragment(ThirdTabFragment.class);
         }
     }
 

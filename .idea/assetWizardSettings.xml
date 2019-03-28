@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/E:/Program%20Files/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_expand_less_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/E:/Program%20Files/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_close_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,11 +33,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="height" value="12" />
-                            <entry key="outputName" value="ic_expand_less_black_12dp" />
+                            <entry key="outputName" value="ic_clean" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="G:\桌面\ic_error.svg" />
-                            <entry key="width" value="12" />
                           </map>
                         </option>
                       </PersistentState>

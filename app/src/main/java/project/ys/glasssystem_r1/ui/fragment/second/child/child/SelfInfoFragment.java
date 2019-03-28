@@ -1,4 +1,4 @@
-package project.ys.glasssystem_r1.ui.fragment.second.child.user_hild;
+package project.ys.glasssystem_r1.ui.fragment.second.child.child;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -28,8 +28,6 @@ import project.ys.glasssystem_r1.ui.adapter.MenuItemQuickAdapter;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.EMAIL;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.NAME;
 import static project.ys.glasssystem_r1.common.constant.UserConstant.PHONE;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_ACCOUNT;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.USER_NAME;
 
 @EFragment(R.layout.fragment_self_detail)
 public class SelfInfoFragment extends SupportFragment implements UserDetailContract.View {

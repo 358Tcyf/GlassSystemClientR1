@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
@@ -45,10 +46,11 @@ import project.ys.glasssystem_r1.mvp.presenter.PushPresenter;
 import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
 import project.ys.glasssystem_r1.ui.fragment.common.SearchFragment;
 
+import static project.ys.glasssystem_r1.common.constant.Constant.DEFAULT_LIMIT;
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_PUSH;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showTipDialog;
 
 @EFragment(R.layout.fragment_push)
 public class PushFragment extends SupportFragment implements PushContract.View {
@@ -58,17 +60,18 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
-    TextView orderBy;
+    @ViewById(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    @ViewById(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    LayoutInflater inflater;
+    TextView listCountView;
     RelativeLayout selectBar;
     RadioButton allSelectRadio;
     QMUIRoundButton allSelectBtn;
     QMUIRoundButton deleteSelectBtn;
     QMUIRoundButton cancelSelectBtn;
 
-    @ViewById(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-    @ViewById(R.id.swipeRefresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @DrawableRes(R.drawable.ic_user_search)
     Drawable icSearch;
@@ -76,7 +79,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     Drawable icSort;
     @DrawableRes(R.drawable.ic_user_refresh)
     Drawable icRefresh;
-
 
     @StringRes(R.string.detail)
     String strDetail;
@@ -108,7 +110,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     String clickRetry;
 
 
-
     @AfterInject
     void afterInject() {
         pushPresenter = new PushPresenter(this, _mActivity);
@@ -131,7 +132,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     private boolean mInAtBottom = false;
     boolean selectShow = false;
     private UserBeanPlus currentUser;
-
+    private int limit = DEFAULT_LIMIT;
     @Override
     public void refreshView() {
         mEmptyView.show(true);
@@ -141,7 +142,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @UiThread
     void refreshComplete() {
-        pushPresenter.getList(currentUser.getNo());
+        pushPresenter.getList(currentUser.getNo(),limit);
     }
 
 
@@ -150,6 +151,27 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new PushQuickAdapter(_mActivity, selects);
         mRecyclerView.setAdapter(mAdapter);
+        int total_count = pushPresenter.getTotal(currentUser.getNo());
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mList.size() >= total_count) {
+                            //数据全部加载完毕
+                            mAdapter.loadMoreEnd();
+                        } else {
+                            //成功获取更多数据
+                            limit += DEFAULT_LIMIT;
+                            pushPresenter.getList(currentUser.getNo(), limit);
+                            mAdapter.loadMoreComplete();
+                        }
+                    }
+
+                }, 1000);
+            }
+        }, mRecyclerView);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -158,22 +180,16 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                 mInAtBottom = !mRecyclerView.canScrollVertically(1);
                 //滑动到顶部
                 mInAtTop = !mRecyclerView.canScrollVertically(-1);
+                if (mInAtBottom) {
+                    limit+=DEFAULT_LIMIT;
+                    pushPresenter.getList(currentUser.getNo(),limit);
+                }
 
             }
         });
-        LayoutInflater inflater = LayoutInflater.from(_mActivity);
-        orderBy = (TextView) inflater.inflate(R.layout.head_order, null);
-        orderBy.setText(strOrderBy + " " + sortByDate + "v");
-        orderBy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                action(0, strSort);
-            }
-        });
-        mAdapter.setHeaderView(orderBy);
+        inflater = LayoutInflater.from(_mActivity);
 
-
-        selectBar = (RelativeLayout) inflater.inflate(R.layout.head_push, null);
+        selectBar = (RelativeLayout) inflater.inflate(R.layout.head_select, null);
         allSelectRadio = selectBar.findViewById(R.id.all_select_radio);
         allSelectRadio.setEnabled(false);
         allSelectBtn = selectBar.findViewById(R.id.all_select_btn);
@@ -184,20 +200,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         deleteSelectBtn.setOnClickListener(clickListener);
         cancelSelectBtn.setOnClickListener(clickListener);
 
-        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
-            int i = position;
-            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
-                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
-                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
-                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
-                        dialog.dismiss();
-                        action(i, tag);
-                    })
-                    .build()
-                    .show();
-            return false;
-        });
         mAdapter.setOnItemClickListener(normalItemChildClickListener);
         mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
     }
@@ -228,16 +230,11 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                             pushPresenter.deleteOne(select.getPush().getId());
                         }
                     }
-                    mAdapter.toggleSelected();
-                    mAdapter.notifyDataSetChanged();
-                    mAdapter.removeAllHeaderView();
-                    mAdapter.setOnItemClickListener(normalItemChildClickListener);
-                    mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
-                    mAdapter.setHeaderView(orderBy);
-                    selectShow = false;
+                    cancelSelectBar();
                     break;
                 case R.id.cancel_btn:
                     //TODO 取消
+                    selects.clear();
                     cancelSelectBar();
                     break;
             }
@@ -248,11 +245,11 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mAdapter.toggleSelected();
         mAdapter.notifyDataSetChanged();
         mAdapter.removeAllHeaderView();
+        mAdapter.setHeaderView(listCountView);
         mAdapter.setOnItemClickListener(normalItemChildClickListener);
         mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
-        mAdapter.setHeaderView(orderBy);
-        selects.clear();
         selectShow = false;
+        pushPresenter.getList(currentUser.getNo(),limit);
     }
 
     BaseQuickAdapter.OnItemClickListener normalItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
@@ -265,17 +262,18 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     BaseQuickAdapter.OnItemLongClickListener normalItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-            int i = position;
-            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
-                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
-                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
-                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
-                        dialog.dismiss();
-                        action(i, tag);
-                    })
-                    .build()
-                    .show();
+            action(0, strManager);
+//            int i = position;
+//            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+//                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
+//                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
+//                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
+//                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
+//                        dialog.dismiss();
+//                        action(i, tag);
+//                    })
+//                    .build()
+//                    .show();
             return false;
         }
     };
@@ -311,10 +309,10 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     private void action(int i, String tag) {
         if (tag.equals(strDetail)) {
-            new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
             //TODO 查看详情
-            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(ChartsFragment.newInstance(mList.get(i))));
             setRead(mList.get(i));
+            new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(ChartsFragment.newInstance(mList.get(i))));
         }
         if (tag.equals(strDelete)) {
             //TODO 删除
@@ -338,8 +336,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                             .addItem(sortByDate)
                             .addItem(sortByRead)
                             .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
-                                orderBy.setText(strOrderBy + " " + tag1 + "v");
-                                pushPresenter.sortList(currentUser.getNo(), tag1);
+                                pushPresenter.sortList(currentUser.getNo(),limit, tag1);
                                 dialog.dismiss();
                             });
             QMUIBottomSheet sheet = builder.build();
@@ -373,6 +370,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     public void setList(ArrayList list) {
         mEmptyView.hide();
         this.mList = list;
+        this.limit = list.size();
         setList();
     }
 
@@ -383,6 +381,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             selects.add(new PushSelectedBean(false, push));
         }
         mAdapter.setNewData(selects);
+        if (listCountView == null) {
+            listCountView = (TextView) inflater.inflate(R.layout.head_count, null);
+            listCountView.setHeight(QMUIDisplayHelper.dp2px(_mActivity, 40));
+            mAdapter.setHeaderView(listCountView);
+        }
+        listCountView.setText("共 " + mList.size() + " 条");
     }
 
     @Override
@@ -397,31 +401,33 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @Subscribe
     public void onTabSelectedEvent(FirstTabSelectedEvent event) {
-        if (event.position != FIRST) return;
-        if (mInAtTop) {
-            swipeRefresh();
-        } else {
-            scrollToTop();
+        if (event.position == FIRST) {
+            if (mInAtTop) {
+                swipeRefresh();
+            } else {
+                scrollToTop();
+            }
         }
     }
 
     @Subscribe
     public void onFirstTabMenuEvent(FirstTabMenuEvent event) {
-        if (event.position != FIRST) return;
-        if (event.tag == null) return;
-        action(0, event.tag);
+        if (event.position == FIRST) {
+            if (event.tag != null)
+                action(0, event.tag);
+        }
     }
 
     @Subscribe
     public void onRefreshList(RefreshListEvent event) {
-        pushPresenter.getList(currentUser.getNo());
+        pushPresenter.getList(currentUser.getNo(),limit);
     }
 
     @UiThread
     void swipeRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
         new Handler().postDelayed(() -> {
-            pushPresenter.getList("");
+            pushPresenter.getList(currentUser.getNo(),limit);
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000);
     }
@@ -441,7 +447,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     public boolean onBackPressedSupport() {
         if (selectShow) {
             cancelSelectBar();
-            return false;
+            return true;
         } else
             return super.onBackPressedSupport();
     }

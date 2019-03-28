@@ -44,10 +44,10 @@ import static android.text.TextUtils.isEmpty;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.changeURL;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showSuccessDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showTipDialog;
 import static project.ys.glasssystem_r1.util.utils.ToastUtils.showNormalToast;
 
 @EFragment(R.layout.fragment_login_new)

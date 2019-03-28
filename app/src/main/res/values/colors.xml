@@ -32,6 +32,12 @@
     <color name="tab_unselect">#c9c9c9</color>
 
 
+    <color name="all_select">#227D51</color>
+    <color name="delete">#b84e4e</color>
+    <color name="cancel">#c9c9c9</color>
+
+
+
     <color name="color1">#365650</color>
     <color name="color2">#6A8372</color>
     <color name="color3">#227D51</color>

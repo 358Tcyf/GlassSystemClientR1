@@ -68,10 +68,10 @@ import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 import static project.ys.glasssystem_r1.util.utils.DateUtils.getNowTime;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showFailDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showLoadingDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showSuccessDialog;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showTipDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showSuccessDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showTipDialog;
 import static project.ys.glasssystem_r1.util.utils.ToastUtils.showNormalToast;
 
 @EFragment

@@ -7,9 +7,10 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.INSTANT;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.URL;
 import static project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment.PUSH;
 
-@Rest(rootUrl = HTTP + "192.168.137.161" + PORT, converters = MyConverter.class)
+@Rest(rootUrl = HTTP + URL + PORT, converters = MyConverter.class)
 public interface MyRestClient {
 
     @Get(PUSH + INSTANT + "/{alias}")

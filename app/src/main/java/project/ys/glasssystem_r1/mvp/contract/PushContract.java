@@ -12,7 +12,9 @@ public interface PushContract {
 
         List<Push> getPushList(String receiver);
 
-        List<Push> sortPushList(String receiver, String tag);
+        List<Push> getPushList(String receiver,int limit);
+
+        List<Push> sortPushList(String receiver,int limit, String tag);
 
         void setRead(Push push);
 
@@ -30,12 +32,14 @@ public interface PushContract {
     }
 
     interface Presenter {
-        void getList(String account);
+        void getList(String account,int limit);
 
-        void sortList(String account, String tag);
+        void sortList(String account,int limit, String tag);
 
         void setRead(Push push);
 
         void deleteOne(int id);
+
+        int getTotal(String account);
     }
 }

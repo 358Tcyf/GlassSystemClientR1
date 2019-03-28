@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.data.entity.Alarm;
-import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.AlarmContract;
 import project.ys.glasssystem_r1.mvp.model.AlarmModel;
 
@@ -27,8 +26,8 @@ public class AlarmPresenter implements AlarmContract.Presenter {
     }
 
     @Override
-    public void getList(String account) {
-        List<Alarm> alarmList = alarmModel.getAllAlarm(account);
+    public void getList(String account, int limit) {
+        List<Alarm> alarmList = alarmModel.getAllAlarm(account,limit);
         if (alarmList.size() == 0) {
             alarmView.refreshFail();
         } else {
@@ -37,8 +36,28 @@ public class AlarmPresenter implements AlarmContract.Presenter {
     }
 
     @Override
+    public void sortList(String account, int limit, String tag) {
+        List<Alarm> pushList = alarmModel.sortAlarmList(account,limit, tag);
+        if (pushList.size() == 0) {
+            alarmView.refreshFail();
+        } else {
+            alarmView.setList((ArrayList) pushList);
+        }
+    }
+
+    @Override
     public void setRead(Alarm alarm) {
         alarmModel.setRead(alarm);
     }
 
+    @Override
+    public void deleteOne(int id) {
+        alarmModel.deleteOne(id);
+    }
+
+    @Override
+    public int getTotal(String account) {
+        List<Alarm> alarmList = alarmModel.getAllAlarm(account);
+        return alarmList.size();
+    }
 }

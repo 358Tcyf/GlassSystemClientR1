@@ -8,8 +8,10 @@ import project.ys.glasssystem_r1.data.entity.Alarm;
 public interface AlarmContract {
     interface Model {
         List<Alarm> getAllAlarm(String receiver);
-
+        List<Alarm> getAllAlarm(String receiver, int limit);
+        List<Alarm> sortAlarmList(String receiver, int limit, String tag);
         void setRead(Alarm alarm);
+        void deleteOne(int id);
     }
 
     interface View {
@@ -23,8 +25,11 @@ public interface AlarmContract {
     }
 
     interface Presenter {
-        void getList(String account);
-
+        void getList(String account,int limit);
+        void sortList(String account,int limit, String tag);
         void setRead(Alarm alarm);
+        void deleteOne(int id);
+
+        int getTotal(String account);
     }
 }

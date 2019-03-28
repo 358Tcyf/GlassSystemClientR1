@@ -1,15 +1,11 @@
 package project.ys.glasssystem_r1.ui.fragment.second;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
 import com.qmuiteam.qmui.widget.QMUIEmptyView;
@@ -49,21 +45,22 @@ import project.ys.glasssystem_r1.ui.fragment.third.child.UserEditFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_USER;
-import static project.ys.glasssystem_r1.util.utils.TipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtnItem;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addViews;
 
 @EFragment(R.layout.fragment_member)
-public class MemberFragment extends SupportFragment implements MemberContract.View {
+public class SecondTabFragment extends SupportFragment implements MemberContract.View {
 
-    public static MemberFragment newInstance() {
-        return new MemberFragment_();
+    public static SecondTabFragment newInstance() {
+        return new SecondTabFragment_();
     }
 
     @ViewById(R.id.topBar)
     QMUITopBarLayout mTopBar;
     @ViewById(R.id.emptyView)
     QMUIEmptyView mEmptyView;
-    @ViewById(R.id.order_by)
-    TextView orderBy;
+
     @ViewById(R.id.indexableLayout)
     IndexableLayout indexableLayout;
 
@@ -151,34 +148,16 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
         searchUser.setOnClickListener(v -> action(null, strSearch));
         sortBtn.setOnClickListener(v -> action(null, strSort));
         if (currentUser.getNo().startsWith("A"))
-            mTopBar.addRightView(addBtns(_mActivity, addUser, searchUser, sortBtn), R.id.btn, layoutParams);
+            mTopBar.addRightView(addViews(_mActivity, addUser, searchUser, sortBtn), R.id.btn, layoutParams);
         else
-            mTopBar.addRightView(addBtns(_mActivity, searchUser, sortBtn), R.id.btn, layoutParams);
+            mTopBar.addRightView(addViews(_mActivity, searchUser, sortBtn), R.id.btn, layoutParams);
     }
 
-    public static QMUIAlphaImageButton addBtnItem(Context context, int resId) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        QMUIAlphaImageButton btn = (QMUIAlphaImageButton) inflater.inflate(R.layout.item_topbar_btn, null);
-        btn.setImageResource(resId);
-        return btn;
-    }
 
-    public static LinearLayout addBtns(Context context, QMUIAlphaImageButton... btn) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout btns = (LinearLayout) inflater.inflate(R.layout.layout_topbar_btns, null);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        for (int i = 0; i < btn.length; i++) {
-            btns.addView(btn[i], layoutParams);
-        }
-        return btns;
-    }
 
 
     private void initOrder() {
         order = orderByName;
-        orderBy.setText(strOrderBy + " " + order + "v");
-        orderBy.setOnClickListener(v -> action(null, strSort));
     }
 
     private void initAdapter() {
@@ -243,7 +222,6 @@ public class MemberFragment extends SupportFragment implements MemberContract.Vi
                             .addItem(orderByRole)
                             .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
                                 order = tag1;
-                                orderBy.setText(strOrderBy + " " + order + "v");
                                 memberPresenter.userList();
                                 dialog.dismiss();
                             });

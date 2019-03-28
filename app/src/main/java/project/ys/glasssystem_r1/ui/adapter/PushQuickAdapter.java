@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.util.ArrayList;
 
@@ -54,11 +53,7 @@ public class PushQuickAdapter extends BaseQuickAdapter<PushSelectedBean, BaseVie
         }
         helper.setEnabled(R.id.push_selected, false);
         helper.setChecked(R.id.push_selected, item.isSelected());
-        if (showSelected) {
-            helper.setGone(R.id.push_selected, true);
-        } else {
-            helper.setGone(R.id.push_selected, false);
-        }
+        helper.setGone(R.id.push_selected, showSelected);
     }
 
     public void toggleSelected() {

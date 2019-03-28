@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/qmui_config_color_white"
+    android:foreground="?attr/selectableItemBackground">
+
+
+    <ImageView
+        android:id="@+id/icon_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:src="@drawable/ic_record" />
 
     <TextView
         android:id="@+id/item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/icon_clean"
+        android:layout_toEndOf="@id/icon_record"
         android:foreground="?attr/selectableItemBackground"
-        android:paddingStart="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
+        android:padding="@dimen/dp_12"
         android:text="@string/search"
         android:textSize="@dimen/item_text_size" />
+
+
+    <ImageView
+        android:id="@+id/icon_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:src="@drawable/ic_clean" />
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_alignStart="@id/item_text"
-        android:layout_alignEnd="@id/item_text"
         android:layout_alignBottom="@id/item_text"
-        android:background="@color/qmui_config_color_black" />
+        android:background="@color/qmui_config_color_gray_3" />
 
 </RelativeLayout>

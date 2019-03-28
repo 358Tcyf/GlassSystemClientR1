@@ -85,35 +85,86 @@ public class DatabaseHelper {
         return (ArrayList<Push>) list;
     }
 
+    public ArrayList<Push> getAllPush(String receiver, int limit) {
+        List<Push> list = pushDao.getAll(receiver, limit);
+        return (ArrayList<Push>) list;
+    }
+
     public ArrayList<Alarm> getAllAlarm(String receiver) {
         List<Alarm> list = alarmDao.getAll(receiver);
         return (ArrayList<Alarm>) list;
     }
 
+    public ArrayList<Alarm> getAllAlarm(String receiver, int limit) {
+        List<Alarm> list = alarmDao.getAll(receiver,limit);
+        return (ArrayList<Alarm>) list;
+    }
+
     public ArrayList<Push> searchPush(String receiver, String order, String searchText) {
         List<Push> list = new ArrayList<>();
-        Logger.d(order);
-        Logger.d(searchText);
         if (order.equals(context.getString(R.string.sort_by_date))) {
-            Logger.d(order);
-            list = pushDao.findWithReceiverAndSearchText(receiver,"%" + searchText + "%");
+            list = pushDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%");
         }
         if (order.equals(context.getString(R.string.sort_by_read))) {
             Logger.d(order);
-            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver,"%" + searchText + "%");
+            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%");
         }
         return (ArrayList<Push>) list;
     }
 
-    public ArrayList<Push> sortAllPush(String receiver, String order) {
+    public ArrayList<Push> searchPush(String receiver, String order, String searchText,int limit) {
         List<Push> list = new ArrayList<>();
-        if (order.equals(context.getString(R.string.sort_by_date)))
-            list = pushDao.getAll(receiver);
-        if (order.equals(context.getString(R.string.sort_by_read)))
-            list = pushDao.getAllByRead(receiver);
+        if (order.equals(context.getString(R.string.sort_by_date))) {
+            list = pushDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%",limit);
+        }
+        if (order.equals(context.getString(R.string.sort_by_read))) {
+            Logger.d(order);
+            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%",limit);
+        }
         return (ArrayList<Push>) list;
     }
 
+    public ArrayList<Alarm> searchAlarm(String receiver, String order, String searchText) {
+        List<Alarm> list = new ArrayList<>();
+        if (order.equals(context.getString(R.string.sort_by_date))) {
+            list = alarmDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%");
+        }
+        if (order.equals(context.getString(R.string.sort_by_read))) {
+            Logger.d(order);
+            list = alarmDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%");
+        }
+        return (ArrayList<Alarm>) list;
+    }
+
+    public ArrayList<Alarm> searchAlarm(String receiver, String order, String searchText,int limit) {
+        List<Alarm> list = new ArrayList<>();
+        if (order.equals(context.getString(R.string.sort_by_date))) {
+            list = alarmDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%",limit);
+        }
+        if (order.equals(context.getString(R.string.sort_by_read))) {
+            Logger.d(order);
+            list = alarmDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%",limit);
+        }
+        return (ArrayList<Alarm>) list;
+    }
+
+    public ArrayList<Push> sortAllPush(String receiver, int limit, String order) {
+        List<Push> list = new ArrayList<>();
+        if (order.equals(context.getString(R.string.sort_by_date)))
+            list = pushDao.getAll(receiver, limit);
+        if (order.equals(context.getString(R.string.sort_by_read)))
+            list = pushDao.getAllByRead(receiver, limit);
+        return (ArrayList<Push>) list;
+    }
+
+    public ArrayList<Alarm> sortAllAlarm(String receiver, int limit, String order) {
+        List<Alarm> list = new ArrayList<>();
+        if (order.equals(context.getString(R.string.sort_by_date)))
+            list = alarmDao.getAll(receiver,limit);
+        if (order.equals(context.getString(R.string.sort_by_read)))
+            list = alarmDao.getAllByRead(receiver,limit);
+        return (ArrayList<Alarm>) list;
+    }
 
     public static void showDebugDBAddressLogToast(CustomerApp app) {
         if (BuildConfig.DEBUG) {
@@ -143,7 +194,6 @@ public class DatabaseHelper {
     }
 
 
-
     public void setDefault(Push push, String submenu) {
         push.setDefaultSubMenu(submenu);
         Logger.d("///" + push);
@@ -153,6 +203,10 @@ public class DatabaseHelper {
 
     public void deletePush(int id) {
         pushDao.delete(pushDao.findById(id));
+    }
+
+    public void deleteAlarm(int id) {
+        alarmDao.delete(alarmDao.findById(id));
     }
 
     public void insertSearch(String record) {
@@ -174,4 +228,7 @@ public class DatabaseHelper {
         return fiveRecord;
     }
 
+    public void deleteRecord(SearchRecord searchRecord) {
+       searchDao.delete(searchRecord);
+    }
 }

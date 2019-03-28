@@ -111,7 +111,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
 
     @Override
     public void setOrientation(int orientation) {
-        if (LinearLayout.HORIZONTAL == orientation) {
+        if (LinearLayout.VERTICAL == orientation) {
             throw new IllegalArgumentException("ExpandableTextView only supports Vertical Orientation.");
         }
         super.setOrientation(orientation);
@@ -264,7 +264,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
 
         LayoutInflater.from(context).inflate(R.layout.expandabletextview, this, true);
         // enforces vertical orientation
-        setOrientation(LinearLayout.VERTICAL);
+        setOrientation(LinearLayout.HORIZONTAL);
 
         // default visibility is gone
         setVisibility(GONE);
@@ -302,27 +302,36 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
     }
 
     private void findViews() {
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1);
+
         mTv = (TextView) findViewById(R.id.expandable_text);
+        mTv.setLayoutParams(textParams);
+
         mTv.setTextColor(mContentTextColor);
         mTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContentTextSize);
         mTv.setLineSpacing(0, mContentLineSpacingMultiplier);
         mTv.setOnClickListener(this);
 
         mStateTv = (TextView) findViewById(R.id.expand_collapse);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams stateParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         if (mStateTvGravity == STATE_TV_GRAVITY_LEFT) {
-            params.gravity = Gravity.START;
+            stateParams.gravity = Gravity.START;
         } else if (mStateTvGravity == STATE_TV_GRAVITY_CENTER) {
-            params.gravity = Gravity.CENTER_HORIZONTAL;
+            stateParams.gravity = Gravity.CENTER_HORIZONTAL;
         } else if (mStateTvGravity == STATE_TV_GRAVITY_RIGHT) {
-            params.gravity = Gravity.END;
+            stateParams.gravity = Gravity.END;
         }
-        mStateTv.setLayoutParams(params);
+        mStateTv.setLayoutParams(stateParams);
         mStateTv.setText(mCollapsed ? mExpandString : mCollapsedString);
         mStateTv.setTextColor(mStateTextColor);
         mStateTv.setCompoundDrawablesWithIntrinsicBounds(mCollapsed ? mExpandDrawable : mCollapseDrawable, null, null, null);
         mStateTv.setCompoundDrawablePadding(10);
         mStateTv.setOnClickListener(this);
+    }
+
+    public void setSateTextColor(int color) {
+        mStateTextColor = color;
+        mStateTv.setTextColor(mStateTextColor);
     }
 
     private static boolean isPostLolipop() {
