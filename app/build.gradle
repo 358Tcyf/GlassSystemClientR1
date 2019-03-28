@@ -1,15 +1,19 @@
-apply plugin: 'com.android.application'
+if (isLibrary) {
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.mob.sdk'
 //apply plugin: 'fastdex.app'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.358Tcyf'
+group = 'com.github.358Tcyf'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "project.ys.glasssystem_r1"
+//        applicationId "project.ys.glasssystem_r1"
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
