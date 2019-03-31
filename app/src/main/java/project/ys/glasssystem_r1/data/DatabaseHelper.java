@@ -196,8 +196,6 @@ public class DatabaseHelper {
 
     public void setDefault(Push push, String submenu) {
         push.setDefaultSubMenu(submenu);
-        Logger.d("///" + push);
-
         pushDao.update(push);
     }
 

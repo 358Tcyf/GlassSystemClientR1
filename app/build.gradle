@@ -1,8 +1,4 @@
-if (isLibrary) {
-    apply plugin: 'com.android.library'
-} else {
     apply plugin: 'com.android.application'
-}
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -192,5 +188,9 @@ dependencies {
     /*一个强大且全面的图片加载器*/
     implementation "me.panpf:sketch:$sketch_version"
 
+    /*英菲尼迪ViewPager*/
+    implementation 'com.github.devlight:infinitecycleviewpager:1.0.2'
 
+    /*alibaba ViewPager*/
+    implementation 'com.alibaba.android:ultraviewpager:1.0.7.8'
 }

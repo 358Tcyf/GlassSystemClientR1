@@ -15,6 +15,7 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.SubMenuSelectedEvent;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
+import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreBarChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyBarChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonPieChart;
@@ -27,29 +28,11 @@ import static project.ys.glasssystem_r1.data.entity.BaseChart.ring_chart;
 @EFragment(R.layout.fragment_content_main)
 public class ChartContentFragment extends BaseBackFragment {
 
-    public static ChartContentFragment newInstance() {
-        Bundle args = new Bundle();
-        ChartContentFragment fragment = new ChartContentFragment_();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     private static final String ARG_MENU = "arg_menu";
-    private HashMap<Integer, BaseBackFragment> mFragments;
-    private HashMap<BaseChart, BaseBackFragment> fragments;
-    //    private int position;
-//    private int prePosition;
+    private HashMap<BaseChart, CommonChartFragment> mFragments;
     private BaseChart mBaseChart;
     private BaseChart preSBaseChart;
-
-
-    public static ChartContentFragment newInstance(int itemId) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_MENU, itemId);
-        ChartContentFragment fragment = new ChartContentFragment_();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public static ChartContentFragment newInstance(BaseChart baseChart) {
         Bundle args = new Bundle();
@@ -63,7 +46,6 @@ public class ChartContentFragment extends BaseBackFragment {
     void afterInject() {
         Bundle args = getArguments();
         if (args != null) {
-//            position = args.getInt(ARG_MENU);
             mBaseChart = args.getParcelable(ARG_MENU);
         }
 
@@ -73,23 +55,19 @@ public class ChartContentFragment extends BaseBackFragment {
     @AfterViews
     void afterViews() {
         mFragments = new HashMap<>();
-        fragments = new HashMap<>();
         initContentFragment();
     }
 
     @UiThread
     void initContentFragment() {
-//        BaseBackFragment fragment = chartsContent(position);
-        BaseBackFragment fragment = chartsContent(mBaseChart);
-        fragments.put(mBaseChart, fragment);
-//        mFragments.put(position, fragment);
+        CommonChartFragment fragment = chartsContent(mBaseChart);
+        mFragments.put(mBaseChart, fragment);
         loadRootFragment(R.id.fl_content_container, fragment);
     }
 
 
-
-    private BaseBackFragment chartsContent(BaseChart baseChart) {
-        BaseBackFragment fragment = null;
+    private CommonChartFragment chartsContent(BaseChart baseChart) {
+        CommonChartFragment fragment = null;
         switch (baseChart.getChart_type()) {
             case line_chart:
                 break;
@@ -110,46 +88,27 @@ public class ChartContentFragment extends BaseBackFragment {
     }
 
 
-//    @Subscribe
-//    public void onMenuSelectedEvent(MenuSelectedEvent event) {
-//        prePosition = position;
-//        position = event.position;
-//        switchContentFragment();
-//    }
-
     @Subscribe
     public void onSubMenuSelectedEvent(SubMenuSelectedEvent event) {
         mBaseChart = event.chart;
         switchChartsFragment();
     }
 
-//    private void switchContentFragment() {
-//        if (position == prePosition) {
-//            return;
-//        }
-//        if (mFragments.get(position) != null) {
-//            showHideFragment(mFragments.get(position), mFragments.get(prePosition));
-//            loadRootFragment(R.id.fl_content_container, mFragments.get(position));
-//        } else {
-//            BaseBackFragment fragment = chartsContent(position);
-//            mFragments.put(position, fragment);
-//            loadRootFragment(R.id.fl_content_container, fragment);
-//        }
-//    }
-
 
     private void switchChartsFragment() {
         if (mBaseChart.equals(preSBaseChart)) {
             return;
-        }
-        if (mFragments.get(mBaseChart) != null) {
-            showHideFragment(mFragments.get(mBaseChart), mFragments.get(preSBaseChart));
-            loadRootFragment(R.id.fl_content_container, mFragments.get(mBaseChart));
         } else {
-            BaseBackFragment fragment = chartsContent(mBaseChart);
-            fragments.put(mBaseChart, fragment);
+            preSBaseChart = mBaseChart;
+        }
+        if (mFragments.get(mBaseChart) != null && mFragments.get(preSBaseChart) != null) {
+            showHideFragment(mFragments.get(mBaseChart), mFragments.get(preSBaseChart));
+        } else {
+            CommonChartFragment fragment = chartsContent(mBaseChart);
+            mFragments.put(mBaseChart, fragment);
             loadRootFragment(R.id.fl_content_container, fragment);
         }
+
     }
 
     @Override

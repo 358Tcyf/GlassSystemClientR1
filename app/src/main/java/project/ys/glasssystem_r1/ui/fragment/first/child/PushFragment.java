@@ -155,21 +155,28 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mRecyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mList.size() >= total_count) {
-                            //数据全部加载完毕
-                            mAdapter.loadMoreEnd();
-                        } else {
-                            //成功获取更多数据
-                            limit += DEFAULT_LIMIT;
-                            pushPresenter.getList(currentUser.getNo(), limit);
-                            mAdapter.loadMoreComplete();
+                if (mList.size() >= total_count) {
+                    //数据全部加载完毕
+                    mAdapter.loadMoreEnd();
+                }
+                else {
+                    mRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mList.size() >= total_count) {
+                                //数据全部加载完毕
+                                mAdapter.loadMoreEnd();
+                            } else {
+                                //成功获取更多数据
+                                limit += DEFAULT_LIMIT;
+                                pushPresenter.getList(currentUser.getNo(), limit);
+                                mAdapter.loadMoreComplete();
+                            }
                         }
-                    }
 
-                }, 1000);
+                    }, 2000);
+                }
+
             }
         }, mRecyclerView);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -312,7 +319,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             //TODO 查看详情
             setRead(mList.get(i));
             new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
-            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(ChartsFragment.newInstance(mList.get(i))));
+            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PagersFragment.newInstance(mList.get(i))));
         }
         if (tag.equals(strDelete)) {
             //TODO 删除

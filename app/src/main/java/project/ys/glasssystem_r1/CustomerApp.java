@@ -47,7 +47,7 @@ public class CustomerApp extends Application {
     public void onCreate() {
         super.onCreate();
         _instance = this;
-//        initFragmentation();
+        initFragmentation();
         initGlobeActivity();
         initMMKV();
         initLogger();

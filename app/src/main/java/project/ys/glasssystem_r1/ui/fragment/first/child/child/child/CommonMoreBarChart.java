@@ -17,10 +17,11 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
+import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.util.managers.BarChartManager;
 
 @EFragment(R.layout.fragment_chart_bar)
-public class CommonMoreBarChart extends BaseBackFragment {
+public class CommonMoreBarChart extends CommonChartFragment {
 
     private static final String ARG_CHART = "arg_chart";
     private BaseChart mBaseChart;

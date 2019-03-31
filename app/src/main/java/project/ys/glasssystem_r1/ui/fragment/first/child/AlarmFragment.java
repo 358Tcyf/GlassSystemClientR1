@@ -122,21 +122,27 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mRecyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mList.size() >= total_count) {
-                            //数据全部加载完毕
-                            mAdapter.loadMoreEnd();
-                        } else {
-                            //成功获取更多数据
-                            limit += DEFAULT_LIMIT;
-                            alarmPresenter.getList(currentUser.getNo(), limit);
-                            mAdapter.loadMoreComplete();
+                if (mList.size() >= total_count) {
+                    //数据全部加载完毕
+                    mAdapter.loadMoreEnd();
+                }
+                else {
+                    mRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mList.size() >= total_count) {
+                                //数据全部加载完毕
+                                mAdapter.loadMoreEnd();
+                            } else {
+                                //成功获取更多数据
+                                limit += DEFAULT_LIMIT;
+                                alarmPresenter.getList(currentUser.getNo(), limit);
+                                mAdapter.loadMoreComplete();
+                            }
                         }
-                    }
 
-                }, 1000);
+                    }, 2000);
+                }
             }
         }, mRecyclerView);
         mAdapter.setOnItemClickListener(normalItemChildClickListener);

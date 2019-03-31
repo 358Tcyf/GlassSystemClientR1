@@ -11,5 +11,5 @@ public class Constant {
     public static final int EIGHTH = 7;
     public static final int NINTH = 8;
     public static final int TENTH = 9;
-    public static final int DEFAULT_LIMIT = 6;
+    public static final int DEFAULT_LIMIT = 5;
 }

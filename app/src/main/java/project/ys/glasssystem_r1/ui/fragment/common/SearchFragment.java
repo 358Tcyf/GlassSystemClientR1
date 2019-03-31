@@ -48,6 +48,7 @@ import project.ys.glasssystem_r1.ui.adapter.SearchRecordQuickAdapter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
+import project.ys.glasssystem_r1.ui.fragment.first.child.PagersFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.DEFAULT_LIMIT;
@@ -302,7 +303,7 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
             new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
             //TODO 查看详情
             if (searchClass == SEARCH_PUSH) {
-                EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(ChartsFragment.newInstance(pushList.get(i))));
+                EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PagersFragment.newInstance(pushList.get(i))));
                 setRead(pushList.get(i));
             }
         }
