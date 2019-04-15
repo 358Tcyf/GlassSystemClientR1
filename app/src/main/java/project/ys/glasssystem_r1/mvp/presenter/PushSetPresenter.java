@@ -29,7 +29,7 @@ public class PushSetPresenter implements PushSetContract.Presenter {
     public PushSetPresenter(PushSetContract.View pushSetView, Context context) {
         this.pushSetView = pushSetView;
         this.mContext = context;
-        pushSetModel = new PushSetModel();
+        pushSetModel = new PushSetModel(context);
     }
 
     final String[] items = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};

@@ -47,7 +47,6 @@ import project.ys.glasssystem_r1.ui.adapter.PushQuickAdapter;
 import project.ys.glasssystem_r1.ui.adapter.SearchRecordQuickAdapter;
 import project.ys.glasssystem_r1.ui.adapter.UserPinyinAdapter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
-import project.ys.glasssystem_r1.ui.fragment.first.child.ChartsFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.PagersFragment;
 import project.ys.glasssystem_r1.ui.fragment.second.child.UserFragment;
 
@@ -304,7 +303,6 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
             //TODO 查看详情
             if (searchClass == SEARCH_PUSH) {
                 EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PagersFragment.newInstance(pushList.get(i))));
-                setRead(pushList.get(i));
             }
         }
     }
@@ -316,9 +314,6 @@ public class SearchFragment extends BaseBackFragment implements SearchContract.V
         }
     }
 
-    private void setRead(Push push) {
-        searchPresenter.setRead(push);
-    }
 
     @Override
     public void showNoData() {

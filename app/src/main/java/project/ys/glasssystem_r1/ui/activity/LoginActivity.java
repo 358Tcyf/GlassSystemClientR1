@@ -2,6 +2,8 @@ package project.ys.glasssystem_r1.ui.activity;
 
 import android.annotation.SuppressLint;
 
+import com.gyf.barlibrary.ImmersionBar;
+
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

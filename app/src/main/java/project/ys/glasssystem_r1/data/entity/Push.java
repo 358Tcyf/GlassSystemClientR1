@@ -42,6 +42,8 @@ public class Push extends BaseEntity implements Parcelable {
     @ColumnInfo(name = "receiver_haveRead")
     private boolean haveRead;
 
+
+
     protected Push(Parcel in) {
         title = in.readString();
         content = in.readString();

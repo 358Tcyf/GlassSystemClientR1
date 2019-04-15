@@ -21,6 +21,8 @@ import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.ui.activity.HomeActivity_;
 import project.ys.glasssystem_r1.ui.activity.LoginActivity_;
 
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
+
 @EFragment(R.layout.fragment_splash)
 public class SplashFragment extends SupportFragment {
     public static SplashFragment newInstance() {
@@ -66,14 +68,17 @@ public class SplashFragment extends SupportFragment {
         });
     }
 
-
-    @Click(R.id.loginBtn)
-    public void loginBtn() {
+    @Click(R.id.skipBtn)
+    void skipBtn() {
         UserBeanPlus user = CustomerApp.getInstance().getCurrentUser();
         if (user == null)
             toLogin();
         else
             toHome();
+    }
+    @Click(R.id.loginBtn)
+    public void loginBtn() {
+        toLogin();
     }
 
 

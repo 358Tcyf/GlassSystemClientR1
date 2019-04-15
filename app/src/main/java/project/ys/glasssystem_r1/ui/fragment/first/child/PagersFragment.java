@@ -4,14 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
-import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import org.androidannotations.annotations.AfterInject;
@@ -19,14 +20,17 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.ColorRes;
+import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.common.event.RefreshListEvent;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.mvp.contract.ChartContract;
@@ -47,7 +51,6 @@ import static project.ys.glasssystem_r1.data.entity.Push.PUSH_CHARTS;
 
 @EFragment
 public class PagersFragment extends BaseBackFragment implements ChartContract.View {
-
 
     public static final String PUSH = "push";
     public static final String PUSH_CONTENT = "push_content";
@@ -73,10 +76,17 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
     @ColorRes(R.color.colorText_Icon)
     int topbarText;
 
+    @StringRes(R.string.cancel)
+    String cancel;
+
+    @StringRes(R.string.ok)
+    String ok;
+
     private Push push;
     private String content;
     private List<BaseChart> charts = new ArrayList<>();
     private List<String> subMenus = new ArrayList<>();
+    private HashMap<String, Boolean> isBrowses = new HashMap<>();
 
     private String defaultSubMenu;
     private ChartPresenter chartPresenter;
@@ -84,10 +94,13 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
     private List<CommonChartFragment> mFragments = new ArrayList<>();
     private BaseChart mBaseChart;
     private BaseChart preSBaseChart;
+    private UserBeanPlus currentUser;
 
     @AfterInject
     void afterInject() {
         chartPresenter = new ChartPresenter(this, _mActivity);
+        currentUser = CustomerApp.getInstance().getCurrentUser();
+        chartPresenter.getTags(currentUser.getNo());
         push = getArguments().getParcelable(PUSH);
         if (push != null) {
             content = getArguments().getString(PUSH_CONTENT);
@@ -141,6 +154,20 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         };
         mUltraViewPager.setScrollMode(UltraViewPager.ScrollMode.VERTICAL);
         mUltraViewPager.setAdapter(mPageAdapter);
+        mUltraViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                isBrowses.put(subMenus.get(i), true);
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
 
     }
 
@@ -183,15 +210,52 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         return fragment;
     }
 
+    private String[] push_charts = new String[4];
 
     void sortCharts() {
+        String temp = null;
+        for (int i = 0; i < 4; i++) {
+            if (PUSH_CHARTS[i].equals(defaultSubMenu)) {
+                push_charts[0] = PUSH_CHARTS[i];
+            }
+        }
         for (int i = 0; i < 4; i++)
             for (BaseChart chart : charts) {
                 if (chart.getSubmenu().equals(PUSH_CHARTS[i])) {
                     subMenus.add(chart.getSubmenu());
                     mFragments.add(chartsContent(chart));
+                    isBrowses.put(PUSH_CHARTS[i], false);
                 }
             }
+
+//         if(!push.isHaveRead())
+        chartPresenter.cutFirst(currentUser.getNo(), subMenus);
     }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        //         if(!push.isHaveRead())
+        for (String tag : subMenus) {
+            if (isBrowses.get(tag)) {
+                chartPresenter.addOne(currentUser.getNo(), tag);
+            }
+        }
+        chartPresenter.checkCount(currentUser.getNo(), subMenus);
+        chartPresenter.setRead(push);
+        EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent());
+        return super.onBackPressedSupport();
+    }
+
+    @Override
+    public void showTips(String tipMsg) {
+        QMUIDialog.CheckBoxMessageDialogBuilder logoutDailog = new QMUIDialog.CheckBoxMessageDialogBuilder(_mActivity);
+        logoutDailog.setTitle(tipMsg)
+                .setMessage("不再提示")
+                .setChecked(false)
+                .addAction(cancel, (dialog, index) -> dialog.dismiss())
+                .addAction(ok, (dialog, index) -> {
+
+                    dialog.dismiss();
+                }).show();
+    }
 }

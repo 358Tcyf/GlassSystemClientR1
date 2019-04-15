@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog;
-import com.applikeysolutions.cosmocalendar.dialog.OnDaysSelectionListener;
-import com.applikeysolutions.cosmocalendar.model.Day;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -142,7 +140,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     void afterInject() {
         currentUser = CustomerApp.getInstance().getCurrentUser();
         currentSet = CustomerApp.getInstance().getPushSet();
-        pushSetPresenter = new PushSetPresenter(this);
+        pushSetPresenter = new PushSetPresenter(this, _mActivity);
     }
 
     @AfterViews
@@ -386,7 +384,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     private void deleteTag(String content) {
         deleteOneTag(content);
         createSection3();
-        if (alarmTags.size() >=0) {
+        if (alarmTags.size() >= 0) {
             pushSetPresenter.uploadAlarmTags(currentUser.getNo(), alarmTags);
         }
     }
@@ -436,29 +434,26 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     }
 
     private void showDateChoice() {
-        CalendarDialog calendarDialog = new CalendarDialog(_mActivity, new OnDaysSelectionListener() {
-            @Override
-            public void onDaysSelected(List<Day> selectedDays) {
-                if (selectedDays != null) {
-                    if (selectedDays.size() > 0) {
-                        Date start = selectedDays.get(0).getCalendar().getTime();
-                        Date end = selectedDays.get(selectedDays.size() - 1).getCalendar().getTime();
-                        start.setHours(0);
-                        start.setMinutes(0);
-                        start.setSeconds(0);
-                        end.setHours(23);
-                        end.setMinutes(59);
-                        end.setSeconds(59);
-                        currentSet.setStart(start.getTime());
-                        currentSet.setEnd(end.getTime());
-                        CustomerApp.getInstance().setPushSet(currentSet);
-                        loading = showLoadingDialog(getContext(), saving);
-                        loading.show();
-                        pushSetPresenter.updateSets(currentUser.getNo(), currentSet);
-                    }
+        CalendarDialog calendarDialog = new CalendarDialog(_mActivity, selectedDays -> {
+            if (selectedDays != null) {
+                if (selectedDays.size() > 0) {
+                    Date start = selectedDays.get(0).getCalendar().getTime();
+                    Date end = selectedDays.get(selectedDays.size() - 1).getCalendar().getTime();
+                    start.setHours(0);
+                    start.setMinutes(0);
+                    start.setSeconds(0);
+                    end.setHours(23);
+                    end.setMinutes(59);
+                    end.setSeconds(59);
+                    currentSet.setStart(start.getTime());
+                    currentSet.setEnd(end.getTime());
+                    CustomerApp.getInstance().setPushSet(currentSet);
+                    loading = showLoadingDialog(getContext(), saving);
+                    loading.show();
+                    pushSetPresenter.updateSets(currentUser.getNo(), currentSet);
                 }
-
             }
+
         });
         calendarDialog.show();
         calendarDialog.setSelectionType(RANGE);
@@ -468,6 +463,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         for (long i = currentSet.getStart() / 1000; i < currentSet.getEnd() / 1000; i += 86400)
             longs.add(i * 1000);
         calendarDialog.setConnectedCalendarDays(longs);
+        calendarDialog.setConnectedDayTextColor(_mActivity.getColor(R.color.colorPrimaryDark));
     }
 
     private void showTimeChoice() {

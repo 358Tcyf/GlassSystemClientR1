@@ -16,9 +16,11 @@ import project.ys.glasssystem_r1.BuildConfig;
 import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.dao.AlarmDao;
+import project.ys.glasssystem_r1.data.dao.BrowseCountDao;
 import project.ys.glasssystem_r1.data.dao.PushDao;
 import project.ys.glasssystem_r1.data.dao.SearchRecordDao;
 import project.ys.glasssystem_r1.data.entity.Alarm;
+import project.ys.glasssystem_r1.data.entity.BrowseCount;
 import project.ys.glasssystem_r1.data.entity.Push;
 import project.ys.glasssystem_r1.data.entity.SearchRecord;
 
@@ -30,6 +32,7 @@ public class DatabaseHelper {
     private PushDao pushDao;
     private AlarmDao alarmDao;
     private SearchRecordDao searchDao;
+    private BrowseCountDao browseCountDao;
 
     public DatabaseHelper(Context context) {
         this.context = context;
@@ -55,6 +58,7 @@ public class DatabaseHelper {
         pushDao = giisDatabase.pushDao();
         alarmDao = giisDatabase.alarmDao();
         searchDao = giisDatabase.searchDao();
+        browseCountDao = giisDatabase.browseCountDao();
     }
 
     public PushDao getPushDao() {
@@ -69,6 +73,9 @@ public class DatabaseHelper {
         return searchDao;
     }
 
+    public BrowseCountDao getBrowseCountDao() {
+        return browseCountDao;
+    }
 
     public void insertPush(Push push) {
         pushDao.insert(push);
@@ -96,7 +103,7 @@ public class DatabaseHelper {
     }
 
     public ArrayList<Alarm> getAllAlarm(String receiver, int limit) {
-        List<Alarm> list = alarmDao.getAll(receiver,limit);
+        List<Alarm> list = alarmDao.getAll(receiver, limit);
         return (ArrayList<Alarm>) list;
     }
 
@@ -112,14 +119,14 @@ public class DatabaseHelper {
         return (ArrayList<Push>) list;
     }
 
-    public ArrayList<Push> searchPush(String receiver, String order, String searchText,int limit) {
+    public ArrayList<Push> searchPush(String receiver, String order, String searchText, int limit) {
         List<Push> list = new ArrayList<>();
         if (order.equals(context.getString(R.string.sort_by_date))) {
-            list = pushDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%",limit);
+            list = pushDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%", limit);
         }
         if (order.equals(context.getString(R.string.sort_by_read))) {
             Logger.d(order);
-            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%",limit);
+            list = pushDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%", limit);
         }
         return (ArrayList<Push>) list;
     }
@@ -136,14 +143,14 @@ public class DatabaseHelper {
         return (ArrayList<Alarm>) list;
     }
 
-    public ArrayList<Alarm> searchAlarm(String receiver, String order, String searchText,int limit) {
+    public ArrayList<Alarm> searchAlarm(String receiver, String order, String searchText, int limit) {
         List<Alarm> list = new ArrayList<>();
         if (order.equals(context.getString(R.string.sort_by_date))) {
-            list = alarmDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%",limit);
+            list = alarmDao.findWithReceiverAndSearchText(receiver, "%" + searchText + "%", limit);
         }
         if (order.equals(context.getString(R.string.sort_by_read))) {
             Logger.d(order);
-            list = alarmDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%",limit);
+            list = alarmDao.findWithReceiverAndSearchTextOrderByRead(receiver, "%" + searchText + "%", limit);
         }
         return (ArrayList<Alarm>) list;
     }
@@ -160,9 +167,9 @@ public class DatabaseHelper {
     public ArrayList<Alarm> sortAllAlarm(String receiver, int limit, String order) {
         List<Alarm> list = new ArrayList<>();
         if (order.equals(context.getString(R.string.sort_by_date)))
-            list = alarmDao.getAll(receiver,limit);
+            list = alarmDao.getAll(receiver, limit);
         if (order.equals(context.getString(R.string.sort_by_read)))
-            list = alarmDao.getAllByRead(receiver,limit);
+            list = alarmDao.getAllByRead(receiver, limit);
         return (ArrayList<Alarm>) list;
     }
 
@@ -227,6 +234,45 @@ public class DatabaseHelper {
     }
 
     public void deleteRecord(SearchRecord searchRecord) {
-       searchDao.delete(searchRecord);
+        searchDao.delete(searchRecord);
+    }
+
+    public void insertBrowseCount(String tag, int count, String receiver) {
+        if (cutOne(receiver, tag)) {
+            BrowseCount browseCount = browseCountDao.findByNoAndTag(receiver, tag);
+            browseCount.setCount(5);
+            browseCountDao.update(browseCount);
+        } else {
+            BrowseCount browseCount = new BrowseCount(tag, count, receiver);
+            browseCountDao.insert(browseCount);
+        }
+
+    }
+
+    public boolean cutOne(String receiver, String tag) {
+        if (browseCountDao.findByNoAndTag(receiver, tag) == null)
+            return false;
+        else {
+            BrowseCount browseCount = browseCountDao.findByNoAndTag(receiver, tag);
+            browseCount.setCount(browseCount.getCount() - 1);
+            browseCountDao.update(browseCount);
+            return true;
+        }
+    }
+
+    public boolean addOne(String receiver, String tag) {
+        if (browseCountDao.findByNoAndTag(receiver, tag) == null)
+            return false;
+        else {
+            BrowseCount browseCount = browseCountDao.findByNoAndTag(receiver, tag);
+            browseCount.setCount(browseCount.getCount() + 1);
+            browseCountDao.update(browseCount);
+            return true;
+        }
+    }
+
+    public int getCount(String receiver, String tag) {
+        BrowseCount browseCount = browseCountDao.findByNoAndTag(receiver, tag);
+        return browseCount.getCount();
     }
 }

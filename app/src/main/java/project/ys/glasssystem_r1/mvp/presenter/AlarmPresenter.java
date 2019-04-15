@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.data.entity.Alarm;
+import project.ys.glasssystem_r1.http.OnHttpCallBack;
+import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.mvp.contract.AlarmContract;
 import project.ys.glasssystem_r1.mvp.model.AlarmModel;
 
@@ -59,5 +61,34 @@ public class AlarmPresenter implements AlarmContract.Presenter {
     public int getTotal(String account) {
         List<Alarm> alarmList = alarmModel.getAllAlarm(account);
         return alarmList.size();
+    }
+
+    @Override
+    public void upload(String no) {
+        alarmModel.upload(no, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                alarmView.showErrorMsg(errorMsg);
+            }
+        });
+    }
+    @Override
+    public void download(String no) {
+        alarmModel.download(no, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                alarmView.showErrorMsg(errorMsg);
+            }
+        });
     }
 }

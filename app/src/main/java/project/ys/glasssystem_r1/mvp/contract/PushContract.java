@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.data.entity.Push;
+import project.ys.glasssystem_r1.http.OnHttpCallBack;
+import project.ys.glasssystem_r1.http.RetResult;
 
 public interface PushContract {
     interface Model {
@@ -19,6 +21,10 @@ public interface PushContract {
         void setRead(Push push);
 
         void deleteOne(int id);
+
+        void upload(String no, OnHttpCallBack<RetResult> callBack);
+
+        void download(String no, OnHttpCallBack<RetResult> callBack);
     }
 
     interface View {
@@ -41,5 +47,8 @@ public interface PushContract {
         void deleteOne(int id);
 
         int getTotal(String account);
+
+        void upload(String no);
+        void download(String no);
     }
 }

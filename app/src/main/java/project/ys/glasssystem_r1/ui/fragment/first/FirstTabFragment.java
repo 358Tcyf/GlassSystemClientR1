@@ -39,7 +39,6 @@ import project.ys.glasssystem_r1.ui.fragment.first.child.PushFragment;
 import static project.ys.glasssystem_r1.common.constant.Constant.FIRST;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtnItem;
-import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtns;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addViews;
 
 @EFragment(R.layout.fragment_push_root)
@@ -54,8 +53,11 @@ public class FirstTabFragment extends BaseBackFragment {
     @ViewById(R.id.pager)
     ViewPager mPager;
 
+    QMUIAlphaImageButton upDownBtn;
     QMUIAlphaImageButton searchBtn;
     QMUIAlphaImageButton sortBtn;
+
+
 
     @StringArrayRes(R.array.pushTabs)
     String[] pushTabs;
@@ -76,8 +78,8 @@ public class FirstTabFragment extends BaseBackFragment {
 
         LayoutInflater inflater = LayoutInflater.from(_mActivity);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.setMarginStart(QMUIDisplayHelper.dp2px(_mActivity, 90));
-        layoutParams.setMarginEnd(QMUIDisplayHelper.dp2px(_mActivity, 90));
+        layoutParams.setMarginStart(QMUIDisplayHelper.dp2px(_mActivity, 120));
+        layoutParams.setMarginEnd(QMUIDisplayHelper.dp2px(_mActivity, 120));
         mTabs = (QMUITabSegment) inflater.inflate(R.layout.layout_tab, null);
         mTopBar.addLeftView(mTabs, R.id.tab, layoutParams);
 
@@ -89,21 +91,22 @@ public class FirstTabFragment extends BaseBackFragment {
                 .addTab(new QMUITabSegment.Tab(pushTabs[SECOND]));
 
 
-//        mTopBar.addRightImageButton(R.drawable.ic_search, R.id.search)
-//                .setOnClickListener(view -> {
-//                    EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSearch));
-//                });
+//
         RelativeLayout.LayoutParams btnLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         btnLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        upDownBtn = addBtnItem(_mActivity, R.drawable.ic_up_down);
         searchBtn = addBtnItem(_mActivity, R.drawable.ic_search);
         sortBtn = addBtnItem(_mActivity, R.drawable.ic_sort);
+        upDownBtn.setOnClickListener(v ->
+                EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSync))
+        );
         searchBtn.setOnClickListener(v ->
                 EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSearch))
         );
         sortBtn.setOnClickListener(v ->
                 EventBusActivityScope.getDefault(_mActivity).post(new FirstTabMenuEvent(mTabs.getSelectedIndex(), strSort))
         );
-        mTopBar.addRightView(addViews(_mActivity, searchBtn, sortBtn), R.id.btn, btnLayoutParams);
+        mTopBar.addRightView(addViews(_mActivity, upDownBtn, searchBtn, sortBtn), R.id.btn, btnLayoutParams);
 
     }
 
@@ -140,6 +143,8 @@ public class FirstTabFragment extends BaseBackFragment {
     Drawable icSort;
     @DrawableRes(R.drawable.ic_user_refresh)
     Drawable icRefresh;
+    @StringRes(R.string.sync)
+    String strSync;
     @StringRes(R.string.search)
     String strSearch;
     @StringRes(R.string.sort)

@@ -183,4 +183,8 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
         sheet.show();
     }
 
+    @Override
+    public void showTips(String tipMsg) {
+
+    }
 }

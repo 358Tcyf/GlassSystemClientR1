@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.ys.glasssystem_r1.data.entity.Alarm;
+import project.ys.glasssystem_r1.http.OnHttpCallBack;
+import project.ys.glasssystem_r1.http.RetResult;
 
 public interface AlarmContract {
     interface Model {
@@ -12,6 +14,9 @@ public interface AlarmContract {
         List<Alarm> sortAlarmList(String receiver, int limit, String tag);
         void setRead(Alarm alarm);
         void deleteOne(int id);
+        void upload(String no, OnHttpCallBack<RetResult> callBack);
+
+        void download(String no, OnHttpCallBack<RetResult> callBack);
     }
 
     interface View {
@@ -31,5 +36,8 @@ public interface AlarmContract {
         void deleteOne(int id);
 
         int getTotal(String account);
+
+        void upload(String no);
+        void download(String no);
     }
 }

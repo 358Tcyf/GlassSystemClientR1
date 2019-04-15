@@ -266,13 +266,11 @@ public class CustomerApp extends Application {
         JSONObject jsonObject = JSON.parseObject(data);
         if (jsonObject.containsKey("pushUuid")) {
             Push push = JSON.parseObject(data, Push.class);
-            push.setCreateTime(push.getCreateTime() + 60 * 1000);
             helper.insertPush(push);
             EventBusActivityScope.getDefault(getCurrentActivity()).post(new RefreshListEvent());
             notifyDefault(this, "数据推送", push.getTitle());
         } else if (jsonObject.containsKey("alarmUuid")) {
             Alarm alarm = JSON.parseObject(data, Alarm.class);
-            alarm.setCreateTime(alarm.getCreateTime() + 60 * 1000);
             helper.insertAlarm(alarm);
             EventBusActivityScope.getDefault(getCurrentActivity()).post(new RefreshListEvent());
             notifyDefault(this, "数据推送", alarm.getTitle());

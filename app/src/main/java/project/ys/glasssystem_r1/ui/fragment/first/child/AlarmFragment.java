@@ -67,7 +67,12 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
     QMUIRoundButton deleteSelectBtn;
     QMUIRoundButton cancelSelectBtn;
 
-
+    @StringRes(R.string.sync)
+    String strSync;
+    @StringRes(R.string.upload)
+    String upload;
+    @StringRes(R.string.download)
+    String download;
     @StringRes(R.string.search)
     String strSearch;
     @StringRes(R.string.sort)
@@ -125,8 +130,7 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
                 if (mList.size() >= total_count) {
                     //数据全部加载完毕
                     mAdapter.loadMoreEnd();
-                }
-                else {
+                } else {
                     mRecyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -280,16 +284,32 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
 
     private void action(int i, String tag) {
         if (tag.equals(strDetail)) {
-            //TODO 查看详情
             setRead(mList.get(i));
             new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
         }
+        if (tag.equals(strSync)) {
+            QMUIBottomSheet.BottomListSheetBuilder builder =
+                    new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                            .addItem(upload)
+                            .addItem(download)
+                            .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+                                action(0, tag1);
+                                dialog.dismiss();
+                            });
+            QMUIBottomSheet sheet = builder.build();
+            sheet.show();
+        }
+        if (tag.equals(upload)) {
+            alarmPresenter.upload(currentUser.getNo());
+        }
+        if (tag.equals(download)) {
+            alarmPresenter.download(currentUser.getNo());
+            refreshView();
+        }
         if (tag.equals(strSearch)) {
-            //TODO 搜索
             EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(SearchFragment.newInstance(SEARCH_ALARM)));
         }
         if (tag.equals(strSort)) {
-            //TODO 排序
             QMUIBottomSheet.BottomListSheetBuilder builder =
                     new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                             .addItem(sortByDate)
@@ -302,7 +322,6 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
             sheet.show();
         }
         if (tag.equals(strManager)) {
-            //TODO 管理列表
             selects.clear();
             selectShow = true;
             for (Alarm alarm : mList) {
@@ -316,7 +335,6 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
             mAdapter.notifyDataSetChanged();
         }
         if (tag.equals(strRefresh)) {
-            //TODO 重新加载
             refreshView();
         }
     }

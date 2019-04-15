@@ -1,13 +1,17 @@
 package project.ys.glasssystem_r1.mvp.model;
 
+import android.content.Context;
+
 import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import project.ys.glasssystem_r1.data.DatabaseHelper;
 import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
+import project.ys.glasssystem_r1.data.entity.BrowseCount;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
@@ -20,6 +24,17 @@ import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.getURL;
 
 public class PushSetModel implements PushSetContract.Model {
+    private Context mContext;
+    private DatabaseHelper helper;
+
+    public PushSetModel() {
+    }
+
+    public PushSetModel(Context mContext) {
+        this.mContext = mContext;
+        helper = new DatabaseHelper(mContext);
+    }
+
     @Override
     public void getTags(String no, OnHttpCallBack<RetResult> callBack) {
         RetrofitUtils.newInstance(HTTP + getURL() + PORT + "/")
@@ -69,7 +84,9 @@ public class PushSetModel implements PushSetContract.Model {
                     public void onNext(RetResult retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
-
+                            for (String tag : tags) {
+                                helper.insertBrowseCount(tag, 5, no);
+                            }
                         }
                     }
 

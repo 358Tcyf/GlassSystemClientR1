@@ -82,6 +82,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @StringRes(R.string.detail)
     String strDetail;
+    @StringRes(R.string.sync)
+    String strSync;
+    @StringRes(R.string.upload)
+    String upload;
+    @StringRes(R.string.download)
+    String download;
     @StringRes(R.string.search)
     String strSearch;
     @StringRes(R.string.sort)
@@ -133,6 +139,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
     boolean selectShow = false;
     private UserBeanPlus currentUser;
     private int limit = DEFAULT_LIMIT;
+
     @Override
     public void refreshView() {
         mEmptyView.show(true);
@@ -142,7 +149,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @UiThread
     void refreshComplete() {
-        pushPresenter.getList(currentUser.getNo(),limit);
+        pushPresenter.getList(currentUser.getNo(), limit);
     }
 
 
@@ -158,8 +165,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                 if (mList.size() >= total_count) {
                     //数据全部加载完毕
                     mAdapter.loadMoreEnd();
-                }
-                else {
+                } else {
                     mRecyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -188,8 +194,8 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                 //滑动到顶部
                 mInAtTop = !mRecyclerView.canScrollVertically(-1);
                 if (mInAtBottom) {
-                    limit+=DEFAULT_LIMIT;
-                    pushPresenter.getList(currentUser.getNo(),limit);
+                    limit += DEFAULT_LIMIT;
+                    pushPresenter.getList(currentUser.getNo(), limit);
                 }
 
             }
@@ -217,7 +223,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.all_select_btn:
-                    //TODO 全选
                     allSelectRadio.setChecked(!allSelectRadio.isChecked());
                     if (allSelectRadio.isChecked()) {
                         for (PushSelectedBean select : selects) {
@@ -231,7 +236,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                     mAdapter.setNewData(selects);
                     break;
                 case R.id.delete_btn:
-                    //TODO 删除
                     for (PushSelectedBean select : selects) {
                         if (select.isSelected()) {
                             pushPresenter.deleteOne(select.getPush().getId());
@@ -240,7 +244,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                     cancelSelectBar();
                     break;
                 case R.id.cancel_btn:
-                    //TODO 取消
                     selects.clear();
                     cancelSelectBar();
                     break;
@@ -256,7 +259,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mAdapter.setOnItemClickListener(normalItemChildClickListener);
         mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
         selectShow = false;
-        pushPresenter.getList(currentUser.getNo(),limit);
+        pushPresenter.getList(currentUser.getNo(), limit);
     }
 
     BaseQuickAdapter.OnItemClickListener normalItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
@@ -270,24 +273,12 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         @Override
         public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
             action(0, strManager);
-//            int i = position;
-//            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
-//                    .addItem(R.drawable.ic_push_details, strDetail, strDetail)
-//                    .addItem(R.drawable.ic_user_delete, strDelete, strDelete)
-//                    .addItem(R.drawable.ic_icon_workmore, strManager, strManager)
-//                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
-//                        dialog.dismiss();
-//                        action(i, tag);
-//                    })
-//                    .build()
-//                    .show();
             return false;
         }
     };
     BaseQuickAdapter.OnItemClickListener selectedItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            //TODO 单选
             selects.get(position).setSelected(!selects.get(position).isSelected());
             mAdapter.notifyDataSetChanged();
         }
@@ -307,7 +298,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             new Handler().postDelayed(() -> {
                 mSwipeRefreshLayout.setRefreshing(false);
-//                refreshLoad();
             }, 1000);
 
         });
@@ -316,13 +306,9 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     private void action(int i, String tag) {
         if (tag.equals(strDetail)) {
-            //TODO 查看详情
-            setRead(mList.get(i));
-            new Handler().postDelayed(() -> EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent()), 1000);
-            EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PagersFragment.newInstance(mList.get(i))));
+           EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(PagersFragment.newInstance(mList.get(i))));
         }
         if (tag.equals(strDelete)) {
-            //TODO 删除
             showTipDialog(getContext(), tag);
             showMessageNegativeDialog(getContext(), strDelete + push
                     , "确定要" + strDelete + push + ": " + mList.get(i).getTitle() + "吗？"
@@ -332,25 +318,41 @@ public class PushFragment extends SupportFragment implements PushContract.View {
                         dialog.dismiss();
                     });
         }
+        if (tag.equals(strSync)) {
+            QMUIBottomSheet.BottomListSheetBuilder builder =
+                    new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                            .addItem(upload)
+                            .addItem(download)
+                            .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
+                                action(0, tag1);
+                                dialog.dismiss();
+                            });
+            QMUIBottomSheet sheet = builder.build();
+            sheet.show();
+        }
+        if (tag.equals(upload)) {
+            pushPresenter.upload(currentUser.getNo());
+        }
+        if (tag.equals(download)) {
+            pushPresenter.download(currentUser.getNo());
+            refreshView();
+        }
         if (tag.equals(strSearch)) {
-            //TODO 搜索
             EventBusActivityScope.getDefault(_mActivity).post(new StartBrotherEvent(SearchFragment.newInstance(SEARCH_PUSH)));
         }
         if (tag.equals(strSort)) {
-            //TODO 排序
             QMUIBottomSheet.BottomListSheetBuilder builder =
                     new QMUIBottomSheet.BottomListSheetBuilder(getContext())
                             .addItem(sortByDate)
                             .addItem(sortByRead)
                             .setOnSheetItemClickListener((dialog, itemView, position, tag1) -> {
-                                pushPresenter.sortList(currentUser.getNo(),limit, tag1);
+                                pushPresenter.sortList(currentUser.getNo(), limit, tag1);
                                 dialog.dismiss();
                             });
             QMUIBottomSheet sheet = builder.build();
             sheet.show();
         }
         if (tag.equals(strManager)) {
-            //TODO 管理列表
             selects.clear();
             selectShow = true;
             for (Push push : mList) {
@@ -364,7 +366,6 @@ public class PushFragment extends SupportFragment implements PushContract.View {
             mAdapter.notifyDataSetChanged();
         }
         if (tag.equals(strRefresh)) {
-            //TODO 重新加载
             refreshView();
         }
     }
@@ -427,14 +428,14 @@ public class PushFragment extends SupportFragment implements PushContract.View {
 
     @Subscribe
     public void onRefreshList(RefreshListEvent event) {
-        pushPresenter.getList(currentUser.getNo(),limit);
+        pushPresenter.getList(currentUser.getNo(), limit);
     }
 
     @UiThread
     void swipeRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
         new Handler().postDelayed(() -> {
-            pushPresenter.getList(currentUser.getNo(),limit);
+            pushPresenter.getList(currentUser.getNo(), limit);
             mSwipeRefreshLayout.setRefreshing(false);
         }, 1000);
     }

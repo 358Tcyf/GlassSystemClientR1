@@ -193,4 +193,8 @@ dependencies {
 
     /*alibaba ViewPager*/
     implementation 'com.alibaba.android:ultraviewpager:1.0.7.8'
+    
+    /*沉浸式导航栏*/
+    implementation 'com.gyf.immersionbar:immersionbar:2.3.3'
+
 }

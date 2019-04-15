@@ -8,6 +8,8 @@ import okhttp3.MultipartBody;
 import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
 import project.ys.glasssystem_r1.data.bean.UserBean;
+import project.ys.glasssystem_r1.data.entity.Alarm;
+import project.ys.glasssystem_r1.data.entity.Push;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -15,17 +17,22 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.ADD_USER;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.DOWNLOAD_ALARM;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.DOWNLOAD_PUSH;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.FILE;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_ALARM_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_SETS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.GET_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LATEST_NO;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.LOGIN;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.PUSH;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.RESET_PASSWORD;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.SEARCH_USER;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.SET;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_ALARM;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_ALARM_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_PASSWORD;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_PUSH;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPDATE_USER;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.UPLOAD;
@@ -105,4 +112,18 @@ public interface HttpContract {
     Observable<RetResult> uploadAlarmTags(@Query("account") String account,
                                           @Body List<AlarmTag> alarmTags);
 
+
+    @POST(PUSH + UPDATE_PUSH)
+    Observable<RetResult> uploadPush(@Query("account") String account,
+                                     @Body List<Push> pushes);
+
+    @POST(PUSH + DOWNLOAD_PUSH)
+    Observable<RetResult> downloadPush(@Query("account") String account);
+
+    @POST(PUSH + UPDATE_ALARM)
+    Observable<RetResult> uploadAlarm(@Query("account") String account,
+                                      @Body List<Alarm> alarms);
+
+    @POST(PUSH + DOWNLOAD_ALARM)
+    Observable<RetResult> downloadAlarm(@Query("account") String account);
 }

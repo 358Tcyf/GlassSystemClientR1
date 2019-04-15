@@ -4,6 +4,7 @@
     <string name="inputNo">请输入工号</string>
     <string name="inputPassword">请输入密码</string>
     <string name="login">登录</string>
+    <string name="skip">跳过</string>
     <string name="logining">登录中</string>
     <string name="updating">提交中</string>
     <string name="noEmpty">工号为空</string>
@@ -28,6 +29,9 @@
     <string name="log_off">注销</string>
     <string name="account">账号</string>
     <string name="search">搜索</string>
+    <string name="sync">同步</string>
+    <string name="upload">上传</string>
+    <string name="download">下载</string>
     <string name="sort">排序</string>
     <string name="cancel">取消</string>
     <string name="submit">提交</string>
@@ -55,8 +59,8 @@
 
     <!--主页-推送页-->
     <string name="order_by">排序方式：</string>
-    <string name="push_tab1">数据推送</string>
-    <string name="push_tab2">数据预警</string>
+    <string name="push_tab1">推送</string>
+    <string name="push_tab2">预警</string>
     <string name="sort_by_date">推送时间</string>
     <string name="sort_by_read">未读推送</string>
     <string name="push">推送</string>
@@ -102,7 +106,7 @@
     <string name="inputPhone">请输入手机</string>
     <string name="nextStep">下一步</string>
     <string name="prevStep">上一步</string>
-    <string name="skip">跳过</string>
+
     <string name="complete">完成</string>
 
     <!--主页-成员页-查看详情-->

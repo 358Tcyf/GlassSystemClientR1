@@ -29,9 +29,12 @@ public class HttpConstant {
     public static final String UPDATE_ALARM_TAGS = "/updateAlarmTags";
 
 
-    public static final String PUSH = "/file";
+    public static final String PUSH = "/push";
     public static final String INSTANT = "/instantPush";
-
+    public static final String UPDATE_PUSH = "/updatePushes";
+    public static final String DOWNLOAD_PUSH = "/downloadPushes";
+    public static final String UPDATE_ALARM = "/updateAlarms";
+    public static final String DOWNLOAD_ALARM = "/downloadAlarms";
 
     public static final String FILE = "/file";
     public static final String UPLOAD = "/upload";
