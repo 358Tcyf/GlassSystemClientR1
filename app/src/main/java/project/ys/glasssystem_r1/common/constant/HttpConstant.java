@@ -25,8 +25,10 @@ public class HttpConstant {
     public static final String UPLOAD_SETS = "/uploadSet";
     public static final String GET_TAGS = "/getTags";
     public static final String UPDATE_TAGS = "/updateTags";
+    public static final String CANCEL_TAGS = "/cancelTags";
     public static final String GET_ALARM_TAGS = "/getAlarmTags";
     public static final String UPDATE_ALARM_TAGS = "/updateAlarmTags";
+    public static final String CANCEL_SMART_SUB = "/cancelSmartSub";
 
 
     public static final String PUSH = "/push";

@@ -450,7 +450,6 @@ public class ThirdTabFragment extends SupportFragment implements UserDetailContr
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getActivity());
         builder.setTitle("修改网络通信地址")
                 .setDefaultText(getURL())
-//                .setPlaceholder(URL)
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .addAction("默认", new QMUIDialogAction.ActionListener() {
                     @Override

@@ -95,9 +95,11 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
     private BaseChart mBaseChart;
     private BaseChart preSBaseChart;
     private UserBeanPlus currentUser;
+    private boolean smartSub;
 
     @AfterInject
     void afterInject() {
+        smartSub = CustomerApp.getInstance().getPushSet().isSmartSub();
         chartPresenter = new ChartPresenter(this, _mActivity);
         currentUser = CustomerApp.getInstance().getCurrentUser();
         chartPresenter.getTags(currentUser.getNo());
@@ -210,13 +212,13 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         return fragment;
     }
 
-    private String[] push_charts = new String[4];
+    private String[] push_charts = PUSH_CHARTS;
 
     void sortCharts() {
-        String temp = null;
         for (int i = 0; i < 4; i++) {
             if (PUSH_CHARTS[i].equals(defaultSubMenu)) {
-                push_charts[0] = PUSH_CHARTS[i];
+                push_charts[i] = push_charts[0];
+                push_charts[0] = defaultSubMenu;
             }
         }
         for (int i = 0; i < 4; i++)
@@ -228,34 +230,49 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
                 }
             }
 
-//         if(!push.isHaveRead())
-        chartPresenter.cutFirst(currentUser.getNo(), subMenus);
+        if (!push.isHaveRead() && smartSub)
+            chartPresenter.cutFirst(currentUser.getNo(), subMenus);
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        //         if(!push.isHaveRead())
-        for (String tag : subMenus) {
-            if (isBrowses.get(tag)) {
-                chartPresenter.addOne(currentUser.getNo(), tag);
+        if (!push.isHaveRead() && smartSub) {
+            for (String tag : subMenus) {
+                if (isBrowses.get(tag)) {
+                    chartPresenter.addOne(currentUser.getNo(), tag);
+                }
             }
+            chartPresenter.checkCount(currentUser.getNo(), subMenus);
         }
-        chartPresenter.checkCount(currentUser.getNo(), subMenus);
         chartPresenter.setRead(push);
         EventBusActivityScope.getDefault(_mActivity).post(new RefreshListEvent());
         return super.onBackPressedSupport();
     }
 
     @Override
-    public void showTips(String tipMsg) {
+    public void showTips(List<String> tips) {
         QMUIDialog.CheckBoxMessageDialogBuilder logoutDailog = new QMUIDialog.CheckBoxMessageDialogBuilder(_mActivity);
-        logoutDailog.setTitle(tipMsg)
+        StringBuilder tipMsg = new StringBuilder();
+        for (String tip : tips) {
+            tipMsg.append("“" + tip + "”").append(" ");
+        }
+        logoutDailog.setTitle("你多次没有浏览 " + tipMsg + "要取消订阅吗？")
                 .setMessage("不再提示")
                 .setChecked(false)
-                .addAction(cancel, (dialog, index) -> dialog.dismiss())
+                .addAction(cancel, (dialog, index) -> {
+                    cancelSmartSub(logoutDailog.isChecked());
+                    dialog.dismiss();
+                })
                 .addAction(ok, (dialog, index) -> {
-
+                    cancelSmartSub(logoutDailog.isChecked());
+                    chartPresenter.cancelTags(currentUser.getNo(), tips);
                     dialog.dismiss();
                 }).show();
+    }
+
+    private void cancelSmartSub(boolean checked) {
+        if (checked) {
+            chartPresenter.cancelSmartSub(currentUser.getNo());
+        }
     }
 }

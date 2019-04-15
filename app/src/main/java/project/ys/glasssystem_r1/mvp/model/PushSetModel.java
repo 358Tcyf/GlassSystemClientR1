@@ -11,7 +11,6 @@ import io.reactivex.schedulers.Schedulers;
 import project.ys.glasssystem_r1.data.DatabaseHelper;
 import project.ys.glasssystem_r1.data.bean.AlarmTag;
 import project.ys.glasssystem_r1.data.bean.PushSet;
-import project.ys.glasssystem_r1.data.entity.BrowseCount;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
@@ -52,6 +51,10 @@ public class PushSetModel implements PushSetContract.Model {
                     public void onNext(RetResult retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
+                            List<String> tags = (List<String>) retResult.getData();
+                            for (String tag : tags) {
+                                helper.insertBrowseCount(tag,  no);
+                            }
                         }
                     }
 

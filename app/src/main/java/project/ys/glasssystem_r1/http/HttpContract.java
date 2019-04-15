@@ -17,6 +17,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.ADD_USER;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.CANCEL_SMART_SUB;
+import static project.ys.glasssystem_r1.common.constant.HttpConstant.CANCEL_TAGS;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.DOWNLOAD_ALARM;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.DOWNLOAD_PUSH;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.FILE;
@@ -90,7 +92,9 @@ public interface HttpContract {
     @POST(SET + UPDATE_TAGS)
     Observable<RetResult> updateTags(@Query("account") String account,
                                      @Body List<String> tags);
-
+    @POST(SET + CANCEL_TAGS)
+    Observable<RetResult> cancelTags(@Query("account") String account,
+                                     @Body List<String> tags);
     @POST(SET + GET_SETS)
     Observable<RetResult<PushSet>> getSets(@Query("account") String account);
 
@@ -113,6 +117,10 @@ public interface HttpContract {
                                           @Body List<AlarmTag> alarmTags);
 
 
+
+    @POST(SET + CANCEL_SMART_SUB)
+    Observable<RetResult> cancelSmartSub(@Query("account") String account);
+
     @POST(PUSH + UPDATE_PUSH)
     Observable<RetResult> uploadPush(@Query("account") String account,
                                      @Body List<Push> pushes);
@@ -126,4 +134,5 @@ public interface HttpContract {
 
     @POST(PUSH + DOWNLOAD_ALARM)
     Observable<RetResult> downloadAlarm(@Query("account") String account);
+
 }

@@ -237,6 +237,14 @@ public class DatabaseHelper {
         searchDao.delete(searchRecord);
     }
 
+    public void insertBrowseCount(String tag, String receiver) {
+        if (!cutOne(receiver, tag)) {
+            BrowseCount browseCount = new BrowseCount(tag, 5, receiver);
+            browseCountDao.insert(browseCount);
+        }
+
+    }
+
     public void insertBrowseCount(String tag, int count, String receiver) {
         if (cutOne(receiver, tag)) {
             BrowseCount browseCount = browseCountDao.findByNoAndTag(receiver, tag);

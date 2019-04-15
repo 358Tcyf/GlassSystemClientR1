@@ -35,6 +35,9 @@ public class PushSet {
 
     private boolean pushSwitch;
 
+    private boolean smartSub;
+
+
     private int time;
 
     private boolean alarmSwitch;
@@ -114,5 +117,14 @@ public class PushSet {
 
     public void setEnd(long end) {
         this.end = end;
+    }
+
+
+    public boolean isSmartSub() {
+        return smartSub;
+    }
+
+    public void setSmartSub(boolean smartSub) {
+        this.smartSub = smartSub;
     }
 }

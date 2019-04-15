@@ -84,6 +84,16 @@ public class PushSetPresenter implements PushSetContract.Presenter {
                 pushSetView.showErrorMsg(errorMsg);
             }
         });
+        pushSetModel.getTags(no, new OnHttpCallBack<RetResult>() {
+            @Override
+            public void onSuccess(RetResult retResult) {
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                pushSetView.showErrorMsg(errorMsg);
+            }
+        });
     }
 
     @Override

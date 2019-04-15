@@ -184,7 +184,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
     }
 
     @Override
-    public void showTips(String tipMsg) {
+    public void showTips(List<String> tips) {
 
     }
 }
