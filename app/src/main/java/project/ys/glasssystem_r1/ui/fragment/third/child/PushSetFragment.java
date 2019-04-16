@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog;
+import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -43,8 +44,10 @@ import project.ys.glasssystem_r1.ui.widget.customerdialog.AlarmTagDialogBuilder;
 
 import static android.text.TextUtils.isEmpty;
 import static com.applikeysolutions.cosmocalendar.utils.SelectionType.RANGE;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.push_tags;
-import static project.ys.glasssystem_r1.common.constant.UserConstant.push_time;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PRODUCE_TAGS;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_TAGS;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_TIME;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.SALES_TAGS;
 import static project.ys.glasssystem_r1.ui.widget.customeritem.AlarmTagView.createItem;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
@@ -135,12 +138,20 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     private List<AlarmTag> alarmTags = new ArrayList<>();
     private List<QMUICommonListItemView> alarmTagItems = new ArrayList<>();
     private int timeSelect;
+    private String[] push_tags = {};
 
     @AfterInject
     void afterInject() {
         currentUser = CustomerApp.getInstance().getCurrentUser();
         currentSet = CustomerApp.getInstance().getPushSet();
         pushSetPresenter = new PushSetPresenter(this, _mActivity);
+        if (currentUser.getRoleName().equals("生产部门"))
+            push_tags = PRODUCE_TAGS;
+        else if (currentUser.getRoleName().equals("销售部门"))
+            push_tags = SALES_TAGS;
+        else
+            push_tags = PUSH_TAGS;
+
     }
 
     @AfterViews
@@ -232,7 +243,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
         pushTimeItem = mGroupListView.createItemView(
                 null,
                 pushTime,
-                push_time[currentSet.getTime()],
+                PUSH_TIME[currentSet.getTime()],
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         pushTagsItem = mGroupListView.createItemView(
@@ -469,9 +480,9 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     private void showTimeChoice() {
         new QMUIDialog.CheckableDialogBuilder(_mActivity)
                 .setCheckedIndex(currentSet.getTime())
-                .addItems(push_time, (dialog, which) -> {
+                .addItems(PUSH_TIME, (dialog, which) -> {
                     timeSelect = which;
-                    pushTimeItem.setDetailText(push_time[which]);
+                    pushTimeItem.setDetailText(PUSH_TIME[which]);
                     dialog.dismiss();
                 })
                 .create().show();

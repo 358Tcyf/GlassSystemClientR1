@@ -11,7 +11,6 @@ import android.os.Parcelable;
 public class Push extends BaseEntity implements Parcelable {
 
 
-    public static String[] PUSH_CHARTS = {"生产量","生产型号统计","生产质量","生产能耗"};
 
     @Ignore
     public Push() {

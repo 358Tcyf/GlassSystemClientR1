@@ -15,6 +15,9 @@ import project.ys.glasssystem_r1.mvp.model.PushSetModel;
 
 import static com.alibaba.fastjson.JSON.parseArray;
 import static com.alibaba.fastjson.JSON.toJSONString;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PRODUCE_TAGS;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_TAGS;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.SALES_TAGS;
 
 public class PushSetPresenter implements PushSetContract.Presenter {
     private PushSetContract.View pushSetView;
@@ -32,10 +35,16 @@ public class PushSetPresenter implements PushSetContract.Presenter {
         pushSetModel = new PushSetModel(context);
     }
 
-    final String[] items = new String[]{"生产量", "生产型号统计", "生产质量", "生产能耗"};
+    private String[] items = {};
 
     @Override
     public void getTags(String no) {
+        if (no.startsWith("P"))
+            items = PRODUCE_TAGS;
+        else if (no.startsWith("S"))
+            items = SALES_TAGS;
+        else
+            items = PUSH_TAGS;
         pushSetModel.getTags(no, new OnHttpCallBack<RetResult>() {
             @Override
             public void onSuccess(RetResult retResult) {

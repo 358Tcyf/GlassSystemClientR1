@@ -158,10 +158,10 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mAdapter = new PushQuickAdapter(_mActivity, selects);
         mRecyclerView.setAdapter(mAdapter);
-        int total_count = pushPresenter.getTotal(currentUser.getNo());
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
+                int total_count = pushPresenter.getTotal(currentUser.getNo());
                 if (mList.size() >= total_count) {
                     //数据全部加载完毕
                     mAdapter.loadMoreEnd();

@@ -38,15 +38,17 @@ import project.ys.glasssystem_r1.mvp.presenter.ChartPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreBarChart;
+import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreLineChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyBarChart;
+import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyLineChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonPieChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonRingChart;
 
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_CHARTS;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.bar_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.line_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.pie_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.ring_chart;
-import static project.ys.glasssystem_r1.data.entity.Push.PUSH_CHARTS;
 
 
 @EFragment
@@ -195,6 +197,10 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         CommonChartFragment fragment = null;
         switch (baseChart.getChart_type()) {
             case line_chart:
+                if (baseChart.isOnly())
+                    fragment = CommonOnlyLineChart.newInstance(baseChart);
+                else
+                    fragment = CommonMoreLineChart.newInstance(baseChart);
                 break;
             case bar_chart:
                 if (baseChart.isOnly())
