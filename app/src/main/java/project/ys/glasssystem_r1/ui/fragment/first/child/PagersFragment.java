@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -227,10 +228,12 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
                 push_charts[0] = defaultSubMenu;
             }
         }
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < PUSH_CHARTS.length; i++)
             for (BaseChart chart : charts) {
                 if (chart.getSubmenu().equals(PUSH_CHARTS[i])) {
+                    Logger.d(chart.getSubmenu());
                     subMenus.add(chart.getSubmenu());
+                    Logger.d(subMenus);
                     mFragments.add(chartsContent(chart));
                     isBrowses.put(PUSH_CHARTS[i], false);
                 }

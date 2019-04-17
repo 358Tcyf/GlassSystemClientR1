@@ -259,6 +259,7 @@ public class PushFragment extends SupportFragment implements PushContract.View {
         mAdapter.setOnItemClickListener(normalItemChildClickListener);
         mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
         selectShow = false;
+        allSelectRadio.setChecked(false);
         pushPresenter.getList(currentUser.getNo(), limit);
     }
 

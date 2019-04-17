@@ -2,8 +2,9 @@ package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
 import android.os.Bundle;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -17,9 +18,9 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
-import project.ys.glasssystem_r1.util.managers.BarChartManager;
+import project.ys.glasssystem_r1.util.managers.LineChartManager;
 
-@EFragment(R.layout.fragment_chart_bar)
+@EFragment(R.layout.fragment_chart_line)
 public class CommonOnlyLineChart extends CommonChartFragment {
 
     private static final String ARG_CHART = "arg_chart";
@@ -34,14 +35,13 @@ public class CommonOnlyLineChart extends CommonChartFragment {
         return fragment;
     }
 
-    @ViewById(R.id.bar_chart)
-    BarChart mBarChart;
+    @ViewById(R.id.line_chart)
+    LineChart mLineChart;
 
     @AfterInject
     void afterInject() {
         Bundle args = getArguments();
         if (args != null) {
-//            position = args.getInt(ARG_MENU);
             mBaseChart = args.getParcelable(ARG_CHART);
         }
     }
@@ -52,37 +52,19 @@ public class CommonOnlyLineChart extends CommonChartFragment {
     }
 
     private void showBarChartAlong() {
-        BarChartManager barChartManager = new BarChartManager(mBarChart);
+        LineChartManager lineChartManager = new LineChartManager(mLineChart);
         String[] xValues = mBaseChart.getxValues();
-        List<String> labels = mBaseChart.getLabels();
-        List<Integer> colours = new ArrayList<>();
-        colours.add(_mActivity.getColor(R.color.color4));
-        colours.add(_mActivity.getColor(R.color.color3));
-//        barChartManager.showBarChart(setData(), label, xValues, _mActivity.getColor(R.color.colorPrimaryDark), false);
-        barChartManager.showListBarChart(setListData(), labels, xValues, colours, false);
-        barChartManager.setDescription(mBaseChart.getTitle());
+        String labels = mBaseChart.getLabel();
+
+        lineChartManager.showLineChart(setData(), labels, xValues, _mActivity.getColor(R.color.color4));
+        lineChartManager.setDescription(mBaseChart.getTitle());
     }
 
-    private List<BarEntry> setData() {
-        List<BarEntry> data = new ArrayList<>();
+    private List<Entry> setData() {
+        List<Entry> data = new ArrayList<>();
         List<BaseEntry> entries = mBaseChart.getyValues();
         for (BaseEntry entry : entries) {
             data.add(new BarEntry(Float.valueOf(entry.getxValue().toString()), Float.valueOf(entry.getyValue().toString())));
-        }
-        return data;
-    }
-
-    private List<List<BarEntry>> setListData() {
-        List<List<BarEntry>> data = new ArrayList<>();
-        List<List<BaseEntry>> listEntries = mBaseChart.getyListValues();
-
-
-        for (int i = 0; i < listEntries.size(); i++) {
-            data.add(new ArrayList<>());
-            List<BaseEntry> entries = listEntries.get(i);
-            for (int j = 0; j < entries.size(); j++) {
-                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getxValue().toString()), Float.valueOf(entries.get(j).getyValue().toString())));
-            }
         }
         return data;
     }

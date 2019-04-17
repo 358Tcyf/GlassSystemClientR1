@@ -226,6 +226,7 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
         mAdapter.setOnItemClickListener(normalItemChildClickListener);
         mAdapter.setOnItemLongClickListener(normalItemLongClickListener);
         selectShow = false;
+        allSelectRadio.setChecked(false);
         alarmPresenter.getList(currentUser.getNo(), limit);
     }
 

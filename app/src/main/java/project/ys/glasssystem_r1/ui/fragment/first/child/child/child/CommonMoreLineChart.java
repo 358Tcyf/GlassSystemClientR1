@@ -2,8 +2,9 @@ package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 
 import android.os.Bundle;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -17,9 +18,9 @@ import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
-import project.ys.glasssystem_r1.util.managers.BarChartManager;
+import project.ys.glasssystem_r1.util.managers.LineChartManager;
 
-@EFragment(R.layout.fragment_chart_bar)
+@EFragment(R.layout.fragment_chart_line)
 public class CommonMoreLineChart extends CommonChartFragment {
 
     private static final String ARG_CHART = "arg_chart";
@@ -34,8 +35,8 @@ public class CommonMoreLineChart extends CommonChartFragment {
         return fragment;
     }
 
-    @ViewById(R.id.bar_chart)
-    BarChart mBarChart;
+    @ViewById(R.id.line_chart)
+    LineChart mLineChart;
 
     @AfterInject
     void afterInject() {
@@ -52,21 +53,22 @@ public class CommonMoreLineChart extends CommonChartFragment {
 
 
     private void showBarChartMore() {
-        BarChartManager barChartManager = new BarChartManager(mBarChart);
+        LineChartManager lineChartManager = new LineChartManager(mLineChart);
         List<Integer> colours = new ArrayList<>();
         colours.add(_mActivity.getColor(R.color.color1));
         colours.add(_mActivity.getColor(R.color.color2));
         colours.add(_mActivity.getColor(R.color.color3));
-        barChartManager.showMoreBarChart(setListData(), mBaseChart.getLabels(), mBaseChart.getxValues(), colours);
-        barChartManager.setXAxis(mBaseChart.getxValues().length, 0, mBaseChart.getxValues().length);
-        barChartManager.setYAxis(100, 0, 10);
-        barChartManager.setDescription(mBaseChart.getTitle());
+        colours.add(_mActivity.getColor(R.color.color4));
+        lineChartManager.showMoreLineChart(setListData(), mBaseChart.getLabels(), mBaseChart.getxValues(), colours);
+        lineChartManager.setXAxis(mBaseChart.getxValues().length, 0, mBaseChart.getxValues().length);
+        lineChartManager.setYAxis(100, 0, 10);
+        lineChartManager.setDescription(mBaseChart.getTitle());
 
     }
 
 
-    private List<List<BarEntry>> setListData() {
-        List<List<BarEntry>> data = new ArrayList<>();
+    private List<List<Entry>> setListData() {
+        List<List<Entry>> data = new ArrayList<>();
         List<List<BaseEntry>> listEntries = mBaseChart.getyListValues();
 
 

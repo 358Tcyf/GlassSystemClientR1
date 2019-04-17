@@ -142,7 +142,6 @@ public class CustomerApp extends Application {
         PushManager.getInstance().initialize(this.getApplicationContext(), MyPushService.class);
         PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), MyIntentService.class);
         String cid = PushManager.getInstance().getClientid(this);
-//        Logger.d(cid);
     }
 
     public void setGetuiAlias() {
