@@ -6,5 +6,4 @@ public class AppStatusConstant {
     public static final String KEY_HOME_ACTION = "key_home_action";//返回到主页面
     public static final int ACTION_BACK_TO_HOME = 0;//默认值
     public static final int ACTION_RESTART_APP = 1;//被强杀
-
 }

@@ -3,8 +3,8 @@ package project.ys.glasssystem_r1.ui.fragment.first.child.child.child;
 import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -48,15 +48,14 @@ public class CommonOnlyLineChart extends CommonChartFragment {
 
     @AfterViews
     void afterViews() {
-        showBarChartAlong();
+        showLinerChartAlong();
     }
 
-    private void showBarChartAlong() {
+    private void showLinerChartAlong() {
         LineChartManager lineChartManager = new LineChartManager(mLineChart);
         String[] xValues = mBaseChart.getxValues();
-        String labels = mBaseChart.getLabel();
-
-        lineChartManager.showLineChart(setData(), labels, xValues, _mActivity.getColor(R.color.color4));
+        String label = mBaseChart.getLabel();
+        lineChartManager.showLineChart(setData(), label, xValues, _mActivity.getColor(R.color.color4));
         lineChartManager.setDescription(mBaseChart.getTitle());
     }
 
@@ -64,7 +63,10 @@ public class CommonOnlyLineChart extends CommonChartFragment {
         List<Entry> data = new ArrayList<>();
         List<BaseEntry> entries = mBaseChart.getyValues();
         for (BaseEntry entry : entries) {
-            data.add(new BarEntry(Float.valueOf(entry.getxValue().toString()), Float.valueOf(entry.getyValue().toString())));
+            Logger.d(entry);
+            float x = Float.valueOf(entry.getX().toString());
+            float y = entry.getY() == null ? 0 : Float.valueOf(entry.getY().toString());
+            data.add(new Entry(x, y));
         }
         return data;
     }

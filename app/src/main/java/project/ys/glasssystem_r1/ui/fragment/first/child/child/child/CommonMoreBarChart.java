@@ -16,7 +16,6 @@ import java.util.List;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.util.managers.BarChartManager;
 
@@ -65,17 +64,14 @@ public class CommonMoreBarChart extends CommonChartFragment {
 
     }
 
-
     private List<List<BarEntry>> setListData() {
         List<List<BarEntry>> data = new ArrayList<>();
         List<List<BaseEntry>> listEntries = mBaseChart.getyListValues();
-
-
         for (int i = 0; i < listEntries.size(); i++) {
             data.add(new ArrayList<>());
             List<BaseEntry> entries = listEntries.get(i);
             for (int j = 0; j < entries.size(); j++) {
-                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getxValue().toString()), Float.valueOf(entries.get(j).getyValue().toString())));
+                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getX().toString()), Float.valueOf(entries.get(j).getY().toString())));
             }
         }
         return data;

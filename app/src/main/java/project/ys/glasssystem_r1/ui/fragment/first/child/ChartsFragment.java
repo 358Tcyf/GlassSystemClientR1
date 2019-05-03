@@ -92,7 +92,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
             content = getArguments().getString(PUSH_CONTENT);
             charts = JSON.parseArray(content, BaseChart.class);
             for (BaseChart chart : charts) {
-                subMenus.add(chart.getSubmenu());
+                subMenus.add(chart.getSub());
             }
             defaultSubMenu = getArguments().getString(DEFAULT_SUBMENU);
         }
@@ -130,7 +130,7 @@ public class ChartsFragment extends BaseBackFragment implements ChartContract.Vi
         mFragments = new HashMap<>();
         BaseChart defaultChart = charts.get(0);
         for (BaseChart chart : charts) {
-            if (chart.getSubmenu().equals(defaultSubMenu))
+            if (chart.getSub().equals(defaultSubMenu))
                 defaultChart = chart;
         }
         ChartContentFragment fragment = ChartContentFragment.newInstance(defaultChart);

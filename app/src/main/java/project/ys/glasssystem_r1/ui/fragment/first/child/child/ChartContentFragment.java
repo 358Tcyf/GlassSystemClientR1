@@ -68,7 +68,7 @@ public class ChartContentFragment extends BaseBackFragment {
 
     private CommonChartFragment chartsContent(BaseChart baseChart) {
         CommonChartFragment fragment = null;
-        switch (baseChart.getChart_type()) {
+        switch (baseChart.getType()) {
             case line_chart:
                 break;
             case bar_chart:

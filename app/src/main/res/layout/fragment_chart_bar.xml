@@ -13,7 +13,7 @@
         android:background="@color/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_alignTop="@id/top"
         android:layout_height="match_parent"

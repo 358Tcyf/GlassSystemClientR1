@@ -201,7 +201,7 @@ public class PieChartManager {
      */
     public void setDescription(String str) {
         RelativeLayout relativeLayout = (RelativeLayout) mPieChart.getParent();
-        TextView description = relativeLayout.findViewById(R.id.description);
+        TextView description = relativeLayout.findViewById(R.id.desc);
         description.setText(str);
     }
     /**

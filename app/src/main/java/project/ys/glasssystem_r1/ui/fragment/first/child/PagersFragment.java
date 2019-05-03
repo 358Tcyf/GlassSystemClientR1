@@ -196,7 +196,7 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
 
     private CommonChartFragment chartsContent(BaseChart baseChart) {
         CommonChartFragment fragment = null;
-        switch (baseChart.getChart_type()) {
+        switch (baseChart.getType()) {
             case line_chart:
                 if (baseChart.isOnly())
                     fragment = CommonOnlyLineChart.newInstance(baseChart);
@@ -230,10 +230,8 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         }
         for (int i = 0; i < PUSH_CHARTS.length; i++)
             for (BaseChart chart : charts) {
-                if (chart.getSubmenu().equals(PUSH_CHARTS[i])) {
-                    Logger.d(chart.getSubmenu());
-                    subMenus.add(chart.getSubmenu());
-                    Logger.d(subMenus);
+                if (chart.getSub().equals(PUSH_CHARTS[i])) {
+                    subMenus.add(chart.getSub());
                     mFragments.add(chartsContent(chart));
                     isBrowses.put(PUSH_CHARTS[i], false);
                 }

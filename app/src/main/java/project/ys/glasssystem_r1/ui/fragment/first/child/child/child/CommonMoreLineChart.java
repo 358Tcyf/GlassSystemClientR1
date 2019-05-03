@@ -48,11 +48,11 @@ public class CommonMoreLineChart extends CommonChartFragment {
 
     @AfterViews
     void afterViews() {
-        showBarChartMore();
+        showMoreLineChart();
     }
 
 
-    private void showBarChartMore() {
+    private void showMoreLineChart() {
         LineChartManager lineChartManager = new LineChartManager(mLineChart);
         List<Integer> colours = new ArrayList<>();
         colours.add(_mActivity.getColor(R.color.color1));
@@ -61,7 +61,6 @@ public class CommonMoreLineChart extends CommonChartFragment {
         colours.add(_mActivity.getColor(R.color.color4));
         lineChartManager.showMoreLineChart(setListData(), mBaseChart.getLabels(), mBaseChart.getxValues(), colours);
         lineChartManager.setXAxis(mBaseChart.getxValues().length, 0, mBaseChart.getxValues().length);
-        lineChartManager.setYAxis(100, 0, 10);
         lineChartManager.setDescription(mBaseChart.getTitle());
 
     }
@@ -70,14 +69,12 @@ public class CommonMoreLineChart extends CommonChartFragment {
     private List<List<Entry>> setListData() {
         List<List<Entry>> data = new ArrayList<>();
         List<List<BaseEntry>> listEntries = mBaseChart.getyListValues();
-
-
-        for (int i = 0; i < listEntries.size(); i++) {
-            data.add(new ArrayList<>());
-            List<BaseEntry> entries = listEntries.get(i);
-            for (int j = 0; j < entries.size(); j++) {
-                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getxValue().toString()), Float.valueOf(entries.get(j).getyValue().toString())));
+        for (List<BaseEntry> baseEntries : listEntries) {
+            List<Entry> e = new ArrayList<>();
+            for (BaseEntry entry : baseEntries) {
+                e.add(new BarEntry(Float.valueOf(entry.getX().toString()), Float.valueOf(entry.getY().toString())));
             }
+            data.add(e);
         }
         return data;
     }

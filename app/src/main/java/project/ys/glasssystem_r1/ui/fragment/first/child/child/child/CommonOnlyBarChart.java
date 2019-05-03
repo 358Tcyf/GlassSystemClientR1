@@ -16,7 +16,6 @@ import java.util.List;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.util.managers.BarChartManager;
 
@@ -68,7 +67,7 @@ public class CommonOnlyBarChart extends CommonChartFragment {
         List<BarEntry> data = new ArrayList<>();
         List<BaseEntry> entries = mBaseChart.getyValues();
         for (BaseEntry entry : entries) {
-            data.add(new BarEntry(Float.valueOf(entry.getxValue().toString()), Float.valueOf(entry.getyValue().toString())));
+            data.add(new BarEntry(Float.valueOf(entry.getX().toString()), Float.valueOf(entry.getY().toString())));
         }
         return data;
     }
@@ -82,7 +81,7 @@ public class CommonOnlyBarChart extends CommonChartFragment {
             data.add(new ArrayList<>());
             List<BaseEntry> entries = listEntries.get(i);
             for (int j = 0; j < entries.size(); j++) {
-                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getxValue().toString()), Float.valueOf(entries.get(j).getyValue().toString())));
+                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getX().toString()), Float.valueOf(entries.get(j).getY().toString())));
             }
         }
         return data;

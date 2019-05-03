@@ -47,7 +47,7 @@ public class CustomerApp extends Application {
     public void onCreate() {
         super.onCreate();
         _instance = this;
-        initFragmentation();
+//        initFragmentation();
         initGlobeActivity();
         initMMKV();
         initLogger();
@@ -141,7 +141,6 @@ public class CustomerApp extends Application {
     private void initGetuiPush() {
         PushManager.getInstance().initialize(this.getApplicationContext(), MyPushService.class);
         PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), MyIntentService.class);
-        String cid = PushManager.getInstance().getClientid(this);
     }
 
     public void setGetuiAlias() {
@@ -273,8 +272,6 @@ public class CustomerApp extends Application {
             helper.insertAlarm(alarm);
             EventBusActivityScope.getDefault(getCurrentActivity()).post(new RefreshListEvent());
             notifyDefault(this, "数据推送", alarm.getTitle());
-        } else {
-            Logger.d("不存在Uuid");
         }
     }
 

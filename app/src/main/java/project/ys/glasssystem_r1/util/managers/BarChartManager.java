@@ -169,7 +169,6 @@ public class BarChartManager {
         }
         BarData data = new BarData();
         for (int i = 0; i < listEntries.size(); i++) {
-
             List<BarEntry> entries = listEntries.get(i);
             BarDataSet barDataSet = new BarDataSet(entries, labels.get(i));
             barDataSet.setColor(colours.get(i));
@@ -180,30 +179,20 @@ public class BarChartManager {
         }
         int amount = listEntries.size();
 
-        float groupSpace = 0.3f; //柱状图组之间的间距
+        float groupSpace = 0.3f; //设置柱状图组之间的间距
         float barSpace = (float) ((1 - 0.12) / amount / 10);
         float barWidth = (float) ((1 - 0.3) / amount / 10 * 9);
-
-        // (0.2 + 0.02) * 4 + 0.08 = 1.00 -> interval per "group"
         xAxis.setLabelCount(labels.size(), false);
         data.setBarWidth(barWidth);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                for (int i = 0; i < xValues.length; i++) {
-                    if (value == i) {
-                        return xValues[i];
-                    }
+        xAxis.setValueFormatter((value, axis) -> { //设置横轴
+            for (int i = 0; i < xValues.length; i++) {
+                if (value == i) {
+                    return xValues[i];
                 }
-                return "";
             }
+            return "";
         });
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return mFormat.format(value) + "%";
-            }
-        });
+        leftAxis.setValueFormatter((value, axis) -> mFormat.format(value) + "%"); //设置纵轴
         data.groupBars(0, groupSpace, barSpace);
         mBarChart.setData(data);
     }
@@ -317,7 +306,7 @@ public class BarChartManager {
      */
     public void setDescription(String str) {
         RelativeLayout relativeLayout = (RelativeLayout) mBarChart.getParent();
-        TextView description = relativeLayout.findViewById(R.id.description);
+        TextView description = relativeLayout.findViewById(R.id.desc);
         description.setText(str);
     }
 

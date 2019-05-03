@@ -11,12 +11,7 @@ public class UserConstant {
 
     public static final String USER_PIC_PATH = "user_pic_path";
 
-
     public static final int NAME = 0;
     public static final int EMAIL = 1;
     public static final int PHONE = 2;
-
-
-
-
 }

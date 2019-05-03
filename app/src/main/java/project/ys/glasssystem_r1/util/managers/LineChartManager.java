@@ -122,10 +122,10 @@ public class LineChartManager {
         lineDataSet.setValueTextSize(14f);
         lineDataSet.setHighlightEnabled(true);
         //设置折线图填充
-        lineDataSet.setDrawFilled(mode);
-        lineDataSet.setFillColor(color);
+//        lineDataSet.setDrawFilled(mode);
+//        lineDataSet.setFillColor(color);
         //线模式为圆滑曲线（默认折线）
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+//        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
     }
 
 
@@ -141,7 +141,6 @@ public class LineChartManager {
         // 每一个LineDataSet代表一条线
         LineDataSet lineDataSet = new LineDataSet(entries, label);
         initLineDataSet(lineDataSet, color, true);
-
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
         LineData data = new LineData(dataSets);
@@ -150,7 +149,6 @@ public class LineChartManager {
         IAxisValueFormatter xAxisFormatter = new XAxisValueFormatter(xValues);
         xAxis.setValueFormatter(xAxisFormatter);
         mLineChart.setData(data);
-
     }
 
     /**
@@ -174,10 +172,10 @@ public class LineChartManager {
         LineData lineData = new LineData(dataSets);
         IAxisValueFormatter xAxisFormatter = new XAxisValueFormatter(xValues);
         xAxis.setValueFormatter(xAxisFormatter);
+        xAxis.setLabelCount(data.get(0).size() + 1, true);
+        xAxis.setDrawLabels(true);
         mLineChart.setData(lineData);//设置数据
         mLineChart.invalidate();//刷新显示
-
-
     }
 
     public class XAxisValueFormatter implements IAxisValueFormatter {
@@ -275,7 +273,7 @@ public class LineChartManager {
      */
     public void setDescription(String str) {
         RelativeLayout relativeLayout = (RelativeLayout) mLineChart.getParent();
-        TextView description = relativeLayout.findViewById(R.id.description);
+        TextView description = relativeLayout.findViewById(R.id.desc);
         description.setText(str);
     }
 }

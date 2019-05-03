@@ -17,7 +17,6 @@ import java.util.List;
 import project.ys.glasssystem_r1.R;
 import project.ys.glasssystem_r1.data.entity.BaseChart;
 import project.ys.glasssystem_r1.data.entity.BaseEntry;
-import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.util.managers.PieChartManager;
 
@@ -55,20 +54,20 @@ public class CommonPieChart extends CommonChartFragment {
         PieChartManager pieChartManager = new PieChartManager(mPieChart);
 
 
-        if (mBaseChart.getChart_type() == BaseChart.pie_chart)
+        if (mBaseChart.getType() == BaseChart.pie_chart)
             pieChartManager.showSolidPieChart(setData(), ""
                     , Arrays.asList(_mActivity.getColor(R.color.colorPrimaryDark)
                             , _mActivity.getColor(R.color.color1)
                             , _mActivity.getColor(R.color.color2)
                             , _mActivity.getColor(R.color.color3)));
-        if (mBaseChart.getChart_type() == BaseChart.ring_chart)
+        if (mBaseChart.getType() == BaseChart.ring_chart)
             pieChartManager.showRingPieChart(setData(), ""
                     , "电量单位：kW·h\n煤单位：吨\n水单位：吨"
                     , Arrays.asList(_mActivity.getColor(R.color.color1)
                             , _mActivity.getColor(R.color.color2)
                             , _mActivity.getColor(R.color.color3)));
         pieChartManager.setDescription(mBaseChart.getTitle());
-        pieChartManager.setSubDescription(mBaseChart.getDescription());
+        pieChartManager.setSubDescription(mBaseChart.getDesc());
 
 
     }
@@ -78,7 +77,7 @@ public class CommonPieChart extends CommonChartFragment {
         List<PieEntry> data = new ArrayList<>();
         List<BaseEntry> entries = mBaseChart.getyValues();
         for (BaseEntry entry : entries) {
-            data.add(new PieEntry(Float.valueOf(entry.getyValue().toString()), String.valueOf(entry.getxValue())));
+            data.add(new PieEntry(Float.valueOf(entry.getY().toString()), String.valueOf(entry.getX())));
         }
         return data;
     }

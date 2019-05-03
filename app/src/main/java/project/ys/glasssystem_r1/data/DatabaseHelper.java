@@ -180,7 +180,7 @@ public class DatabaseHelper {
                 Method getAddressLog = debugDB.getMethod("getAddressLog");
                 Object value = getAddressLog.invoke(null);
                 if (!value.equals("not available")) {
-                    showNotification(app, "调试提醒", "查看本地数据库", (String) value);
+//                    showNotification(app, "调试提醒", "查看本地数据库", (String) value);
 //                    notifyDefault(app, "DebugDB", (String) value);
 
                 }
@@ -254,7 +254,6 @@ public class DatabaseHelper {
             BrowseCount browseCount = new BrowseCount(tag, count, receiver);
             browseCountDao.insert(browseCount);
         }
-
     }
 
     public boolean cutOne(String receiver, String tag) {

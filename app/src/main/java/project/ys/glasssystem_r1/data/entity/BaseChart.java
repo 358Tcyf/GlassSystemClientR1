@@ -19,13 +19,13 @@ public class BaseChart implements Parcelable {
 
     private String menu;
 
-    private String submenu;
+    private String sub;
 
     private String title;
 
-    private String description;
+    private String desc;
 
-    private int chart_type;
+    private int type;
 
     private boolean only;
 
@@ -41,10 +41,10 @@ public class BaseChart implements Parcelable {
 
     protected BaseChart(Parcel in) {
         menu = in.readString();
-        submenu = in.readString();
+        sub = in.readString();
         title = in.readString();
-        description = in.readString();
-        chart_type = in.readInt();
+        desc = in.readString();
+        type = in.readInt();
         only = in.readByte() != 0;
         label = in.readString();
         labels = in.createStringArrayList();
@@ -71,12 +71,12 @@ public class BaseChart implements Parcelable {
         this.menu = menu;
     }
 
-    public String getSubmenu() {
-        return submenu;
+    public String getSub() {
+        return sub;
     }
 
-    public void setSubmenu(String submenu) {
-        this.submenu = submenu;
+    public void setSub(String sub) {
+        this.sub = sub;
     }
 
     public String getTitle() {
@@ -87,20 +87,20 @@ public class BaseChart implements Parcelable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public int getChart_type() {
-        return chart_type;
+    public int getType() {
+        return type;
     }
 
-    public void setChart_type(int chart_type) {
-        this.chart_type = chart_type;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public boolean isOnly() {
@@ -155,10 +155,10 @@ public class BaseChart implements Parcelable {
     public String toString() {
         return "BaseChart{" +
                 "menu='" + menu + '\'' +
-                ", submenu='" + submenu + '\'' +
+                ", sub='" + sub + '\'' +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", chart_type=" + chart_type +
+                ", desc='" + desc + '\'' +
+                ", type=" + type +
                 ", only=" + only +
                 ", label='" + label + '\'' +
                 ", labels=" + labels +
@@ -176,10 +176,10 @@ public class BaseChart implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(menu);
-        dest.writeString(submenu);
+        dest.writeString(sub);
         dest.writeString(title);
-        dest.writeString(description);
-        dest.writeInt(chart_type);
+        dest.writeString(desc);
+        dest.writeInt(type);
         dest.writeByte((byte) (only ? 1 : 0));
         dest.writeString(label);
         dest.writeStringList(labels);
