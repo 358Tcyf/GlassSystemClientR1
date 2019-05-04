@@ -31,5 +31,9 @@
         <item>@string/phone</item>
     </string-array>
 
-
+    <string-array name="userSelfAction">
+        <item>@string/send_email</item>
+        <item>@string/call_phone</item>
+        <item>@string/send_sms</item>
+    </string-array>
 </resources>
