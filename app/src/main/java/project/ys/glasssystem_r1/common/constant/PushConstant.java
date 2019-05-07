@@ -1,18 +1,14 @@
 package project.ys.glasssystem_r1.common.constant;
 
 public class PushConstant {
-    public static String DailyProduceCountList = "生产量";
-    public static String DailyCountOfModel = "生产型号统计";
-    public static String DailyProduceQualityList = "生产质量";
-    public static String DailyConsume = "生产能耗";
-    public static String DailySaleCount = "销售量";
-    public static String DailyDeliveryCount = "交易量";
-    public static String DailySale = "销售额";
-    public static String DailyCustomRate = "顾客满意率";
+    public static String DailyProduce = "日生产量";
+    public static String DailyTestRank = "日质检品级";
+    public static String DailyConsume = "日生产能耗";
 
-    public static String[] PUSH_CHARTS = {DailyProduceCountList,DailyCountOfModel,DailyProduceQualityList,DailyConsume,DailySaleCount,DailyDeliveryCount,DailySale,DailyCustomRate};
-    public static final String[] PUSH_TAGS = PUSH_CHARTS;
-    public static final String[] PRODUCE_TAGS = {DailyProduceCountList,DailyCountOfModel,DailyProduceQualityList,DailyConsume,};
-    public static final String[] SALES_TAGS = {DailySaleCount,DailyDeliveryCount,DailySale,DailyCustomRate};;
-    public static final String[] PUSH_TIME = {"每4小时一次", "每8小时一次", "每12小时一次", "每天一次"};
+    public static String WeeklyProduce = "周生产量";
+    public static String WeeklyTestRank = "周质检品级";
+    public static String WeeklyConsume = "周生产能耗";
+
+    public static String[] PUSH_TAGS = {DailyProduce, DailyTestRank, DailyConsume, WeeklyProduce, WeeklyTestRank, WeeklyConsume};
+    public static  String[] PUSH_TIME = {"每日22:00", "次日08:00"};
 }

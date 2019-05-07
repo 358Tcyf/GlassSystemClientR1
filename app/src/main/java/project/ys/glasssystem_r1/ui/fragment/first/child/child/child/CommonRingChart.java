@@ -61,8 +61,9 @@ public class CommonRingChart extends CommonChartFragment {
                             , _mActivity.getColor(R.color.color3)));
         if (mBaseChart.getType() == BaseChart.ring_chart)
             pieChartManager.showRingPieChart(setData(), ""
-                    , "电量单位：kW·h\n煤单位：吨\n水单位：吨"
-                    , Arrays.asList(_mActivity.getColor(R.color.color1)
+                    , "水单位：吨\n电量单位：k·kW·h\n原料单位：吨\n煤单位：吨"
+                    , Arrays.asList(_mActivity.getColor(R.color.colorPrimaryDark)
+                            , _mActivity.getColor(R.color.color1)
                             , _mActivity.getColor(R.color.color2)
                             , _mActivity.getColor(R.color.color3)));
         pieChartManager.setDescription(mBaseChart.getTitle());

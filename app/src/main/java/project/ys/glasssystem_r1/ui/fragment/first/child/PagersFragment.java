@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
-import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -39,13 +38,11 @@ import project.ys.glasssystem_r1.mvp.presenter.ChartPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 import project.ys.glasssystem_r1.ui.fragment.base.CommonChartFragment;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreBarChart;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonMoreLineChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyBarChart;
-import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonOnlyLineChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonPieChart;
 import project.ys.glasssystem_r1.ui.fragment.first.child.child.child.CommonRingChart;
 
-import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_CHARTS;
+import static project.ys.glasssystem_r1.common.constant.PushConstant.PUSH_TAGS;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.bar_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.line_chart;
 import static project.ys.glasssystem_r1.data.entity.BaseChart.pie_chart;
@@ -198,11 +195,11 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         CommonChartFragment fragment = null;
         switch (baseChart.getType()) {
             case line_chart:
-                if (baseChart.isOnly())
-                    fragment = CommonOnlyLineChart.newInstance(baseChart);
-                else
-                    fragment = CommonMoreLineChart.newInstance(baseChart);
-                break;
+//                if (baseChart.isOnly())
+//                    fragment = CommonOnlyLineChart.newInstance(baseChart);
+//                else
+//                    fragment = CommonMoreLineChart.newInstance(baseChart);
+//                break;
             case bar_chart:
                 if (baseChart.isOnly())
                     fragment = CommonOnlyBarChart.newInstance(baseChart);
@@ -219,21 +216,21 @@ public class PagersFragment extends BaseBackFragment implements ChartContract.Vi
         return fragment;
     }
 
-    private String[] push_charts = PUSH_CHARTS;
+    private String[] push_charts = PUSH_TAGS;
 
     void sortCharts() {
         for (int i = 0; i < 4; i++) {
-            if (PUSH_CHARTS[i].equals(defaultSubMenu)) {
+            if (PUSH_TAGS[i].equals(defaultSubMenu)) {
                 push_charts[i] = push_charts[0];
                 push_charts[0] = defaultSubMenu;
             }
         }
-        for (int i = 0; i < PUSH_CHARTS.length; i++)
+        for (int i = 0; i < PUSH_TAGS.length; i++)
             for (BaseChart chart : charts) {
-                if (chart.getSub().equals(PUSH_CHARTS[i])) {
+                if (chart.getSub().equals(PUSH_TAGS[i])) {
                     subMenus.add(chart.getSub());
                     mFragments.add(chartsContent(chart));
-                    isBrowses.put(PUSH_CHARTS[i], false);
+                    isBrowses.put(PUSH_TAGS[i], false);
                 }
             }
 

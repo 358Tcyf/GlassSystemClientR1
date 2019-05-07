@@ -354,14 +354,14 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
     public void toHomeActivity() {
         account = inputAccount.getText().toString();
         password = inputPassword.getText().toString();
-        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(account, password));
+//        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(account, password));
         Intent intent = new Intent(getContext(), HomeActivity_.class);
         startActivity(intent);
         getActivity().finish();
     }
 
     public void toHomeFragment() {
-        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(inputAccount.getText().toString(), inputPassword.getText().toString()));
+//        CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(inputAccount.getText().toString(), inputPassword.getText().toString()));
         _mActivity.setTheme(R.style.AppTheme);
         startWithPop(HomeFragment.newInstance());
     }

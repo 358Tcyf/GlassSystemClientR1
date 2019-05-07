@@ -15,8 +15,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,7 +48,8 @@ public class BarChartManager {
      * 初始化LineChart
      */
     private void initChart() {
-        mFormat = new DecimalFormat("#,###.##");
+        mFormat = new DecimalFormat();
+        mFormat.applyPattern("0");
         mBarChart.setTouchEnabled(true); // 所有触摸事件,默认true
         mBarChart.setDragEnabled(true);    // 可拖动,默认true
         mBarChart.setScaleEnabled(false);   // 两个轴上的缩放,X,Y分别默认为true
@@ -127,7 +131,6 @@ public class BarChartManager {
         mBarChart.setData(data);
     }
 
-
     /**
      * 展示柱状图(一条多组)
      */
@@ -178,7 +181,6 @@ public class BarChartManager {
             data.addDataSet(barDataSet);
         }
         int amount = listEntries.size();
-
         float groupSpace = 0.3f; //设置柱状图组之间的间距
         float barSpace = (float) ((1 - 0.12) / amount / 10);
         float barWidth = (float) ((1 - 0.3) / amount / 10 * 9);
@@ -192,8 +194,9 @@ public class BarChartManager {
             }
             return "";
         });
-        leftAxis.setValueFormatter((value, axis) -> mFormat.format(value) + "%"); //设置纵轴
+        leftAxis.setValueFormatter((value, axis) -> mFormat.format(value)); //设置纵轴
         data.groupBars(0, groupSpace, barSpace);
+        data.setValueFormatter(new MyValueFormatter());
         mBarChart.setData(data);
     }
 
@@ -207,7 +210,7 @@ public class BarChartManager {
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            return mFormat.format(value) + "%";
+            return mFormat.format(value);
         }
     }
 
@@ -227,6 +230,13 @@ public class BarChartManager {
 
     }
 
+    public class MyValueFormatter implements IValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return mFormat.format(value);
+        }
+    }
 
     /**
      * 设置Y轴值

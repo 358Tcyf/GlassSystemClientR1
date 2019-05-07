@@ -4,13 +4,15 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import project.ys.glasssystem_r1.CustomerApp;
 import project.ys.glasssystem_r1.data.bean.UserBean;
-import project.ys.glasssystem_r1.mvp.contract.LoginContract;
+import project.ys.glasssystem_r1.data.bean.UserBeanPlus;
 import project.ys.glasssystem_r1.http.HttpContract;
 import project.ys.glasssystem_r1.http.HttpFeedBackUtil;
 import project.ys.glasssystem_r1.http.OnHttpCallBack;
 import project.ys.glasssystem_r1.http.RetResult;
 import project.ys.glasssystem_r1.http.RetrofitUtils;
+import project.ys.glasssystem_r1.mvp.contract.LoginContract;
 
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.HTTP;
 import static project.ys.glasssystem_r1.common.constant.HttpConstant.PORT;
@@ -35,7 +37,8 @@ public class LoginModel implements LoginContract.Model {
                     public void onNext(RetResult<UserBean> retResult) {
                         HttpFeedBackUtil.handleRetResult(retResult, callBack);
                         if (retResult.getCode() == RetResult.RetCode.SUCCESS.code) {
-
+                            UserBean user = retResult.getData();
+                            CustomerApp.getInstance().setCurrentUser(new UserBeanPlus(user.getNo(), user.getPassword()));
                         }
                     }
 

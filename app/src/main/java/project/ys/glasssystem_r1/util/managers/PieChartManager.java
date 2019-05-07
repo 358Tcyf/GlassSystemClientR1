@@ -29,12 +29,12 @@ public class PieChartManager {
     }
 
     //初始化
-    private void initHalfPieChart() {
+    private void initPieChart() {
         mPieChart.setTouchEnabled(true); // 所有触摸事件,默认true
         mPieChart.setDrawHoleEnabled(false);//是否显示中间的洞
 
         mPieChart.setRotationAngle(0);// 初始旋转角度
-        mPieChart.setRotationEnabled(true);// 可以手动旋转
+//        mPieChart.setRotationEnabled(true);// 可以手动旋转
 //        mPieChart.setRotationAngle(180f);// 初始旋转角度
 //        mPieChart.setRotationEnabled(false);// 可以手动旋转
 
@@ -43,7 +43,7 @@ public class PieChartManager {
 
         //是否显示每个部分的文字描述
         mPieChart.setDrawEntryLabels(true);
-        mPieChart.setEntryLabelColor(Color.BLACK); //描述文字的颜色
+        mPieChart.setEntryLabelColor(Color.WHITE); //描述文字的颜色
         mPieChart.setEntryLabelTextSize(14);//描述文字的大小
         mPieChart.setEntryLabelTypeface(Typeface.DEFAULT); //描述文字的样式
 
@@ -74,7 +74,6 @@ public class PieChartManager {
 
     }
 
-
     /**
      * 显示实心圆
      *
@@ -83,7 +82,7 @@ public class PieChartManager {
      * @param colors
      */
     public void showSolidPieChart(List<PieEntry> entry, String label, List<Integer> colors) {
-        initHalfPieChart();
+        initPieChart();
         //数据集合
         PieDataSet dataSet = new PieDataSet(entry, label);
         //填充每个区域的颜色
@@ -93,7 +92,7 @@ public class PieChartManager {
         //文字的大小
         dataSet.setValueTextSize(14);
         //文字的颜色
-        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextColor(Color.WHITE);
         //文字的样式
         dataSet.setValueTypeface(Typeface.DEFAULT);
         //设置Y值的位置是在圆内还是圆外
@@ -141,6 +140,7 @@ public class PieChartManager {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);  //设置图例水平显示
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP); //顶部
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT); //右对齐
+//        legend.setYOffset(10f);
 
         legend.setXEntrySpace(10f);//x轴的间距
         legend.setYEntrySpace(6f); //y轴的间距
@@ -166,7 +166,7 @@ public class PieChartManager {
         //饼状图中间可以添加文字
         mPieChart.setDrawCenterText(true);
         mPieChart.setCenterText(str); //设置中间文字
-        mPieChart.setCenterTextColor(Color.BLUE); //中间问题的颜色
+        mPieChart.setCenterTextColor(Color.BLACK); //中间问题的颜色
         mPieChart.setCenterTextSize(14);  //中间文字的大小px
 
         //数据集合
@@ -204,6 +204,7 @@ public class PieChartManager {
         TextView description = relativeLayout.findViewById(R.id.desc);
         description.setText(str);
     }
+
     /**
      * 设置描述信息
      *

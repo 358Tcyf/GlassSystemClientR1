@@ -59,7 +59,6 @@ public class CommonMoreBarChart extends CommonChartFragment {
         colours.add(_mActivity.getColor(R.color.color3));
         barChartManager.showMoreBarChart(setListData(), mBaseChart.getLabels(), mBaseChart.getxValues(), colours);
         barChartManager.setXAxis(mBaseChart.getxValues().length, 0, mBaseChart.getxValues().length);
-        barChartManager.setYAxis(100, 0, 10);
         barChartManager.setDescription(mBaseChart.getTitle());
 
     }
@@ -71,7 +70,7 @@ public class CommonMoreBarChart extends CommonChartFragment {
             data.add(new ArrayList<>());
             List<BaseEntry> entries = listEntries.get(i);
             for (int j = 0; j < entries.size(); j++) {
-                data.get(i).add(new BarEntry(Float.valueOf(entries.get(j).getX().toString()), Float.valueOf(entries.get(j).getY().toString())));
+                data.get(i).add(new BarEntry(Integer.valueOf(entries.get(j).getX().toString()), Integer.valueOf(entries.get(j).getY().toString())));
             }
         }
         return data;
