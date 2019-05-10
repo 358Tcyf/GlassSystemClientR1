@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="roles">
-        <item>@string/managementSection</item>
-        <item>@string/productionSection</item>
-        <item>@string/saleSection</item>
+        <item>@string/sectionA</item>
+        <item>@string/sectionD</item>
+        <item>@string/sectionU</item>
+        <item>@string/sectionR</item>
+        <item>@string/sectionW</item>
+        <item>@string/sectionQ</item>
+        <item>@string/sectionS</item>
+        <item>@string/sectionF</item>
     </string-array>
 
 
     <string-array name="alarmTags">
-        <item>@string/fail_rate</item>
-        <item>@string/elec_consu</item>
-        <item>@string/wtr_consu</item>
-        <item>@string/coal_consu</item>
+        <item>B级品件数</item>
+        <item>C级品件数</item>
+        <item>水消耗/吨</item>
+        <item>电消耗/kw·h</item>
+        <item>原料消耗/吨</item>
+        <item>煤消耗/吨</item>
     </string-array>
 
     <string-array name="pushTabs">

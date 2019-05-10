@@ -45,8 +45,10 @@ import project.ys.glasssystem_r1.ui.fragment.third.child.UserEditFragment;
 
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_USER;
-import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtnItem;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.Account_Index;
+import static project.ys.glasssystem_r1.common.constant.UserConstant.Role_Index;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showMessageNegativeDialog;
+import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addBtnItem;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITopBarHelper.addViews;
 
 @EFragment(R.layout.fragment_member)
@@ -137,6 +139,8 @@ public class SecondTabFragment extends SupportFragment implements MemberContract
     private SimpleHeaderAdapter adapter2;
     private SimpleHeaderAdapter adapter3;
 
+    private List<SimpleHeaderAdapter> headerAdapters = new ArrayList<>();
+
     private void initTopBar() {
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -147,13 +151,11 @@ public class SecondTabFragment extends SupportFragment implements MemberContract
         addUser.setOnClickListener(v -> action(null, strAdd));
         searchUser.setOnClickListener(v -> action(null, strSearch));
         sortBtn.setOnClickListener(v -> action(null, strSort));
-        if (currentUser.getNo().startsWith("A"))
+        if (currentUser.getNo().startsWith("SA"))
             mTopBar.addRightView(addViews(_mActivity, addUser, searchUser, sortBtn), R.id.btn, layoutParams);
         else
             mTopBar.addRightView(addViews(_mActivity, searchUser, sortBtn), R.id.btn, layoutParams);
     }
-
-
 
 
     private void initOrder() {
@@ -288,20 +290,27 @@ public class SecondTabFragment extends SupportFragment implements MemberContract
     public void setList(ArrayList list) {
         list = removeMySelf(list);
         mEmptyView.hide();
-        indexableLayout.removeHeaderAdapter(adapter1);
-        indexableLayout.removeHeaderAdapter(adapter2);
-        indexableLayout.removeHeaderAdapter(adapter3);
+        for (SimpleHeaderAdapter headerAdapter : headerAdapters) {
+            indexableLayout.removeHeaderAdapter(headerAdapter);
+        }
         if (order.equals(orderByName)) {
             userAdapter.setDatas(list);
         } else if (order.equals(orderByRole)) {
             List<List<UserBeanPlus>> lists = divideByRole(list);
-            adapter1 = new SimpleHeaderAdapter<>(userAdapter, "G", "管理员", lists.get(0));
-            adapter2 = new SimpleHeaderAdapter<>(userAdapter, "S", "生产人员", lists.get(1));
-            adapter3 = new SimpleHeaderAdapter<>(userAdapter, "X", "销售人员", lists.get(2));
+            headerAdapters.clear();
+            for (int i = 0; i < Account_Index.length; i++) {
+                headerAdapters.add(new SimpleHeaderAdapter<>(userAdapter, Account_Index[i], Role_Index[i], lists.get(i)));
+            }
+//            adapter1 = new SimpleHeaderAdapter<>(userAdapter, "G", "管理员", lists.get(0));
+//            adapter2 = new SimpleHeaderAdapter<>(userAdapter, "S", "生产人员", lists.get(1));
+//            adapter3 = new SimpleHeaderAdapter<>(userAdapter, "X", "销售人员", lists.get(2));
             userAdapter.getItems().clear();
-            indexableLayout.addHeaderAdapter(adapter3);
-            indexableLayout.addHeaderAdapter(adapter2);
-            indexableLayout.addHeaderAdapter(adapter1);
+            for (SimpleHeaderAdapter headerAdapter : headerAdapters) {
+                indexableLayout.addHeaderAdapter(headerAdapter);
+            }
+//            indexableLayout.addHeaderAdapter(adapter3);
+//            indexableLayout.addHeaderAdapter(adapter2);
+//            indexableLayout.addHeaderAdapter(adapter1);
         }
         userAdapter.notifyDataSetChanged();
     }
@@ -318,21 +327,31 @@ public class SecondTabFragment extends SupportFragment implements MemberContract
     }
 
     public static List<List<UserBeanPlus>> divideByRole(ArrayList list) {
+        List<UserBeanPlus> users = (ArrayList<UserBeanPlus>) list;
         List<List<UserBeanPlus>> lists = new ArrayList<>();
-        List<UserBeanPlus> list1 = new ArrayList<>();
-        List<UserBeanPlus> list2 = new ArrayList<>();
-        List<UserBeanPlus> list3 = new ArrayList<>();
-        for (UserBeanPlus user : (ArrayList<UserBeanPlus>) list) {
-            if (user.getRoleName().startsWith("管"))
-                list1.add(user);
-            if (user.getRoleName().startsWith("生"))
-                list2.add(user);
-            if (user.getRoleName().startsWith("销"))
-                list3.add(user);
+        for (String role : Role_Index) {
+            List<UserBeanPlus> roleList = new ArrayList<>();
+            for (UserBeanPlus user : users) {
+                if (user.getRoleName().equals(role)) {
+                    roleList.add(user);
+                }
+            }
+            lists.add(roleList);
         }
-        lists.add(list1);
-        lists.add(list2);
-        lists.add(list3);
+//        List<UserBeanPlus> list1 = new ArrayList<>();
+//        List<UserBeanPlus> list2 = new ArrayList<>();
+//        List<UserBeanPlus> list3 = new ArrayList<>();
+//        for (UserBeanPlus user : (ArrayList<UserBeanPlus>) list) {
+//            if (user.getRoleName().startsWith("管"))
+//                list1.add(user);
+//            if (user.getRoleName().startsWith("生"))
+//                list2.add(user);
+//            if (user.getRoleName().startsWith("销"))
+//                list3.add(user);
+//        }
+//        lists.add(list1);
+//        lists.add(list2);
+//        lists.add(list3);
         return lists;
     }
 

@@ -40,7 +40,6 @@ public class MemberPresenter implements MemberContract.Presenter {
                 List<Map<String, Object>> userMapList = (List<Map<String, Object>>) userMap.get("staffs");
                 memberView.setList((ArrayList) parseArray(toJSONString(userMapList), UserBeanPlus.class));
             }
-
             @Override
             public void onFailed(String errorMsg) {
                 memberView.showErrorMsg(errorMsg);

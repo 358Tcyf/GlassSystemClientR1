@@ -26,6 +26,7 @@ import org.androidannotations.annotations.res.StringArrayRes;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -98,14 +99,7 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
     String alarmSwitch;
     @StringRes(R.string.add_alarm_tag)
     String addTag;
-    @StringRes(R.string.fail_rate)
-    String failRate;
-    @StringRes(R.string.elec_consu)
-    String elecConsu;
-    @StringRes(R.string.wtr_consu)
-    String wtrConsu;
-    @StringRes(R.string.coal_consu)
-    String coalConsu;
+
     @ColorRes(R.color.colorText_Icon)
     int topbarText;
 
@@ -349,21 +343,9 @@ public class PushSetFragment extends BaseBackFragment implements PushSetContract
             //TODO 添加标签
             showAddSpinner();
         }
-        if (tag.equals(failRate)) {
-            //TODO 删除残片率
-            deleteTag(failRate);
-        }
-        if (tag.equals(elecConsu)) {
-            //TODO 删除电消耗
-            deleteTag(elecConsu);
-        }
-        if (tag.equals(wtrConsu)) {
-            //TODO 删除水消耗
-            deleteTag(wtrConsu);
-        }
-        if (tag.equals(coalConsu)) {
-            //TODO 删除煤消耗
-            deleteTag(coalConsu);
+        if (Arrays.asList(arrayTags).contains(tag)) {
+            //TODO 删除预警标签
+            deleteTag(tag);
         }
         if (tag.equals(strSave)) {
             //TODO 保存

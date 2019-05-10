@@ -94,9 +94,14 @@
     <string name="name">姓名</string>
 
     <string name="createRole">建立角色</string>
-    <string name="managementSection">管理部门</string>
-    <string name="productionSection">生产部门</string>
-    <string name="saleSection">销售部门</string>
+    <string name="sectionA">行政部门</string>
+    <string name="sectionD">研发部门</string>
+    <string name="sectionU">采购部门</string>
+    <string name="sectionR">生产部门</string>
+    <string name="sectionW">仓储部门</string>
+    <string name="sectionQ">质检部门</string>
+    <string name="sectionS">销售部门</string>
+    <string name="sectionF">财务部门</string>
     <string name="userNo">工号</string>
     <string name="userSection">部门</string>
 
@@ -145,10 +150,6 @@
     <string name="min_value">最小值</string>
     <string name="max_value">最大值</string>
 
-    <string name="fail_rate">残片率/%</string>
-    <string name="elec_consu">电消耗/kw·h</string>
-    <string name="wtr_consu">水消耗/吨</string>
-    <string name="coal_consu">煤消耗/吨</string>
 
     <string name="expand_string">more</string>
     <string name="collapsed_string">less</string>

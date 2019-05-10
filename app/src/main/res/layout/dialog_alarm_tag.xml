@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
+        app:ms_popup_padding_bottom="36dp"
         android:layout_marginEnd="24dp"
         android:foreground="?attr/selectableItemBackground"
         app:ms_background_color="@color/colorText_Icon"

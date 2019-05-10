@@ -35,6 +35,7 @@ import project.ys.glasssystem_r1.mvp.contract.AddUserContract;
 import project.ys.glasssystem_r1.mvp.presenter.AddUserPresenter;
 import project.ys.glasssystem_r1.ui.fragment.base.BaseBackFragment;
 
+import static project.ys.glasssystem_r1.common.constant.UserConstant.getRoleId;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showFailDialog;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showLoadingDialog;
 import static project.ys.glasssystem_r1.ui.widget.qmui.QMUITipDialogUtils.showSuccessDialog;
@@ -123,7 +124,7 @@ public class AddUserFragment extends BaseBackFragment implements AddUserContract
         roleSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                roleId = view.getSelectedIndex() + 1;
+                roleId = getRoleId((String) item);
                 addUserPresenter.getLatestNo(roleId);
             }
         });
@@ -201,6 +202,5 @@ public class AddUserFragment extends BaseBackFragment implements AddUserContract
     @UiThread
     void setNoText() {
         newUserNo.setText(no);
-        Logger.d(no);
     }
 }
