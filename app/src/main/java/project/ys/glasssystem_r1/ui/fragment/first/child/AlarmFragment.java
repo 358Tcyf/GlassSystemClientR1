@@ -1,6 +1,8 @@
 package project.ys.glasssystem_r1.ui.fragment.first.child;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +28,9 @@ import org.androidannotations.annotations.res.StringRes;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import me.yokeyword.eventbusactivityscope.EventBusActivityScope;
 import me.yokeyword.fragmentation.SupportFragment;
 import project.ys.glasssystem_r1.CustomerApp;
@@ -46,6 +50,7 @@ import project.ys.glasssystem_r1.ui.fragment.common.SearchFragment;
 import static project.ys.glasssystem_r1.common.constant.Constant.DEFAULT_LIMIT;
 import static project.ys.glasssystem_r1.common.constant.Constant.SECOND;
 import static project.ys.glasssystem_r1.common.constant.SearchConstant.SEARCH_ALARM;
+import static project.ys.glasssystem_r1.ui.adapter.AlarmQuickAdapter.alarmContent;
 
 @EFragment(R.layout.fragment_alarm)
 public class AlarmFragment extends SupportFragment implements AlarmContract.View {
@@ -85,6 +90,8 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
     String strDetail;
     @StringRes(R.string.manager)
     String strManager;
+    @StringRes(R.string.share)
+    String strShare;
     @StringRes(R.string.refresh)
     String strRefresh;
     @StringRes(R.string.noData)
@@ -233,14 +240,19 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
     BaseQuickAdapter.OnItemClickListener normalItemChildClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            action(position, strDetail);
-
+//            action(position, strDetail);
+            new QMUIBottomSheet.BottomListSheetBuilder(getContext())
+                    .addItem(strDetail)
+                    .addItem(strShare)
+                    .setOnSheetItemClickListener((dialog, itemView, position1, tag) -> {
+                        action(position, tag);
+                        dialog.dismiss();
+                    }).build().show();
         }
     };
     BaseQuickAdapter.OnItemLongClickListener normalItemLongClickListener = new BaseQuickAdapter.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-
             action(0, strManager);
             return false;
         }
@@ -334,6 +346,25 @@ public class AlarmFragment extends SupportFragment implements AlarmContract.View
             mAdapter.setOnItemClickListener(selectedItemChildClickListener);
             mAdapter.setOnItemLongClickListener(selectedItemLongClickListener);
             mAdapter.notifyDataSetChanged();
+        }
+        if (tag.equals(strShare)) {
+            OnekeyShare oks = new OnekeyShare();
+            //关闭sso授权
+            oks.disableSSOWhenAuthorize();
+            // title标题，微信、QQ和QQ空间等平台使用
+            oks.setTitle(getString(R.string.share));
+            // titleUrl QQ和QQ空间跳转链接
+//            oks.setTitleUrl("http://sharesdk.cn");
+            // text是分享文本，所有平台都需要这个字段
+            oks.setText(alarmContent(mList.get(i).getContent()));
+            // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+            oks.setImageData(((BitmapDrawable) Objects.requireNonNull(ContextCompat.getDrawable(_mActivity, R.mipmap.ic_launcher))).getBitmap());
+            // url在微信、微博，Facebook等平台中使用
+//            oks.setUrl("http://sharesdk.cn");
+            // comment是我对这条分享的评论，仅在人人网使用
+//            oks.setComment("我是测试评论文本");
+            // 启动分享GUI
+            oks.show(_mActivity);
         }
         if (tag.equals(strRefresh)) {
             refreshView();

@@ -1,4 +1,4 @@
-    apply plugin: 'com.android.application'
+apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -9,11 +9,11 @@ group = 'com.github.358Tcyf'
 android {
     compileSdkVersion 28
     defaultConfig {
-//        applicationId "project.ys.glasssystem_r1"
-        minSdkVersion 24
+        applicationId "project.ys.glasssystem_r1"
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         compileOptions {
 
@@ -30,6 +30,28 @@ android {
         MobSDK {
             appKey "23b1f3be6f130"
             appSecret "c34ccb155fedfe2471f0142f7b02150b"
+            ShareSDK {
+                devInfo {
+                    Email {}
+                    ShortMessage {}
+                    Wechat {
+                        appId "wx4868b35061f87885"
+                        appSecret "64020361b8ec4c99936c0e3999a9f249"
+                    }
+                    QQ {
+                        appId "100371282"
+                        appKey "aed9b0303e3ed1e27bae87c33761161d"
+                    }
+                    WechatMoments {
+                        appId "wx4868b35061f87885"
+                        appSecret "64020361b8ec4c99936c0e3999a9f249"
+                    }
+                    WechatFavorite {
+                        appId "wx4868b35061f87885"
+                        appSecret "64020361b8ec4c99936c0e3999a9f249"
+                    }
+                }
+            }
             MobVerify {}
             SMSSDK {}
         }
@@ -193,7 +215,7 @@ dependencies {
 
     /*alibaba ViewPager*/
     implementation 'com.alibaba.android:ultraviewpager:1.0.7.8'
-    
+
     /*沉浸式导航栏*/
     implementation 'com.gyf.immersionbar:immersionbar:2.3.3'
 

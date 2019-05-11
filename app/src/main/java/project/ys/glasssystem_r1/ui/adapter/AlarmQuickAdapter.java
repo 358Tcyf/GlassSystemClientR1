@@ -38,20 +38,18 @@ public class AlarmQuickAdapter extends BaseQuickAdapter<AlarmSelectedBean, BaseV
         helper.setEnabled(R.id.selected, false);
         helper.setChecked(R.id.selected, item.isSelected());
         helper.setGone(R.id.selected, showSelected);
-        List<AlarmLog> alarmLogs = JSON.parseArray(item.getAlarm().getContent(), AlarmLog.class);
-//        TextView content = helper.getView(R.id.content);
         ExpandableTextView content = helper.getView(R.id.content);
-
-        String str = "预警日志\n";
-        for (String tag : ALARM_TAGS) {
-            for (AlarmLog log : alarmLogs) {
-                if (log.getTag().equals(tag)) {
-                    str += log.getLog();
-                }
-
-            }
-        }
-        content.setText(str);
+//        List<AlarmLog> alarmLogs = JSON.parseArray(item.getAlarm().getContent(), AlarmLog.class);
+////        TextView content = helper.getView(R.id.content);
+//        String str = "预警日志\n";
+//        for (String tag : ALARM_TAGS) {
+//            for (AlarmLog log : alarmLogs) {
+//                if (log.getTag().equals(tag)) {
+//                    str += log.getLog();
+//                }
+//            }
+//        }
+        content.setText(alarmContent(item.getAlarm().getContent()));
         if (item.getAlarm().isHaveRead()){
             helper.setBackgroundColor(R.id.read, mContext.getColor(R.color.pushRead));
             content.setSateTextColor(mContext.getColor(R.color.pushRead));
@@ -67,4 +65,16 @@ public class AlarmQuickAdapter extends BaseQuickAdapter<AlarmSelectedBean, BaseV
         showSelected = !showSelected;
     }
 
+    public static String alarmContent(String content){
+        List<AlarmLog> alarmLogs = JSON.parseArray(content, AlarmLog.class);
+        String str = "预警日志\n";
+        for (String tag : ALARM_TAGS) {
+            for (AlarmLog log : alarmLogs) {
+                if (log.getTag().equals(tag)) {
+                    str += log.getLog();
+                }
+            }
+        }
+        return str;
+    }
 }
