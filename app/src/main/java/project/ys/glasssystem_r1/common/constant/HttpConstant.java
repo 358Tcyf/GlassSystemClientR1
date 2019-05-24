@@ -8,7 +8,7 @@ public class HttpConstant {
     public static final String HTTP = "http://";
     private static final String BUGDOGGY = "47.102.41.26";
     public static final String URL = BUGDOGGY;
-    public static final String PORT = ":9898";
+    public static final String PORT = ":80";
     public static final String USER = "/user";
     public static final String LOGIN = "/login";
     public static final String USER_LIST = "/userList";

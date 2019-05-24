@@ -274,6 +274,4 @@ public class CustomerApp extends Application {
             notifyDefault(this, "数据推送", alarm.getTitle());
         }
     }
-
-
 }

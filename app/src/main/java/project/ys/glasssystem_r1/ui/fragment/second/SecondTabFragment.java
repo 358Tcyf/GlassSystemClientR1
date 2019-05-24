@@ -183,7 +183,7 @@ public class SecondTabFragment extends SupportFragment implements MemberContract
             action(entity, strDetail);
         });
         userAdapter.setOnItemContentLongClickListener((v, originalPosition, currentPosition, entity) -> {
-            if (!currentUser.getNo().startsWith("A"))
+            if (!currentUser.getNo().startsWith("SA"))
                 action(entity, strDetail);
             else
                 userManage(entity);
